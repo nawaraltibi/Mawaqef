@@ -1,0 +1,44 @@
+{
+  "@@locale": "en",
+  "appTitle": "Parking Application",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "onboardingTitle1": "Discover nearby parking easily",
+  "@onboardingTitle1": {
+    "description": "First onboarding screen title"
+  },
+  "onboardingDescription1": "Find available parking spots near you with real-time availability and convenient locations.",
+  "@onboardingDescription1": {
+    "description": "First onboarding screen description"
+  },
+  "onboardingTitle2": "Reserve your parking spot in seconds",
+  "@onboardingTitle2": {
+    "description": "Second onboarding screen title"
+  },
+  "onboardingDescription2": "Book your parking space instantly and secure your spot before you arrive. No more circling around!",
+  "@onboardingDescription2": {
+    "description": "Second onboarding screen description"
+  },
+  "onboardingTitle3": "Manage and monetize your parking",
+  "@onboardingTitle3": {
+    "description": "Third onboarding screen title"
+  },
+  "onboardingDescription3": "Parking owners can easily manage spaces, set pricing, and earn income from unused parking spots.",
+  "@onboardingDescription3": {
+    "description": "Third onboarding screen description"
+  },
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip button text"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button text"
+  },
+  "getStarted": "Get Started",
+  "@getStarted": {
+    "description": "Get started button text on last onboarding screen"
+  }
+}
+

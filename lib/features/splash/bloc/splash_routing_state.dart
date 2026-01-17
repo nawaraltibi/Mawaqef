@@ -23,6 +23,8 @@ class SplashError extends SplashRoutingState {
 
 /// Destination enum for routing decisions
 enum SplashDestination {
+  /// User needs to complete onboarding
+  onboarding,
   /// User needs to login/register
   unauthenticated,
   /// User is authenticated and can access main app

@@ -1,0 +1,44 @@
+{
+  "@@locale": "ar",
+  "appTitle": "تطبيق مواقف السيارات",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "onboardingTitle1": "اكتشف مواقف السيارات القريبة بسهولة",
+  "@onboardingTitle1": {
+    "description": "First onboarding screen title"
+  },
+  "onboardingDescription1": "اعثر على أماكن مواقف السيارات المتاحة بالقرب منك مع توفر فوري ومواقع مريحة.",
+  "@onboardingDescription1": {
+    "description": "First onboarding screen description"
+  },
+  "onboardingTitle2": "احجز مكان وقوفك في ثوانٍ",
+  "@onboardingTitle2": {
+    "description": "Second onboarding screen title"
+  },
+  "onboardingDescription2": "احجز مكان وقوفك على الفور وامنح مكانك قبل وصولك. لا مزيد من الدوران!",
+  "@onboardingDescription2": {
+    "description": "Second onboarding screen description"
+  },
+  "onboardingTitle3": "إدارة وتحقيق الربح من مواقفك",
+  "@onboardingTitle3": {
+    "description": "Third onboarding screen title"
+  },
+  "onboardingDescription3": "يمكن لأصحاب مواقف السيارات إدارة المساحات بسهولة وتحديد الأسعار وكسب الدخل من أماكن وقوف السيارات غير المستخدمة.",
+  "@onboardingDescription3": {
+    "description": "Third onboarding screen description"
+  },
+  "skip": "تخطي",
+  "@skip": {
+    "description": "Skip button text"
+  },
+  "next": "التالي",
+  "@next": {
+    "description": "Next button text"
+  },
+  "getStarted": "ابدأ الآن",
+  "@getStarted": {
+    "description": "Get started button text on last onboarding screen"
+  }
+}
+

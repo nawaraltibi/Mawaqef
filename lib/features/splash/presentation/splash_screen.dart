@@ -61,9 +61,16 @@ class _SplashScreenState extends State<SplashScreen>
       listener: (context, state) async {
         if (state is SplashLoaded) {
           // Store references before async operations
-          final route = state.destination == SplashDestination.authenticated
-              ? Routes.mainScreenPath
-              : Routes.loginPath;
+          final route = () {
+            switch (state.destination) {
+              case SplashDestination.onboarding:
+                return Routes.onboardingPath;
+              case SplashDestination.authenticated:
+                return Routes.mainScreenPath;
+              case SplashDestination.unauthenticated:
+                return Routes.loginPath;
+            }
+          }();
           final router = GoRouter.of(context);
           
           // Wait for animation to complete if needed

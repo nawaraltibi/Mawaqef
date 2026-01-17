@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/splash_page.dart';
+import '../../features/onboarding/presentation/onboarding_page.dart';
 import 'app_routes.dart';
 
 /// App Pages
@@ -19,6 +20,10 @@ final appPages = GoRouter(
     GoRoute(
       path: Routes.splashPath,
       builder: (context, state) => const SplashPage(),
+    ),
+    GoRoute(
+      path: Routes.onboardingPath,
+      builder: (context, state) => const OnboardingPage(),
     ),
     GoRoute(
       path: Routes.loginPath,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'l10n/app_localizations.dart';
 import 'core/core.dart';
 import 'core/routes/app_pages.dart';
 import 'features/splash/bloc/splash_routing_bloc.dart';
@@ -30,6 +31,9 @@ class ParkingApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         routerConfig: appPages,
+        // Localization support
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
       ),
     );
   }

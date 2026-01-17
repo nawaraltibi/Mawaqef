@@ -65,6 +65,11 @@ dependencies:
   # Declarative routing for Flutter
   go_router: ^14.0.0
 
+  # Localization support
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,6 +91,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # Generate localization files
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

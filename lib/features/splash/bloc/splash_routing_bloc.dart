@@ -16,6 +16,11 @@ class SplashRoutingBloc extends Bloc<SplashRoutingEvent, SplashRoutingState> {
   }
 
   /// Check authentication status and determine routing destination
+  /// 
+  /// Flow:
+  /// 1. Check onboarding completion -> if not completed, show onboarding
+  /// 2. Check authentication token -> if missing, show login
+  /// 3. If authenticated, proceed to main app
   Future<void> _checkStatus(
     SplashCheckStatus event,
     Emitter<SplashRoutingState> emit,
@@ -23,7 +28,16 @@ class SplashRoutingBloc extends Bloc<SplashRoutingEvent, SplashRoutingState> {
     emit(const SplashLoading());
 
     try {
-      // Check if this is the first time opening the app
+      // Check if onboarding has been completed
+      final isOnboardingCompleted = SettingsLocalRepository.isOnboardingCompleted();
+      
+      // If onboarding not completed, route to onboarding screen
+      if (!isOnboardingCompleted) {
+        emit(const SplashLoaded(destination: SplashDestination.onboarding));
+        return;
+      }
+
+      // Check if this is the first time opening the app (for legacy support)
       final isFirstTime = SettingsLocalRepository.isAppOpenedForFirstTime();
       
       // Check if user has a saved token
@@ -45,11 +59,11 @@ class SplashRoutingBloc extends Bloc<SplashRoutingEvent, SplashRoutingState> {
 
       emit(SplashLoaded(destination: destination));
     } catch (e) {
-      // On error, default to unauthenticated (safer than blocking user)
+      // On error, default to onboarding (safer than blocking user)
       emit(SplashError(e.toString()));
       // Retry after a short delay
       await Future.delayed(const Duration(milliseconds: 500));
-      emit(const SplashLoaded(destination: SplashDestination.unauthenticated));
+      emit(const SplashLoaded(destination: SplashDestination.onboarding));
     }
   }
 }

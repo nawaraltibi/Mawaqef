@@ -10,6 +10,7 @@ class Routes {
   static const String mainScreenPath = '/main';
   static const String splashPath = '/splash';
   static const String welcomePath = '/welcome';
+  static const String onboardingPath = '/onboarding';
 
   // Parking feature routes
   static const String parkingPath = '/parking';
