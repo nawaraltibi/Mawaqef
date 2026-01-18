@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/foundation.dart';
 import 'l10n/app_localizations.dart';
 import 'core/core.dart';
 import 'core/routes/app_pages.dart';
+import 'data/datasources/network/api_config.dart';
 import 'features/splash/bloc/splash_routing_bloc.dart';
 
 void main() async {
@@ -12,6 +14,15 @@ void main() async {
   // Initialize services
   await StorageService.init();
   await HiveService.init();
+
+  // Print API configuration for debugging
+  if (kDebugMode) {
+    print('🚀 API Configuration:');
+    print('   Base URL: ${APIConfig.baseUrl}');
+    print('   API Endpoint: ${APIConfig.appAPI}');
+    print('   Host: ${APIConfig.host}');
+    print('');
+  }
 
   runApp(const ParkingApp());
 }
