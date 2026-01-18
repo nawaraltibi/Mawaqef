@@ -214,7 +214,7 @@ class _SnackbarContent extends StatelessWidget {
         border: Border.all(color: _getBorderColor(), width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: AppColors.primaryText.withValues(alpha: 0.1), // Use theme color instead of hardcoded black
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -362,7 +362,7 @@ class _SnackbarContent extends StatelessWidget {
   }
 
   Color _getIconColor() {
-    return Colors.white;
+    return AppColors.textOnPrimary; // Use theme color instead of hardcoded white
   }
 
   IconData _getIcon() {
@@ -392,7 +392,7 @@ class _SnackbarContent extends StatelessWidget {
   }
 
   Color _getActionButtonTextColor() {
-    return Colors.white;
+    return AppColors.textOnPrimary; // Use theme color instead of hardcoded white
   }
 
   Color _getCloseButtonColor() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/splash_page.dart';
 import '../../features/onboarding/presentation/onboarding_page.dart';
+import '../../features/auth/presentation/register_page.dart';
 import 'app_routes.dart';
 
 /// App Pages
@@ -39,15 +40,7 @@ final appPages = GoRouter(
     ),
     GoRoute(
       path: Routes.registerPath,
-      builder: (context, state) {
-        // TODO: Replace with actual RegisterPage when implemented
-        return Scaffold(
-          appBar: AppBar(title: const Text('Register')),
-          body: const Center(
-            child: Text('Register Page - To be implemented'),
-          ),
-        );
-      },
+      builder: (context, state) => const RegisterPage(),
     ),
     GoRoute(
       path: Routes.mainScreenPath,
