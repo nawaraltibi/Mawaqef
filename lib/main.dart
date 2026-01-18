@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'l10n/app_localizations.dart';
 import 'core/core.dart';
 import 'core/routes/app_pages.dart';
@@ -20,21 +21,28 @@ class ParkingApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        // Splash routing BLoC for authentication status checking
-        BlocProvider(create: (_) => SplashRoutingBloc()),
-        // Add other BLoCs here as needed
-      ],
-      child: MaterialApp.router(
-        title: 'Parking Application',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        routerConfig: appPages,
-        // Localization support
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MultiBlocProvider(
+          providers: [
+            // Splash routing BLoC for authentication status checking
+            BlocProvider(create: (_) => SplashRoutingBloc()),
+            // Add other BLoCs here as needed
+          ],
+          child: MaterialApp.router(
+            title: 'Parking Application',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            routerConfig: appPages,
+            // Localization support
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
+        );
+      },
     );
   }
 }
