@@ -39,6 +39,218 @@
   "getStarted": "ابدأ الآن",
   "@getStarted": {
     "description": "Get started button text on last onboarding screen"
+  },
+  "authLoginTitle": "مرحباً بعودتك",
+  "@authLoginTitle": {
+    "description": "Login screen title"
+  },
+  "authLoginSubtitle": "سجل الدخول للمتابعة باستخدام تطبيق مواقف السيارات",
+  "@authLoginSubtitle": {
+    "description": "Login screen subtitle"
+  },
+  "authLoginButton": "تسجيل الدخول",
+  "@authLoginButton": {
+    "description": "Login button text"
+  },
+  "authRegisterTitle": "إنشاء حساب",
+  "@authRegisterTitle": {
+    "description": "Register screen title"
+  },
+  "authRegisterSubtitle": "سجل للبدء باستخدام تطبيق مواقف السيارات",
+  "@authRegisterSubtitle": {
+    "description": "Register screen subtitle"
+  },
+  "authRegisterButton": "إنشاء حساب",
+  "@authRegisterButton": {
+    "description": "Register button text"
+  },
+  "authEmailLabel": "البريد الإلكتروني",
+  "@authEmailLabel": {
+    "description": "Email field label"
+  },
+  "authEmailHint": "أدخل بريدك الإلكتروني",
+  "@authEmailHint": {
+    "description": "Email field hint text"
+  },
+  "authPasswordLabel": "كلمة المرور",
+  "@authPasswordLabel": {
+    "description": "Password field label"
+  },
+  "authPasswordHint": "أدخل كلمة المرور",
+  "@authPasswordHint": {
+    "description": "Password field hint text"
+  },
+  "authPasswordRegisterHint": "أدخل كلمة المرور (8 أحرف على الأقل)",
+  "@authPasswordRegisterHint": {
+    "description": "Password field hint text in register screen"
+  },
+  "authFullNameLabel": "الاسم الكامل",
+  "@authFullNameLabel": {
+    "description": "Full name field label"
+  },
+  "authFullNameHint": "أدخل اسمك الكامل",
+  "@authFullNameHint": {
+    "description": "Full name field hint text"
+  },
+  "authPhoneLabel": "رقم الهاتف",
+  "@authPhoneLabel": {
+    "description": "Phone field label"
+  },
+  "authPhoneHint": "أدخل رقم هاتفك",
+  "@authPhoneHint": {
+    "description": "Phone field hint text"
+  },
+  "authUserTypeLabel": "نوع المستخدم",
+  "@authUserTypeLabel": {
+    "description": "User type field label"
+  },
+  "authUserTypeRegular": "مستخدم عادي",
+  "@authUserTypeRegular": {
+    "description": "Regular user type option"
+  },
+  "authUserTypeOwner": "صاحب موقف سيارات",
+  "@authUserTypeOwner": {
+    "description": "Parking owner type option"
+  },
+  "authConfirmPasswordLabel": "تأكيد كلمة المرور",
+  "@authConfirmPasswordLabel": {
+    "description": "Confirm password field label"
+  },
+  "authConfirmPasswordHint": "أعد إدخال كلمة المرور",
+  "@authConfirmPasswordHint": {
+    "description": "Confirm password field hint text"
+  },
+  "authNoAccount": "ليس لديك حساب؟ ",
+  "@authNoAccount": {
+    "description": "Text before register link on login screen"
+  },
+  "authHaveAccount": "لديك حساب بالفعل؟ ",
+  "@authHaveAccount": {
+    "description": "Text before login link on register screen"
+  },
+  "authValidationEmailRequired": "البريد الإلكتروني مطلوب",
+  "@authValidationEmailRequired": {
+    "description": "Validation error for empty email"
+  },
+  "authValidationEmailInvalid": "الرجاء إدخال عنوان بريد إلكتروني صحيح",
+  "@authValidationEmailInvalid": {
+    "description": "Validation error for invalid email format"
+  },
+  "authValidationPasswordRequired": "كلمة المرور مطلوبة",
+  "@authValidationPasswordRequired": {
+    "description": "Validation error for empty password"
+  },
+  "authValidationPasswordShort": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+  "@authValidationPasswordShort": {
+    "description": "Validation error for short password"
+  },
+  "authValidationFullNameRequired": "الاسم الكامل مطلوب",
+  "@authValidationFullNameRequired": {
+    "description": "Validation error for empty full name"
+  },
+  "authValidationFullNameLong": "الاسم الكامل يجب ألا يتجاوز 255 حرفاً",
+  "@authValidationFullNameLong": {
+    "description": "Validation error for long full name"
+  },
+  "authValidationPhoneRequired": "رقم الهاتف مطلوب",
+  "@authValidationPhoneRequired": {
+    "description": "Validation error for empty phone"
+  },
+  "authValidationUserTypeRequired": "نوع المستخدم مطلوب",
+  "@authValidationUserTypeRequired": {
+    "description": "Validation error for empty user type"
+  },
+  "authValidationUserTypeInvalid": "نوع المستخدم يجب أن يكون \"user\" أو \"owner\"",
+  "@authValidationUserTypeInvalid": {
+    "description": "Validation error for invalid user type"
+  },
+  "authValidationPasswordConfirmationRequired": "تأكيد كلمة المرور مطلوب",
+  "@authValidationPasswordConfirmationRequired": {
+    "description": "Validation error for empty password confirmation"
+  },
+  "authValidationPasswordMismatch": "تأكيد كلمة المرور غير متطابق",
+  "@authValidationPasswordMismatch": {
+    "description": "Validation error for password mismatch"
+  },
+  "authErrorInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+  "@authErrorInvalidCredentials": {
+    "description": "Error message for invalid login credentials"
+  },
+  "authErrorUnexpected": "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى.",
+  "@authErrorUnexpected": {
+    "description": "Generic error message for unexpected errors"
+  },
+  "authErrorUnauthenticated": "غير مصادق عليه.",
+  "@authErrorUnauthenticated": {
+    "description": "Error message for unauthenticated users"
+  },
+  "authErrorAccountPending": "حسابك في انتظار موافقة المدير",
+  "@authErrorAccountPending": {
+    "description": "Message for owner account pending approval"
+  },
+  "authErrorAccountBlocked": "تم حظر حسابك. الرجاء التواصل مع الدعم",
+  "@authErrorAccountBlocked": {
+    "description": "Message for blocked user account"
+  },
+  "authSuccessRegisterPending": "حسابك في انتظار موافقة المدير. سيتم إشعارك عند الموافقة.",
+  "@authSuccessRegisterPending": {
+    "description": "Success message for owner registration pending approval"
+  },
+  "authSuccessLogout": "تم تسجيل الخروج بنجاح",
+  "@authSuccessLogout": {
+    "description": "Success message after logout"
+  },
+  "authProfileTitle": "الملف الشخصي",
+  "@authProfileTitle": {
+    "description": "Profile screen title"
+  },
+  "authLogoutButton": "تسجيل الخروج",
+  "@authLogoutButton": {
+    "description": "Logout button text"
+  },
+  "authLogoutDialogTitle": "تسجيل الخروج",
+  "@authLogoutDialogTitle": {
+    "description": "Logout confirmation dialog title"
+  },
+  "authLogoutDialogMessage": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
+  "@authLogoutDialogMessage": {
+    "description": "Logout confirmation dialog message"
+  },
+  "authLogoutDialogCancel": "إلغاء",
+  "@authLogoutDialogCancel": {
+    "description": "Cancel button in logout dialog"
+  },
+  "authLogoutDialogConfirm": "تسجيل الخروج",
+  "@authLogoutDialogConfirm": {
+    "description": "Confirm button in logout dialog"
+  },
+  "ownerTabParkingManagement": "إدارة المواقف",
+  "@ownerTabParkingManagement": {
+    "description": "Owner tab label for parking management"
+  },
+  "ownerTabProfile": "الملف الشخصي",
+  "@ownerTabProfile": {
+    "description": "Owner tab label for profile"
+  },
+  "userTabHome": "الرئيسية",
+  "@userTabHome": {
+    "description": "User tab label for home"
+  },
+  "userTabVehicles": "المركبات",
+  "@userTabVehicles": {
+    "description": "User tab label for vehicles"
+  },
+  "userTabParkings": "الحجوزات",
+  "@userTabParkings": {
+    "description": "User tab label for parking bookings"
+  },
+  "userTabProfile": "الملف الشخصي",
+  "@userTabProfile": {
+    "description": "User tab label for profile"
+  },
+  "placeholderComingSoon": "قريباً",
+  "@placeholderComingSoon": {
+    "description": "Placeholder text for pages under development"
   }
 }
 

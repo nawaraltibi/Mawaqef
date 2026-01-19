@@ -7,8 +7,9 @@ import '../../../core/styles/app_colors.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
 import '../../../data/repositories/auth_local_repository.dart';
+import '../../../l10n/app_localizations.dart';
 import '../models/user_model.dart';
-import '../cubit/logout_cubit.dart';
+import '../bloc/logout/logout_bloc.dart';
 import 'widgets/logout_dialog.dart';
 
 /// Profile Screen
@@ -29,6 +30,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _loadUser();
   }
 
+  /// Translate error messages based on known error codes or messages
+  String _translateErrorMessage(BuildContext context, String error, int statusCode) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    if (statusCode == 401) {
+      return l10n.authErrorUnauthenticated;
+    }
+    
+    // Return original error message if not recognized
+    return error;
+  }
+
   Future<void> _loadUser() async {
     final userData = await AuthLocalRepository.getUser();
     if (userData != null && mounted) {
@@ -42,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     LogoutDialog.show(
       context,
       () {
-        context.read<LogoutCubit>().logout();
+        context.read<LogoutBloc>().add(LogoutRequested());
       },
     );
   }
@@ -52,18 +65,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(AppLocalizations.of(context)!.authProfileTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
       body: SafeArea(
         bottom: true,
-        child: BlocConsumer<LogoutCubit, LogoutState>(
+        child: BlocConsumer<LogoutBloc, LogoutState>(
           listener: (context, state) {
             if (state is LogoutSuccess) {
+              final l10n = AppLocalizations.of(context)!;
               UnifiedSnackbar.success(
                 context,
-                message: 'Logged out successfully',
+                message: l10n.authSuccessLogout,
               );
 
               // Navigate to login screen after logout
@@ -72,10 +86,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   context.pushReplacement(Routes.loginPath);
                 }
               });
-            } else if (state is LogoutError) {
+            } else if (state is LogoutFailure) {
               // Handle 401 (Unauthenticated) - clear data and navigate
               if (state.statusCode == 401) {
-                // Auth data already cleared by LogoutCubit
+                // Auth data already cleared by LogoutBloc
                 Future.delayed(const Duration(seconds: 1), () {
                   if (mounted) {
                     context.pushReplacement(Routes.loginPath);
@@ -83,7 +97,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 });
               } else {
                 // Show error for other status codes (500, etc.)
-                UnifiedSnackbar.error(context, message: state.error);
+                String errorMessage = _translateErrorMessage(context, state.error, state.statusCode);
+                UnifiedSnackbar.error(context, message: errorMessage);
               }
             }
           },
@@ -169,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     child: CustomElevatedButton(
-                      title: 'Logout',
+                      title: AppLocalizations.of(context)!.authLogoutButton,
                       isLoading: state is LogoutLoading,
                       onPressed: _showLogoutDialog,
                       backgroundColor: AppColors.surface,

@@ -27,8 +27,10 @@ enum SplashDestination {
   onboarding,
   /// User needs to login/register
   unauthenticated,
-  /// User is authenticated and can access main app
-  authenticated,
+  /// User is authenticated as owner - route to owner main screen
+  ownerMain,
+  /// User is authenticated as regular user - route to user main screen
+  userMain,
 }
 
 /// Loaded state with routing destination

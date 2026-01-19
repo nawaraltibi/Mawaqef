@@ -53,8 +53,16 @@ class SplashRoutingBloc extends Bloc<SplashRoutingEvent, SplashRoutingState> {
         // No token found - user needs to authenticate
         destination = SplashDestination.unauthenticated;
       } else {
-        // Token exists - user is authenticated, go to main app
-        destination = SplashDestination.authenticated;
+        // Token exists - check user_type to determine which main screen
+        final userType = await AuthLocalRepository.getUserType();
+        if (userType == 'owner') {
+          destination = SplashDestination.ownerMain;
+        } else if (userType == 'user') {
+          destination = SplashDestination.userMain;
+        } else {
+          // Unknown user type or missing - default to unauthenticated
+          destination = SplashDestination.unauthenticated;
+        }
       }
 
       emit(SplashLoaded(destination: destination));

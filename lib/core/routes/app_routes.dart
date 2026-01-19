@@ -8,6 +8,8 @@ class Routes {
   // Main routes
   static const String homePath = '/home';
   static const String mainScreenPath = '/main';
+  static const String ownerMainPath = '/owner-main';
+  static const String userMainPath = '/user-main';
   static const String splashPath = '/splash';
   static const String welcomePath = '/welcome';
   static const String onboardingPath = '/onboarding';

@@ -7,8 +7,8 @@ import '../../../core/styles/app_colors.dart';
 import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
-import '../cubit/login_cubit.dart';
-import '../models/login_request.dart';
+import '../../../l10n/app_localizations.dart';
+import '../bloc/login/login_bloc.dart';
 
 /// Login Screen
 /// UI component for user login
@@ -31,14 +31,39 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  /// Translate error messages based on known error codes or messages
+  String _translateErrorMessage(BuildContext context, String error, int statusCode) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    // Map known error messages to localized strings
+    if (statusCode == 401) {
+      return l10n.authErrorInvalidCredentials;
+    }
+    if (error.contains('Invalid Email or Password') || 
+        error.toLowerCase().contains('invalid credentials')) {
+      return l10n.authErrorInvalidCredentials;
+    }
+    if (error.contains('Your account is pending admin approval')) {
+      return l10n.authErrorAccountPending;
+    }
+    if (error.contains('Your account has been blocked')) {
+      return l10n.authErrorAccountBlocked;
+    }
+    
+    // Return original error message if not recognized
+    return error;
+  }
+
   void _handleLogin() {
     if (formKey.currentState!.validate()) {
-      final request = LoginRequest(
-        email: emailController.text.trim(),
-        password: passwordController.text,
-      );
-
-      context.read<LoginCubit>().login(request);
+      final bloc = context.read<LoginBloc>();
+      
+      // Update email and password in the bloc state
+      bloc.add(UpdateEmail(emailController.text.trim()));
+      bloc.add(UpdatePassword(passwordController.text));
+      
+      // Send login request
+      bloc.add(SendLoginRequest());
     }
   }
 
@@ -48,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: AppColors.background,
       body: SafeArea(
         bottom: true,
-        child: BlocConsumer<LoginCubit, LoginState>(
+        child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginSuccess) {
               UnifiedSnackbar.success(
@@ -56,27 +81,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 message: state.message,
               );
 
-              // Navigate to main screen after successful login
+              // Navigate to appropriate main screen based on user type
+              final userType = state.response.userType;
+              final navigator = GoRouter.of(context);
               Future.delayed(const Duration(seconds: 1), () {
                 if (mounted) {
-                  context.pushReplacement(Routes.mainScreenPath);
+                  if (userType == 'owner') {
+                    navigator.pushReplacement(Routes.ownerMainPath);
+                  } else if (userType == 'user') {
+                    navigator.pushReplacement(Routes.userMainPath);
+                  } else {
+                    // Fallback to user main screen for unknown types
+                    navigator.pushReplacement(Routes.userMainPath);
+                  }
                 }
               });
-            } else if (state is LoginError) {
+            } else if (state is LoginFailure) {
+              String errorMessage = _translateErrorMessage(context, state.error, state.statusCode);
+              
               // Handle inactive user messages with appropriate styling
               if (state.isInactiveUser) {
                 // Show warning for inactive users (owner pending approval or user blocked)
                 UnifiedSnackbar.warning(
                   context,
-                  message: state.error,
+                  message: errorMessage,
                 );
               } else {
                 // Show error for other login failures
-                UnifiedSnackbar.error(context, message: state.error);
+                UnifiedSnackbar.error(context, message: errorMessage);
               }
             }
           },
           builder: (context, state) {
+            final l10n = AppLocalizations.of(context)!;
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
@@ -90,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       // Welcome Title
                       Text(
-                        'Welcome Back',
+                        l10n.authLoginTitle,
                         style: TextStyle(
                           fontSize: 28.sp,
                           fontWeight: FontWeight.bold,
@@ -99,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        'Sign in to continue using the parking app',
+                        l10n.authLoginSubtitle,
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: AppColors.secondaryText,
@@ -109,17 +146,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       // Email Field
                       CustomTextField(
-                        label: 'Email',
-                        hintText: 'Enter your email',
+                        label: l10n.authEmailLabel,
+                        hintText: l10n.authEmailHint,
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Email is required';
+                            return l10n.authValidationEmailRequired;
                           }
                           if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                               .hasMatch(value)) {
-                            return 'Please enter a valid email address';
+                            return l10n.authValidationEmailInvalid;
                           }
                           return null;
                         },
@@ -128,17 +165,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       // Password Field
                       CustomTextField(
-                        label: 'Password',
-                        hintText: 'Enter your password',
+                        label: l10n.authPasswordLabel,
+                        hintText: l10n.authPasswordHint,
                         controller: passwordController,
                         isPassword: true,
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Password is required';
+                            return l10n.authValidationPasswordRequired;
                           }
                           if (value.length < 8) {
-                            return 'Password must be at least 8 characters';
+                            return l10n.authValidationPasswordShort;
                           }
                           return null;
                         },
@@ -149,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: CustomElevatedButton(
-                          title: 'Login',
+                          title: l10n.authLoginButton,
                           isLoading: state is LoginLoading,
                           onPressed: _handleLogin,
                         ),
@@ -161,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Don't have an account? ",
+                            l10n.authNoAccount,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: AppColors.secondaryText,
@@ -172,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Routes.registerPath,
                             ),
                             child: Text(
-                              'Register',
+                              l10n.authRegisterButton,
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,

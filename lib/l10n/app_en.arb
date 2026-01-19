@@ -39,6 +39,218 @@
   "getStarted": "Get Started",
   "@getStarted": {
     "description": "Get started button text on last onboarding screen"
+  },
+  "authLoginTitle": "Welcome Back",
+  "@authLoginTitle": {
+    "description": "Login screen title"
+  },
+  "authLoginSubtitle": "Sign in to continue using the parking app",
+  "@authLoginSubtitle": {
+    "description": "Login screen subtitle"
+  },
+  "authLoginButton": "Login",
+  "@authLoginButton": {
+    "description": "Login button text"
+  },
+  "authRegisterTitle": "Create Account",
+  "@authRegisterTitle": {
+    "description": "Register screen title"
+  },
+  "authRegisterSubtitle": "Sign up to start using the parking app",
+  "@authRegisterSubtitle": {
+    "description": "Register screen subtitle"
+  },
+  "authRegisterButton": "Register",
+  "@authRegisterButton": {
+    "description": "Register button text"
+  },
+  "authEmailLabel": "Email",
+  "@authEmailLabel": {
+    "description": "Email field label"
+  },
+  "authEmailHint": "Enter your email",
+  "@authEmailHint": {
+    "description": "Email field hint text"
+  },
+  "authPasswordLabel": "Password",
+  "@authPasswordLabel": {
+    "description": "Password field label"
+  },
+  "authPasswordHint": "Enter your password",
+  "@authPasswordHint": {
+    "description": "Password field hint text"
+  },
+  "authPasswordRegisterHint": "Enter your password (min 8 characters)",
+  "@authPasswordRegisterHint": {
+    "description": "Password field hint text in register screen"
+  },
+  "authFullNameLabel": "Full Name",
+  "@authFullNameLabel": {
+    "description": "Full name field label"
+  },
+  "authFullNameHint": "Enter your full name",
+  "@authFullNameHint": {
+    "description": "Full name field hint text"
+  },
+  "authPhoneLabel": "Phone",
+  "@authPhoneLabel": {
+    "description": "Phone field label"
+  },
+  "authPhoneHint": "Enter your phone number",
+  "@authPhoneHint": {
+    "description": "Phone field hint text"
+  },
+  "authUserTypeLabel": "User Type",
+  "@authUserTypeLabel": {
+    "description": "User type field label"
+  },
+  "authUserTypeRegular": "Regular User",
+  "@authUserTypeRegular": {
+    "description": "Regular user type option"
+  },
+  "authUserTypeOwner": "Parking Owner",
+  "@authUserTypeOwner": {
+    "description": "Parking owner type option"
+  },
+  "authConfirmPasswordLabel": "Confirm Password",
+  "@authConfirmPasswordLabel": {
+    "description": "Confirm password field label"
+  },
+  "authConfirmPasswordHint": "Re-enter your password",
+  "@authConfirmPasswordHint": {
+    "description": "Confirm password field hint text"
+  },
+  "authNoAccount": "Don't have an account? ",
+  "@authNoAccount": {
+    "description": "Text before register link on login screen"
+  },
+  "authHaveAccount": "Already have an account? ",
+  "@authHaveAccount": {
+    "description": "Text before login link on register screen"
+  },
+  "authValidationEmailRequired": "Email is required",
+  "@authValidationEmailRequired": {
+    "description": "Validation error for empty email"
+  },
+  "authValidationEmailInvalid": "Please enter a valid email address",
+  "@authValidationEmailInvalid": {
+    "description": "Validation error for invalid email format"
+  },
+  "authValidationPasswordRequired": "Password is required",
+  "@authValidationPasswordRequired": {
+    "description": "Validation error for empty password"
+  },
+  "authValidationPasswordShort": "Password must be at least 8 characters",
+  "@authValidationPasswordShort": {
+    "description": "Validation error for short password"
+  },
+  "authValidationFullNameRequired": "Full name is required",
+  "@authValidationFullNameRequired": {
+    "description": "Validation error for empty full name"
+  },
+  "authValidationFullNameLong": "Full name must not exceed 255 characters",
+  "@authValidationFullNameLong": {
+    "description": "Validation error for long full name"
+  },
+  "authValidationPhoneRequired": "Phone is required",
+  "@authValidationPhoneRequired": {
+    "description": "Validation error for empty phone"
+  },
+  "authValidationUserTypeRequired": "User type is required",
+  "@authValidationUserTypeRequired": {
+    "description": "Validation error for empty user type"
+  },
+  "authValidationUserTypeInvalid": "User type must be either \"user\" or \"owner\"",
+  "@authValidationUserTypeInvalid": {
+    "description": "Validation error for invalid user type"
+  },
+  "authValidationPasswordConfirmationRequired": "Password confirmation is required",
+  "@authValidationPasswordConfirmationRequired": {
+    "description": "Validation error for empty password confirmation"
+  },
+  "authValidationPasswordMismatch": "Password confirmation does not match",
+  "@authValidationPasswordMismatch": {
+    "description": "Validation error for password mismatch"
+  },
+  "authErrorInvalidCredentials": "Invalid Email or Password",
+  "@authErrorInvalidCredentials": {
+    "description": "Error message for invalid login credentials"
+  },
+  "authErrorUnexpected": "An unexpected error occurred. Please try again.",
+  "@authErrorUnexpected": {
+    "description": "Generic error message for unexpected errors"
+  },
+  "authErrorUnauthenticated": "Unauthenticated.",
+  "@authErrorUnauthenticated": {
+    "description": "Error message for unauthenticated users"
+  },
+  "authErrorAccountPending": "Your account is pending admin approval",
+  "@authErrorAccountPending": {
+    "description": "Message for owner account pending approval"
+  },
+  "authErrorAccountBlocked": "Your account has been blocked. Please contact support",
+  "@authErrorAccountBlocked": {
+    "description": "Message for blocked user account"
+  },
+  "authSuccessRegisterPending": "Your account is pending admin approval. You will be notified once approved.",
+  "@authSuccessRegisterPending": {
+    "description": "Success message for owner registration pending approval"
+  },
+  "authSuccessLogout": "Logged out successfully",
+  "@authSuccessLogout": {
+    "description": "Success message after logout"
+  },
+  "authProfileTitle": "Profile",
+  "@authProfileTitle": {
+    "description": "Profile screen title"
+  },
+  "authLogoutButton": "Logout",
+  "@authLogoutButton": {
+    "description": "Logout button text"
+  },
+  "authLogoutDialogTitle": "Logout",
+  "@authLogoutDialogTitle": {
+    "description": "Logout confirmation dialog title"
+  },
+  "authLogoutDialogMessage": "Are you sure you want to logout?",
+  "@authLogoutDialogMessage": {
+    "description": "Logout confirmation dialog message"
+  },
+  "authLogoutDialogCancel": "Cancel",
+  "@authLogoutDialogCancel": {
+    "description": "Cancel button in logout dialog"
+  },
+  "authLogoutDialogConfirm": "Logout",
+  "@authLogoutDialogConfirm": {
+    "description": "Confirm button in logout dialog"
+  },
+  "ownerTabParkingManagement": "Parking Management",
+  "@ownerTabParkingManagement": {
+    "description": "Owner tab label for parking management"
+  },
+  "ownerTabProfile": "Profile",
+  "@ownerTabProfile": {
+    "description": "Owner tab label for profile"
+  },
+  "userTabHome": "Home",
+  "@userTabHome": {
+    "description": "User tab label for home"
+  },
+  "userTabVehicles": "Vehicles",
+  "@userTabVehicles": {
+    "description": "User tab label for vehicles"
+  },
+  "userTabParkings": "Bookings",
+  "@userTabParkings": {
+    "description": "User tab label for parking bookings"
+  },
+  "userTabProfile": "Profile",
+  "@userTabProfile": {
+    "description": "User tab label for profile"
+  },
+  "placeholderComingSoon": "Coming soon",
+  "@placeholderComingSoon": {
+    "description": "Placeholder text for pages under development"
   }
 }
 

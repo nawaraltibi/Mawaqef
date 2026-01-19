@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// Logout Confirmation Dialog
 /// Confirmation dialog for logout action
@@ -15,6 +16,7 @@ class LogoutDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.r),
@@ -26,7 +28,7 @@ class LogoutDialog extends StatelessWidget {
           children: [
             // Title
             Text(
-              'Logout',
+              l10n.authLogoutDialogTitle,
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
@@ -36,7 +38,7 @@ class LogoutDialog extends StatelessWidget {
             SizedBox(height: 16.h),
             // Content
             Text(
-              'Are you sure you want to logout?',
+              l10n.authLogoutDialogMessage,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,
@@ -51,7 +53,7 @@ class LogoutDialog extends StatelessWidget {
                 // Cancel Button
                 Expanded(
                   child: CustomElevatedButton(
-                    title: 'Cancel',
+                    title: l10n.authLogoutDialogCancel,
                     onPressed: () => Navigator.of(context).pop(),
                     backgroundColor: AppColors.surface,
                     foregroundColor: AppColors.primary,
@@ -62,7 +64,7 @@ class LogoutDialog extends StatelessWidget {
                 // Logout Button
                 Expanded(
                   child: CustomElevatedButton(
-                    title: 'Logout',
+                    title: l10n.authLogoutDialogConfirm,
                     onPressed: () {
                       Navigator.of(context).pop();
                       onConfirm();

@@ -5,6 +5,8 @@ import '../../features/onboarding/presentation/onboarding_page.dart';
 import '../../features/auth/presentation/register_page.dart';
 import '../../features/auth/presentation/login_page.dart';
 import '../../features/auth/presentation/profile_page.dart';
+import '../../features/main_screen/presentation/owner_main_page.dart';
+import '../../features/main_screen/presentation/user_main_page.dart';
 import 'app_routes.dart';
 
 /// App Pages
@@ -37,16 +39,12 @@ final appPages = GoRouter(
       builder: (context, state) => const RegisterPage(),
     ),
     GoRoute(
-      path: Routes.mainScreenPath,
-      builder: (context, state) {
-        // TODO: Replace with actual MainScreenPage when implemented
-        return Scaffold(
-          appBar: AppBar(title: const Text('Main Screen')),
-          body: const Center(
-            child: Text('Main Screen - To be implemented'),
-          ),
-        );
-      },
+      path: Routes.ownerMainPath,
+      builder: (context, state) => const OwnerMainPage(),
+    ),
+    GoRoute(
+      path: Routes.userMainPath,
+      builder: (context, state) => const UserMainPage(),
     ),
     GoRoute(
       path: Routes.homePath,

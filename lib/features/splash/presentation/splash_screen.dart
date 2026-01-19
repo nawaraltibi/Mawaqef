@@ -65,8 +65,10 @@ class _SplashScreenState extends State<SplashScreen>
             switch (state.destination) {
               case SplashDestination.onboarding:
                 return Routes.onboardingPath;
-              case SplashDestination.authenticated:
-                return Routes.mainScreenPath;
+              case SplashDestination.ownerMain:
+                return Routes.ownerMainPath;
+              case SplashDestination.userMain:
+                return Routes.userMainPath;
               case SplashDestination.unauthenticated:
                 return Routes.loginPath;
             }

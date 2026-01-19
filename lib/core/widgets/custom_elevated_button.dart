@@ -42,7 +42,7 @@ class CustomElevatedButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: isButtonDisabled || !useGradient || backgroundColor != null
             ? null
-            : const LinearGradient(
+            :  LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: AppColors.buttonGradient,

@@ -8,8 +8,8 @@ import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
 import '../../../core/widgets/custom_dropdown_field.dart';
-import '../cubit/register_cubit.dart';
-import '../models/register_request.dart';
+import '../../../l10n/app_localizations.dart';
+import '../bloc/register/register_bloc.dart';
 
 /// Register Screen
 /// UI component for user registration
@@ -42,18 +42,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  /// Translate error messages based on known error codes or messages
+  String _translateErrorMessage(BuildContext context, String error, int statusCode) {
+    // Return original error message if not recognized
+    // Most validation errors from API should already be in the error message
+    return error;
+  }
+
   void _handleRegister() {
     if (formKey.currentState!.validate()) {
-      final request = RegisterRequest(
-        fullName: fullNameController.text.trim(),
-        email: emailController.text.trim(),
-        phone: phoneController.text.trim(),
-        userType: selectedUserType,
-        password: passwordController.text,
-        passwordConfirmation: passwordConfirmationController.text,
-      );
-
-      context.read<RegisterCubit>().register(request);
+      final bloc = context.read<RegisterBloc>();
+      
+      // Update all fields in the bloc state
+      bloc.add(UpdateFullName(fullNameController.text.trim()));
+      bloc.add(UpdateEmail(emailController.text.trim()));
+      bloc.add(UpdatePhone(phoneController.text.trim()));
+      bloc.add(UpdateUserType(selectedUserType));
+      bloc.add(UpdatePassword(passwordController.text));
+      bloc.add(UpdatePasswordConfirmation(passwordConfirmationController.text));
+      
+      // Send register request
+      bloc.add(SendRegisterRequest());
     }
   }
 
@@ -63,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: AppColors.background,
       body: SafeArea(
         bottom: true,
-        child: BlocConsumer<RegisterCubit, RegisterState>(
+        child: BlocConsumer<RegisterBloc, RegisterState>(
           listener: (context, state) {
             if (state is RegisterSuccess) {
               UnifiedSnackbar.success(
@@ -74,12 +83,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               // Show appropriate message based on user type
               if (state.response.requiresApproval) {
                 // Owner registration - pending approval
+                final l10n = AppLocalizations.of(context)!;
                 Future.delayed(const Duration(seconds: 1), () {
-                  UnifiedSnackbar.info(
-                    context,
-                    message:
-                        'Your account is pending admin approval. You will be notified once approved.',
-                  );
+                  if (mounted) {
+                    UnifiedSnackbar.info(
+                      context,
+                      message: l10n.authSuccessRegisterPending,
+                    );
+                  }
                 });
               }
 
@@ -89,11 +100,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   context.pushReplacement(Routes.loginPath);
                 }
               });
-            } else if (state is RegisterError) {
-              UnifiedSnackbar.error(context, message: state.error);
+            } else if (state is RegisterFailure) {
+              String errorMessage = _translateErrorMessage(context, state.error, state.statusCode);
+              UnifiedSnackbar.error(context, message: errorMessage);
             }
           },
           builder: (context, state) {
+            final l10n = AppLocalizations.of(context)!;
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
@@ -119,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       // Register Title
                       Text(
-                        'Create Account',
+                        l10n.authRegisterTitle,
                         style: TextStyle(
                           fontSize: 28.sp,
                           fontWeight: FontWeight.bold,
@@ -128,7 +141,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        'Sign up to start using the parking app',
+                        l10n.authRegisterSubtitle,
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: AppColors.secondaryText,
@@ -138,16 +151,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       // Full Name Field
                       CustomTextField(
-                        label: 'Full Name',
-                        hintText: 'Enter your full name',
+                        label: l10n.authFullNameLabel,
+                        hintText: l10n.authFullNameHint,
                         controller: fullNameController,
                         keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Full name is required';
+                            return l10n.authValidationFullNameRequired;
                           }
                           if (value.length > 255) {
-                            return 'Full name must not exceed 255 characters';
+                            return l10n.authValidationFullNameLong;
                           }
                           return null;
                         },
@@ -156,17 +169,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       // Email Field
                       CustomTextField(
-                        label: 'Email',
-                        hintText: 'Enter your email',
+                        label: l10n.authEmailLabel,
+                        hintText: l10n.authEmailHint,
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Email is required';
+                            return l10n.authValidationEmailRequired;
                           }
                           if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                               .hasMatch(value)) {
-                            return 'Please enter a valid email address';
+                            return l10n.authValidationEmailInvalid;
                           }
                           return null;
                         },
@@ -175,13 +188,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       // Phone Field
                       CustomTextField(
-                        label: 'Phone',
-                        hintText: 'Enter your phone number',
+                        label: l10n.authPhoneLabel,
+                        hintText: l10n.authPhoneHint,
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Phone is required';
+                            return l10n.authValidationPhoneRequired;
                           }
                           return null;
                         },
@@ -190,12 +203,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       // User Type Dropdown
                       CustomDropdownField<String>(
-                        label: 'User Type',
+                        label: l10n.authUserTypeLabel,
                         items: userTypes,
                         selectedValue: selectedUserType,
                         getLabel: (value) => value == 'user'
-                            ? 'Regular User'
-                            : 'Parking Owner',
+                            ? l10n.authUserTypeRegular
+                            : l10n.authUserTypeOwner,
                         onChanged: (value) {
                           if (value != null) {
                             setState(() {
@@ -208,17 +221,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       // Password Field
                       CustomTextField(
-                        label: 'Password',
-                        hintText: 'Enter your password (min 8 characters)',
+                        label: l10n.authPasswordLabel,
+                        hintText: l10n.authPasswordRegisterHint,
                         controller: passwordController,
                         isPassword: true,
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Password is required';
+                            return l10n.authValidationPasswordRequired;
                           }
                           if (value.length < 8) {
-                            return 'Password must be at least 8 characters';
+                            return l10n.authValidationPasswordShort;
                           }
                           return null;
                         },
@@ -227,17 +240,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       // Password Confirmation Field
                       CustomTextField(
-                        label: 'Confirm Password',
-                        hintText: 'Re-enter your password',
+                        label: l10n.authConfirmPasswordLabel,
+                        hintText: l10n.authConfirmPasswordHint,
                         controller: passwordConfirmationController,
                         isPassword: true,
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Password confirmation is required';
+                            return l10n.authValidationPasswordConfirmationRequired;
                           }
                           if (value != passwordController.text) {
-                            return 'Password confirmation does not match';
+                            return l10n.authValidationPasswordMismatch;
                           }
                           return null;
                         },
@@ -248,7 +261,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: CustomElevatedButton(
-                          title: 'Register',
+                          title: l10n.authRegisterButton,
                           isLoading: state is RegisterLoading,
                           onPressed: _handleRegister,
                         ),
@@ -260,7 +273,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Already have an account? ',
+                            l10n.authHaveAccount,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: AppColors.secondaryText,
@@ -271,7 +284,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               Routes.loginPath,
                             ),
                             child: Text(
-                              'Login',
+                              l10n.authLoginButton,
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
