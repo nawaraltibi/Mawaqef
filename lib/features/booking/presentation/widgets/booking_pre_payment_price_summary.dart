@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/core.dart';
 import '../../../../l10n/app_localizations.dart';
+import 'shared/shared_widgets.dart';
 
 /// Booking Pre-Payment Price Summary Widget
 /// Displays total price with VAT information
@@ -39,25 +40,13 @@ class BookingPrePaymentPriceSummary extends StatelessWidget {
         SizedBox(height: 6.h),
         
         // Total Price
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n.currencySymbol,
-              style: AppTextStyles.titleLarge(
-                context,
-                color: AppColors.primary,
-              ),
-            ),
-            SizedBox(width: 4.w),
-            Text(
-              totalPrice.toStringAsFixed(2),
-              style: AppTextStyles.titleLarge(
-                context,
-                color: AppColors.primary,
-              ),
-            ),
-          ],
+        PriceDisplayWidget(
+          amount: totalPrice,
+          showCurrencySymbol: true,
+          amountStyle: AppTextStyles.titleLarge(
+            context,
+            color: AppColors.primary,
+          ),
         ),
         SizedBox(height: 2.h),
         

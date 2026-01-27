@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/core.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../models/booking_model.dart';
+import 'shared/shared_widgets.dart';
 
 /// Time Info Section Widget
 /// Displays start and end time with proper formatting
@@ -15,19 +16,6 @@ class TimeInfoSection extends StatelessWidget {
     super.key,
     required this.booking,
   });
-
-  /// Parse date string to DateTime
-  DateTime? _parseDateTime(String? dateString) {
-    if (dateString == null || dateString.isEmpty) return null;
-    
-    try {
-      // Try ISO 8601 format first
-      return DateTime.parse(dateString);
-    } catch (e) {
-      // If parsing fails, return null
-      return null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,30 +30,16 @@ class TimeInfoSection extends StatelessWidget {
     final dateFormat = DateFormat('d MMMM yyyy', isArabic ? 'ar' : 'en');
     final timeFormat = DateFormat('h:mm a', isArabic ? 'ar' : 'en');
 
-    final startTime = _parseDateTime(booking.startTime);
-    final endTime = _parseDateTime(booking.endTime);
+    final startTime = DateTimeFormatter.parseDateTime(booking.startTime);
+    final endTime = DateTimeFormatter.parseDateTime(booking.endTime);
 
     if (startTime == null || endTime == null) {
       return const SizedBox.shrink();
     }
 
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      color: AppColors.surface,
-      child: Container(
-        padding: EdgeInsets.all(20.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: AppColors.border,
-            width: 1,
-          ),
-        ),
-        child: Row(
-          children: [
+    return InfoCard(
+      child: Row(
+        children: [
             // Start Time Section
             Expanded(
               child: Column(
@@ -208,7 +182,6 @@ class TimeInfoSection extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

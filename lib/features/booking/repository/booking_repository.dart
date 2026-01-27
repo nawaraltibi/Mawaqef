@@ -24,6 +24,33 @@ import '../models/remaining_time_response.dart';
 /// - 409: Conflict (already cancelled, cannot cancel, etc.)
 /// - 500: Server errors
 class BookingRepository {
+  /// Helper method to handle API response
+  static T _handleResponse<T>(
+    dynamic response,
+    T Function(Map<String, dynamic>) fromJson,
+    int expectedStatusCode,
+  ) {
+    final responseData = response.data;
+
+    if (response.statusCode == expectedStatusCode && 
+        responseData is Map<String, dynamic>) {
+      return fromJson(responseData);
+    }
+
+    throw Exception('Unexpected response status: ${response.statusCode}');
+  }
+
+  /// Helper method to handle errors
+  static Never _handleError(dynamic error) {
+    if (error is AppException) {
+      throw error;
+    }
+    throw AppException(
+      statusCode: 500,
+      errorCode: 'unexpected-error',
+      message: error.toString(),
+    );
+  }
   
   /// Create a new parking booking
   /// 
@@ -47,21 +74,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 201 && responseData is Map<String, dynamic>) {
-        return CreateBookingResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        CreateBookingResponse.fromJson,
+        201,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -87,21 +106,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return CancelBookingResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        CancelBookingResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -130,21 +141,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return ExtendBookingResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        ExtendBookingResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -171,21 +174,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return PaymentResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        PaymentResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -212,21 +207,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return PaymentResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        PaymentResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -251,21 +238,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return BookingsListResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        BookingsListResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -290,21 +269,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return BookingsListResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        BookingsListResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -330,21 +301,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return BookingDetailsResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        BookingDetailsResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -370,21 +333,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return RemainingTimeResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        RemainingTimeResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -409,21 +364,13 @@ class BookingRepository {
 
     try {
       final response = await apiRequest.send();
-      final responseData = response.data;
-
-      if (response.statusCode == 200 && responseData is Map<String, dynamic>) {
-        return PaymentsListResponse.fromJson(responseData);
-      }
-
-      throw Exception('Unexpected response status: ${response.statusCode}');
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(
-        statusCode: 500,
-        errorCode: 'unexpected-error',
-        message: e.toString(),
+      return _handleResponse(
+        response,
+        PaymentsListResponse.fromJson,
+        200,
       );
+    } catch (e) {
+      _handleError(e);
     }
   }
 

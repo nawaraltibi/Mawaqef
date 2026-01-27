@@ -66,16 +66,16 @@ class ActiveBookingCard extends StatelessWidget {
     }
 
     return Container(
-      width: 280.w,
-      margin: EdgeInsets.symmetric(horizontal: 8.w),
+      width: 240.w,
+      margin: EdgeInsets.symmetric(horizontal: 6.w),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
+        color: Colors.white.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(14.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
+            blurRadius: 15,
+            offset: const Offset(0, 4),
             spreadRadius: 0,
           ),
         ],
@@ -89,14 +89,9 @@ class ActiveBookingCard extends StatelessWidget {
               extra: {'bookingId': booking.bookingId},
             );
           },
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(14.r),
           child: Padding(
-            padding: EdgeInsets.only(
-              top: 12.w,
-              left: 12.w,
-              right: 12.w,
-              bottom: 2.w, // تقليل المسافة السفلية إلى الحد الأدنى
-            ),
+            padding: EdgeInsets.all(10.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -114,12 +109,12 @@ class ActiveBookingCard extends StatelessWidget {
                         height: 36.h,
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(6.r),
                         ),
                         child: Icon(
                           Icons.local_parking,
                           color: AppColors.primary,
-                          size: 20.sp,
+                          size: 16.sp,
                         ),
                       ),
                       // Remaining time text
@@ -127,23 +122,24 @@ class ActiveBookingCard extends StatelessWidget {
                         child: Text(
                           _formatRemainingTime(remainingTime!, l10n),
                           textAlign: TextAlign.end,
-                          style: AppTextStyles.titleMedium(
+                          style: AppTextStyles.bodyLarge(
                             context,
                             color: AppColors.primary,
                           ).copyWith(
                             fontWeight: FontWeight.bold,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 6.h),
                   // Progress bar
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(4.r),
+                    borderRadius: BorderRadius.circular(3.r),
                     child: LinearProgressIndicator(
                       value: progress,
-                      minHeight: 5.h,
+                      minHeight: 3.h,
                       backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                       valueColor: AlwaysStoppedAnimation<Color>(
                         progress > 0.2
@@ -152,26 +148,26 @@ class ActiveBookingCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 12.h),
+                  SizedBox(height: 8.h),
                 ],
                 // Vehicle info
                 Row(
                   children: [
                     // Vehicle icon
                     Container(
-                      width: 44.w,
-                      height: 44.h,
+                      width: 36.w,
+                      height: 36.h,
                       decoration: BoxDecoration(
                         color: AppColors.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(10.r),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Icon(
                         Icons.directions_car,
                         color: AppColors.primary,
-                        size: 24.sp,
+                        size: 18.sp,
                       ),
                     ),
-                    SizedBox(width: 10.w),
+                    SizedBox(width: 8.w),
                     // Vehicle details
                     Expanded(
                       child: Column(
@@ -181,14 +177,15 @@ class ActiveBookingCard extends StatelessWidget {
                           if (vehicle != null)
                             Text(
                               vehicle.platNumber,
-                              style: AppTextStyles.bodyLarge(
+                              style: AppTextStyles.bodyMedium(
                                 context,
                                 color: AppColors.primaryText,
                               ).copyWith(
                                 fontWeight: FontWeight.bold,
+                                fontSize: 13.sp,
                               ),
                             ),
-                          SizedBox(height: 2.h),
+                          SizedBox(height: 1.h),
                           // Car make and model
                           if (vehicle != null &&
                               (vehicle.carMake != null || vehicle.carModel != null))
@@ -197,6 +194,8 @@ class ActiveBookingCard extends StatelessWidget {
                               style: AppTextStyles.bodySmall(
                                 context,
                                 color: AppColors.secondaryText,
+                              ).copyWith(
+                                fontSize: 11.sp,
                               ),
                             ),
                         ],
@@ -204,23 +203,25 @@ class ActiveBookingCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 12.h),
+                SizedBox(height: 8.h),
                 // Expiration time
                 if (booking.endTime.isNotEmpty)
                   Row(
                     children: [
                       Icon(
                         Icons.access_time,
-                        size: 14.sp,
+                        size: 12.sp,
                         color: AppColors.secondaryText,
                       ),
-                      SizedBox(width: 6.w),
+                      SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
                           '${l10n.expiresAt} ${_formatEndTime(booking.endTime)}',
                           style: AppTextStyles.bodySmall(
                             context,
                             color: AppColors.secondaryText,
+                          ).copyWith(
+                            fontSize: 10.sp,
                           ),
                         ),
                       ),
@@ -228,15 +229,18 @@ class ActiveBookingCard extends StatelessWidget {
                   ),
                 // Parking lot address and ticket number
                 if (parkingLot != null) ...[
-                  SizedBox(height: 6.h),
+                  SizedBox(height: 4.h),
                   Text(
                     '${parkingLot.address ?? ''} - ${l10n.ticketNumber} ${booking.bookingId}',
                     style: AppTextStyles.bodySmall(
                       context,
                       color: AppColors.secondaryText,
+                    ).copyWith(
+                      fontSize: 10.sp,
                     ),
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    softWrap: false,
                   ),
                 ],
               ],

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/core.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../parking/models/parking_model.dart';
 import '../../../vehicles/data/models/vehicle_model.dart';
 import '../../../vehicles/presentation/utils/vehicle_translations.dart';
+import 'shared/shared_widgets.dart';
 
 /// Payment Booking Info Card Widget
 /// Displays parking and vehicle information in payment screen
@@ -31,25 +31,8 @@ class PaymentBookingInfoCard extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final dateFormat = DateFormat('d MMMM yyyy', Localizations.localeOf(context).languageCode == 'ar' ? 'ar' : 'en');
-    final timeFormat = DateFormat('h:mm a', Localizations.localeOf(context).languageCode == 'ar' ? 'ar' : 'en');
-
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      color: AppColors.surface,
-      child: Container(
-        padding: EdgeInsets.all(20.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: AppColors.border,
-            width: 1,
-          ),
-        ),
-        child: Column(
+    return InfoCard(
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Parking Name
@@ -63,26 +46,16 @@ class PaymentBookingInfoCard extends StatelessWidget {
             SizedBox(height: 8.h),
             
             // Location
-            Row(
-              children: [
-                Icon(
-                  EvaIcons.pin,
-                  size: 16.sp,
-                  color: AppColors.secondaryText,
-                ),
-                SizedBox(width: 6.w),
-                Expanded(
-                  child: Text(
-                    parking.address,
-                    style: AppTextStyles.bodyMedium(
-                      context,
-                      color: AppColors.secondaryText,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+            IconWithText(
+              icon: EvaIcons.pin,
+              text: parking.address,
+              expandText: true,
+              iconSize: 16.sp,
+              spacing: 6.w,
+              textStyle: AppTextStyles.bodyMedium(
+                context,
+                color: AppColors.secondaryText,
+              ),
             ),
             SizedBox(height: 20.h),
             
@@ -166,7 +139,7 @@ class PaymentBookingInfoCard extends StatelessWidget {
                           ),
                           SizedBox(width: 6.w),
                           Text(
-                            dateFormat.format(startTime),
+                            DateTimeFormatter.formatDate(startTime.toIso8601String(), context),
                             style: AppTextStyles.bodyMedium(
                               context,
                               color: AppColors.primaryText,
@@ -184,7 +157,7 @@ class PaymentBookingInfoCard extends StatelessWidget {
                           ),
                           SizedBox(width: 6.w),
                           Text(
-                            timeFormat.format(startTime),
+                            DateTimeFormatter.formatTime(startTime.toIso8601String(), context),
                             style: AppTextStyles.bodyMedium(
                               context,
                               color: AppColors.primaryText,
@@ -237,7 +210,7 @@ class PaymentBookingInfoCard extends StatelessWidget {
                           ),
                           SizedBox(width: 6.w),
                           Text(
-                            dateFormat.format(endTime),
+                            DateTimeFormatter.formatDate(endTime.toIso8601String(), context),
                             style: AppTextStyles.bodyMedium(
                               context,
                               color: AppColors.primaryText,
@@ -255,7 +228,7 @@ class PaymentBookingInfoCard extends StatelessWidget {
                           ),
                           SizedBox(width: 6.w),
                           Text(
-                            timeFormat.format(endTime),
+                            DateTimeFormatter.formatTime(endTime.toIso8601String(), context),
                             style: AppTextStyles.bodyMedium(
                               context,
                               color: AppColors.primaryText,
@@ -270,7 +243,6 @@ class PaymentBookingInfoCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

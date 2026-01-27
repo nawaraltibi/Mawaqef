@@ -23,8 +23,11 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  Timer? _remainingTimeTimer;
-  final Map<int, RemainingTimeResponse?> _remainingTimeCache = {};
+  Timer? _countdownTimer;
+  // تخزين الـ remaining seconds لكل booking
+  final Map<int, int?> _remainingSecondsCache = {};
+  // تخزين الـ timestamp عند استدعاء API الأخير
+  final Map<int, DateTime> _lastFetchTime = {};
 
   @override
   void initState() {
@@ -33,46 +36,93 @@ class _UserHomePageState extends State<UserHomePage> {
 
   @override
   void dispose() {
-    _remainingTimeTimer?.cancel();
+    _countdownTimer?.cancel();
     super.dispose();
   }
 
-  void _startRemainingTimeTimer(List<BookingModel> activeBookings) {
-    _remainingTimeTimer?.cancel();
-    
+  /// استدعاء API مرة واحدة فقط لكل booking
+  void _fetchRemainingTimeOnce(List<BookingModel> activeBookings) {
     if (activeBookings.isEmpty) return;
 
-    _remainingTimeTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) {
-        timer.cancel();
-        return;
-      }
-
-      // Fetch remaining time for all active bookings
-      for (final booking in activeBookings) {
-        _fetchRemainingTime(booking.bookingId);
-      }
-    });
-
-    // Fetch immediately
+    // استدعاء API مرة واحدة فقط لكل booking جديد أو لم يتم تحميله بعد
     for (final booking in activeBookings) {
-      _fetchRemainingTime(booking.bookingId);
+      final bookingId = booking.bookingId;
+      
+      // استدعاء API فقط إذا لم يتم تحميله من قبل أو مر أكثر من دقيقة
+      final shouldFetch = !_remainingSecondsCache.containsKey(bookingId) ||
+          (_lastFetchTime[bookingId] != null &&
+              DateTime.now().difference(_lastFetchTime[bookingId]!).inMinutes > 1);
+
+      if (shouldFetch) {
+        _fetchRemainingTime(bookingId);
+      }
     }
+
+    // بدء countdown timer محلي
+    _startCountdownTimer();
   }
 
+  /// استدعاء API مرة واحدة فقط
   Future<void> _fetchRemainingTime(int bookingId) async {
     try {
       final response = await BookingRepository.getRemainingTime(
         bookingId: bookingId,
       );
-      if (mounted) {
+      if (mounted && response.remainingSeconds != null) {
         setState(() {
-          _remainingTimeCache[bookingId] = response;
+          _remainingSecondsCache[bookingId] = response.remainingSeconds;
+          _lastFetchTime[bookingId] = DateTime.now();
         });
       }
     } catch (e) {
       // Silently handle errors
     }
+  }
+
+  /// Countdown timer محلي ينقص الـ seconds كل ثانية
+  void _startCountdownTimer() {
+    _countdownTimer?.cancel();
+
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+
+      setState(() {
+        // نقص الـ seconds لكل booking
+        _remainingSecondsCache.forEach((bookingId, seconds) {
+          if (seconds != null && seconds > 0) {
+            _remainingSecondsCache[bookingId] = seconds - 1;
+          } else {
+            // إذا انتهى الوقت، استدعاء API مرة أخرى للتحقق
+            _fetchRemainingTime(bookingId);
+          }
+        });
+      });
+    });
+  }
+
+  /// تحويل الـ seconds إلى RemainingTimeResponse للاستخدام في الكارد
+  RemainingTimeResponse? _getRemainingTimeResponse(int bookingId) {
+    final seconds = _remainingSecondsCache[bookingId];
+    if (seconds == null) return null;
+
+    return RemainingTimeResponse(
+      status: true,
+      bookingId: bookingId,
+      remainingSeconds: seconds,
+      remainingTime: _formatSecondsToTime(seconds),
+      warning: seconds < 600 ? 'Less than 10 minutes remaining' : null,
+    );
+  }
+
+  /// تحويل الـ seconds إلى صيغة HH:MM:SS
+  String _formatSecondsToTime(int seconds) {
+    final hours = seconds ~/ 3600;
+    final minutes = (seconds % 3600) ~/ 60;
+    final secs = seconds % 60;
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -96,18 +146,18 @@ class _UserHomePageState extends State<UserHomePage> {
           const ParkingMapPage(),
           // Active bookings horizontal list overlay above bottom nav bar
           Positioned(
-            bottom: 20.h, // Closer to bottom nav bar
-            left: 0,
-            right: 0,
+            bottom: 10.h, // المسافة من bottom nav bar (يمكن تعديلها)
+            left: -10,
+            right: -10,
             child: BlocBuilder<BookingsListBloc, BookingsListState>(
               builder: (context, state) {
                 if (state is BookingsListLoaded && state.isActiveTab) {
                   final activeBookings = state.bookings;
                   
-                  // Start timer when bookings are loaded
+                  // استدعاء API مرة واحدة فقط عند تحميل الحجوزات
                   if (activeBookings.isNotEmpty) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _startRemainingTimeTimer(activeBookings);
+                      _fetchRemainingTimeOnce(activeBookings);
                     });
                   }
 
@@ -118,7 +168,7 @@ class _UserHomePageState extends State<UserHomePage> {
                   // Horizontal bookings list with shrinkWrap for dynamic height
                   return ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxHeight: 300.h, // Maximum height constraint
+                      maxHeight: 155.h, // Maximum height constraint
                     ),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -127,7 +177,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       itemCount: activeBookings.length,
                       itemBuilder: (context, index) {
                         final booking = activeBookings[index];
-                        final remainingTime = _remainingTimeCache[booking.bookingId];
+                        final remainingTime = _getRemainingTimeResponse(booking.bookingId);
                         
                         return ActiveBookingCard(
                           booking: booking,

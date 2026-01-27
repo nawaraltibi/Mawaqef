@@ -4,6 +4,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/core.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../parking/models/parking_model.dart';
+import 'shared/shared_widgets.dart';
 
 /// Booking Pre-Payment Info Card Widget
 /// Displays parking location, availability, and status
@@ -25,21 +26,7 @@ class BookingPrePaymentInfoCard extends StatelessWidget {
     final availableSpaces = parking.availableSpaces ?? parking.totalSpaces;
     final totalSpaces = parking.totalSpaces;
 
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      color: AppColors.surface,
-      child: Container(
-        padding: EdgeInsets.all(20.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: AppColors.border,
-            width: 1,
-          ),
-        ),
+    return InfoCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -54,26 +41,16 @@ class BookingPrePaymentInfoCard extends StatelessWidget {
             SizedBox(height: 8.h),
             
             // Location
-            Row(
-              children: [
-                Icon(
-                  EvaIcons.pin,
-                  size: 16.sp,
-                  color: AppColors.secondaryText,
-                ),
-                SizedBox(width: 6.w),
-                Expanded(
-                  child: Text(
-                    parking.address,
-                    style: AppTextStyles.bodyMedium(
-                      context,
-                      color: AppColors.secondaryText,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+            IconWithText(
+              icon: EvaIcons.pin,
+              text: parking.address,
+              expandText: true,
+              iconSize: 16.sp,
+              spacing: 6.w,
+              textStyle: AppTextStyles.bodyMedium(
+                context,
+                color: AppColors.secondaryText,
+              ),
             ),
             SizedBox(height: 16.h),
             
@@ -146,7 +123,6 @@ class BookingPrePaymentInfoCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

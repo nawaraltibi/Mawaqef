@@ -5,7 +5,7 @@ import '../styles/app_text_styles.dart';
 import '../../l10n/app_localizations.dart';
 
 /// Custom dropdown field with search functionality
-/// 
+///
 /// Why this is valuable:
 /// - Searchable dropdown for large lists
 /// - Consistent UI across the app
@@ -20,7 +20,7 @@ class CustomDropdownField<T> extends StatelessWidget {
   final bool isRequired;
   final bool Function(T, String)? filterFunction;
 
-  const CustomDropdownField({
+   const CustomDropdownField({
     super.key,
     required this.label,
     required this.items,
@@ -39,10 +39,7 @@ class CustomDropdownField<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          label,
-          style: AppTextStyles.fieldLabel(context),
-        ),
+        Text(label, style: AppTextStyles.fieldLabel(context)),
         SizedBox(height: 8.h),
         GestureDetector(
           onTap: useSearch ? () => _showSearchDialog(context) : null,
@@ -63,7 +60,8 @@ class CustomDropdownField<T> extends StatelessWidget {
                         child: Text(
                           selectedValue != null
                               ? getLabel(selectedValue as T)
-                              : l10n?.vehiclesFormPleaseSelect ?? 'Please select',
+                              : l10n?.vehiclesFormPleaseSelect ??
+                                    'Please select',
                           style: AppTextStyles.bodyMedium(
                             context,
                             color: selectedValue != null
@@ -188,13 +186,13 @@ class _SearchableDropdownDialogState<T>
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.r)),
-      child: Container(
+      clipBehavior: Clip.antiAlias,
+      child: ConstrainedBox(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(context).size.height * 0.7,
           maxWidth: MediaQuery.of(context).size.width * 0.9,
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             // Header with search
             Container(
@@ -207,12 +205,16 @@ class _SearchableDropdownDialogState<T>
                 ),
               ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     children: [
                       Expanded(
                         child: Text(
-                          AppLocalizations.of(context)?.vehiclesFormPleaseSelect ?? 'Please select',
+                          AppLocalizations.of(
+                                context,
+                              )?.vehiclesFormPleaseSelect ??
+                              'Please select',
                           style: AppTextStyles.titleLarge(
                             context,
                             color: AppColors.primary,
@@ -234,15 +236,22 @@ class _SearchableDropdownDialogState<T>
                       prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16.r),
-                        borderSide: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
+                        borderSide: BorderSide(
+                          color: AppColors.border.withValues(alpha: 0.5),
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16.r),
-                        borderSide: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
+                        borderSide: BorderSide(
+                          color: AppColors.border.withValues(alpha: 0.5),
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16.r),
-                        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                        borderSide: const BorderSide(
+                          color: AppColors.primary,
+                          width: 2,
+                        ),
                       ),
                       filled: true,
                       fillColor: AppColors.brightWhite,
@@ -255,27 +264,35 @@ class _SearchableDropdownDialogState<T>
                 ],
               ),
             ),
-            // List of items
+            // List of items - use Expanded to take remaining space
             Expanded(
-              child: ValueListenableBuilder<List<T>>(
-                valueListenable: _filteredItemsNotifier,
-                builder: (context, filteredItems, child) {
-                  if (filteredItems.isEmpty) {
-                    return Center(
-                      child: Text(
-                        'No data',
-                        style: AppTextStyles.bodyMedium(
-                          context,
-                          color: AppColors.secondaryText,
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(24.r),
+                  bottomRight: Radius.circular(24.r),
+                ),
+                child: ValueListenableBuilder<List<T>>(
+                  valueListenable: _filteredItemsNotifier,
+                  builder: (context, filteredItems, child) {
+                    if (filteredItems.isEmpty) {
+                      return Container(
+                        constraints: const BoxConstraints(minHeight: 100),
+                        child: Center(
+                          child: Text(
+                            'No data',
+                            style: AppTextStyles.bodyMedium(
+                              context,
+                              color: AppColors.secondaryText,
+                            ),
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: filteredItems.length,
-                    padding: EdgeInsets.symmetric(vertical: 8.h),
-                    itemBuilder: (context, index) {
-                      final item = filteredItems[index];
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: filteredItems.length,
+                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                      itemBuilder: (context, index) {
+                        final item = filteredItems[index];
                         final isSelected = widget.selectedValue == item;
 
                         return Container(
@@ -294,7 +311,9 @@ class _SearchableDropdownDialogState<T>
                             boxShadow: isSelected
                                 ? [
                                     BoxShadow(
-                                      color: AppColors.primary.withValues(alpha: 0.1),
+                                      color: AppColors.primary.withValues(
+                                        alpha: 0.1,
+                                      ),
                                       blurRadius: 4,
                                       offset: const Offset(0, 2),
                                     ),
@@ -316,16 +335,17 @@ class _SearchableDropdownDialogState<T>
                                   Expanded(
                                     child: Text(
                                       widget.getLabel(item),
-                                      style: AppTextStyles.bodyMedium(
-                                        context,
-                                        color: isSelected
-                                            ? AppColors.primary
-                                            : AppColors.primaryText,
-                                      ).copyWith(
-                                        fontWeight: isSelected
-                                            ? FontWeight.w600
-                                            : FontWeight.normal,
-                                      ),
+                                      style:
+                                          AppTextStyles.bodyMedium(
+                                            context,
+                                            color: isSelected
+                                                ? AppColors.primary
+                                                : AppColors.primaryText,
+                                          ).copyWith(
+                                            fontWeight: isSelected
+                                                ? FontWeight.w600
+                                                : FontWeight.normal,
+                                          ),
                                     ),
                                   ),
                                   if (isSelected)
@@ -341,7 +361,8 @@ class _SearchableDropdownDialogState<T>
                         );
                       },
                     );
-                },
+                  },
+                ),
               ),
             ),
           ],
@@ -350,4 +371,3 @@ class _SearchableDropdownDialogState<T>
     );
   }
 }
-

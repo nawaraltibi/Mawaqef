@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +13,13 @@ import 'features/splash/bloc/splash_routing_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // إخفاء الـ system navigation bar (أزرار الرجوع والـ home والـ layers)
+  // مع إبقاء الـ status bar ظاهراً
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.top], // إبقاء الـ status bar فقط، إخفاء الـ navigation bar
+  );
 
   // Initialize services
   await StorageService.init();

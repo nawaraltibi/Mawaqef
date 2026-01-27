@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/core.dart';
 import '../../../../l10n/app_localizations.dart';
+import 'shared/shared_widgets.dart';
 
 /// Extend Booking Price Summary Widget
 /// Displays price breakdown for booking extension
@@ -24,21 +25,7 @@ class ExtendBookingPriceSummary extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      color: AppColors.surface,
-      child: Container(
-        padding: EdgeInsets.all(20.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-            color: AppColors.border,
-            width: 1,
-          ),
-        ),
+    return InfoCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -63,9 +50,10 @@ class ExtendBookingPriceSummary extends StatelessWidget {
                     color: AppColors.secondaryText,
                   ),
                 ),
-                Text(
-                  '${hourlyRate.toStringAsFixed(2)} ${l10n.currencySymbol}',
-                  style: AppTextStyles.bodyMedium(
+                PriceDisplayWidget(
+                  amount: hourlyRate,
+                  showCurrencySymbol: true,
+                  amountStyle: AppTextStyles.bodyMedium(
                     context,
                     color: AppColors.primaryText,
                   ),
@@ -92,9 +80,10 @@ class ExtendBookingPriceSummary extends StatelessWidget {
                     color: AppColors.primaryText,
                   ),
                 ),
-                Text(
-                  '${totalPrice.toStringAsFixed(2)} ${l10n.currencySymbol}',
-                  style: AppTextStyles.titleLarge(
+                PriceDisplayWidget(
+                  amount: totalPrice,
+                  showCurrencySymbol: true,
+                  amountStyle: AppTextStyles.titleLarge(
                     context,
                     color: AppColors.primary,
                   ),
@@ -103,7 +92,6 @@ class ExtendBookingPriceSummary extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

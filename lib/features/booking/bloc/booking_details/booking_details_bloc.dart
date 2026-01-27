@@ -5,6 +5,7 @@ import '../../../../core/utils/app_exception.dart';
 import '../../models/booking_details_response.dart';
 import '../../models/remaining_time_response.dart';
 import '../../repository/booking_repository.dart';
+import '../../core/services/booking_timer_service.dart';
 
 part 'booking_details_event.dart';
 part 'booking_details_state.dart';
@@ -13,10 +14,14 @@ part 'booking_details_state.dart';
 /// Manages fetching booking details and remaining time
 class BookingDetailsBloc
     extends Bloc<BookingDetailsEvent, BookingDetailsState> {
-  Timer? _remainingTimeTimer;
+  final BookingTimerService _timerService;
+  StreamSubscription<int>? _timerSubscription;
   BookingDetailsResponse? _cachedBookingDetails;
+  int? _currentBookingId;
 
-  BookingDetailsBloc() : super(const BookingDetailsInitial()) {
+  BookingDetailsBloc({BookingTimerService? timerService})
+      : _timerService = timerService ?? BookingTimerService(),
+        super(const BookingDetailsInitial()) {
     on<LoadBookingDetails>(_onLoadBookingDetails);
     on<LoadRemainingTime>(_onLoadRemainingTime);
     on<RefreshBookingDetails>(_onRefreshBookingDetails);
@@ -27,7 +32,8 @@ class BookingDetailsBloc
 
   @override
   Future<void> close() {
-    _remainingTimeTimer?.cancel();
+    _timerSubscription?.cancel();
+    _timerService.stopTimer(_currentBookingId ?? 0);
     return super.close();
   }
 
@@ -96,11 +102,38 @@ class BookingDetailsBloc
         bookingId: event.bookingId,
       );
 
-      if (!emit.isDone) {
-        emit(RemainingTimeLoaded(
-          bookingId: event.bookingId,
-          response: response,
-        ));
+      if (!emit.isDone && response.remainingSeconds != null) {
+        // Store remaining seconds in timer service
+        _timerService.setRemainingSeconds(
+          event.bookingId,
+          response.remainingSeconds!,
+          DateTime.now(),
+        );
+
+        // Get cached booking details
+        BookingDetailsResponse? bookingResponse = _cachedBookingDetails;
+        
+        if (bookingResponse == null) {
+          final currentState = state;
+          if (currentState is BookingDetailsLoaded) {
+            bookingResponse = currentState.response;
+          } else if (currentState is RemainingTimeUpdated) {
+            bookingResponse = currentState.response;
+          }
+        }
+
+        if (bookingResponse != null) {
+          emit(RemainingTimeUpdated(
+            bookingId: event.bookingId,
+            response: bookingResponse,
+            remainingTimeResponse: response,
+          ));
+        } else {
+          emit(RemainingTimeLoaded(
+            bookingId: event.bookingId,
+            response: response,
+          ));
+        }
       }
     } on AppException catch (e) {
       if (!emit.isDone) {
@@ -140,26 +173,27 @@ class BookingDetailsBloc
     StartRemainingTimeTimer event,
     Emitter<BookingDetailsState> emit,
   ) {
-    // Cancel existing timer if any
-    _remainingTimeTimer?.cancel();
+    _currentBookingId = event.bookingId;
 
-    // Don't load initial remaining time here - let the tick handler do it
-    // This prevents state from changing to RemainingTimeLoaded before we have booking details
-    
-    // Start periodic timer (update every second)
-    _remainingTimeTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
+    // Cancel existing subscription
+    _timerSubscription?.cancel();
+
+    // Fetch from API if needed
+    if (_timerService.shouldFetchFromApi(event.bookingId)) {
+      add(LoadRemainingTime(bookingId: event.bookingId));
+    }
+
+    // Start timer stream
+    _timerSubscription = _timerService.startTimer(event.bookingId).listen(
+      (remainingSeconds) {
         if (!isClosed) {
           add(RemainingTimeTicked(bookingId: event.bookingId));
-        } else {
-          timer.cancel();
         }
       },
+      onError: (error) {
+        // Handle timer errors if needed
+      },
     );
-    
-    // Trigger first tick immediately
-    add(RemainingTimeTicked(bookingId: event.bookingId));
   }
 
   /// Stop real-time remaining time timer
@@ -167,67 +201,57 @@ class BookingDetailsBloc
     StopRemainingTimeTimer event,
     Emitter<BookingDetailsState> emit,
   ) {
-    _remainingTimeTimer?.cancel();
-    _remainingTimeTimer = null;
+    _timerSubscription?.cancel();
+    _timerSubscription = null;
+    if (_currentBookingId != null) {
+      _timerService.stopTimer(_currentBookingId!);
+    }
   }
 
-  /// Handle remaining time tick (fetch updated remaining time)
+  /// Handle remaining time tick from timer service
   Future<void> _onRemainingTimeTicked(
     RemainingTimeTicked event,
     Emitter<BookingDetailsState> emit,
   ) async {
-    try {
-      final remainingTimeResponse = await BookingRepository.getRemainingTime(
-        bookingId: event.bookingId,
-      );
+    final remainingSeconds = _timerService.getRemainingSeconds(event.bookingId);
+    
+    if (remainingSeconds == null) return;
 
-      if (!emit.isDone) {
-        // Use cached booking details if available, otherwise try current state
-        BookingDetailsResponse? bookingResponse = _cachedBookingDetails;
-        
-        if (bookingResponse == null) {
-          final currentState = state;
-          if (currentState is BookingDetailsLoaded) {
-            bookingResponse = currentState.response;
-          } else if (currentState is RemainingTimeUpdated) {
-            bookingResponse = currentState.response;
-          }
-        }
+    // If expired, fetch from API to verify
+    if (remainingSeconds <= 0) {
+      add(LoadRemainingTime(bookingId: event.bookingId));
+      return;
+    }
 
-        if (bookingResponse != null) {
-          // We have booking details, create RemainingTimeUpdated
-          emit(RemainingTimeUpdated(
-            bookingId: event.bookingId,
-            response: bookingResponse,
-            remainingTimeResponse: remainingTimeResponse,
-          ));
-        } else {
-          // No booking details yet, skip this update
-          // The next tick will have booking details after they're loaded
+    if (!emit.isDone) {
+      // Get cached booking details
+      BookingDetailsResponse? bookingResponse = _cachedBookingDetails;
+      
+      if (bookingResponse == null) {
+        final currentState = state;
+        if (currentState is BookingDetailsLoaded) {
+          bookingResponse = currentState.response;
+        } else if (currentState is RemainingTimeUpdated) {
+          bookingResponse = currentState.response;
         }
       }
-    } on AppException catch (e) {
-      // On error, stop the timer
-      _remainingTimeTimer?.cancel();
-      _remainingTimeTimer = null;
-      
-      if (!emit.isDone) {
-        emit(BookingDetailsError(
+
+      if (bookingResponse != null) {
+        // Create RemainingTimeResponse from timer service
+        final remainingTimeResponse = RemainingTimeResponse(
+          status: true,
           bookingId: event.bookingId,
-          message: e.message,
-          statusCode: e.statusCode,
-          errorCode: e.errorCode,
-        ));
-      }
-    } catch (e) {
-      // On error, stop the timer
-      _remainingTimeTimer?.cancel();
-      _remainingTimeTimer = null;
-      
-      if (!emit.isDone) {
-        emit(BookingDetailsError(
+          remainingSeconds: remainingSeconds,
+          remainingTime: BookingTimerService.formatSecondsToTime(remainingSeconds),
+          warning: BookingTimerService.hasWarning(remainingSeconds)
+              ? 'Less than 10 minutes remaining'
+              : null,
+        );
+
+        emit(RemainingTimeUpdated(
           bookingId: event.bookingId,
-          message: e.toString(),
+          response: bookingResponse,
+          remainingTimeResponse: remainingTimeResponse,
         ));
       }
     }

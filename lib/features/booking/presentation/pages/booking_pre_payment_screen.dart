@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/core.dart';
 import '../../../../core/injection/service_locator.dart';
-import '../../../../core/routes/app_routes.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../bloc/create_booking/create_booking_bloc.dart';
+import '../../core/utils/booking_navigation_helper.dart';
 import '../../../parking/models/parking_model.dart';
 import '../../../vehicles/data/models/vehicle_model.dart';
 import '../../../vehicles/domain/entities/vehicle_entity.dart';
@@ -169,6 +168,89 @@ class _BookingPrePaymentScreenState extends State<BookingPrePaymentScreen> {
     return widget.parking.hourlyRate * _selectedHours;
   }
 
+  /// Handle booking creation success
+  void _handleBookingSuccess(
+    BuildContext context,
+    CreateBookingSuccess state,
+    AppLocalizations l10n,
+  ) {
+    final bookingId = state.response.data?.bookingId;
+    if (bookingId == null || bookingId == 0) {
+      UnifiedSnackbar.error(
+        context,
+        message: l10n.errorBookingIdMissing,
+      );
+      return;
+    }
+
+    final selectedVehicle = _vehicles.firstWhere(
+      (v) => v.vehicleId == _selectedVehicleId,
+      orElse: () => _vehicles.first,
+    );
+
+    final bookingData = BookingNavigationHelper.extractBookingData(
+      response: state.response,
+      parking: widget.parking,
+      vehicle: selectedVehicle,
+      selectedHours: _selectedHours,
+      calculatedTotal: _calculateTotalPrice(),
+    );
+
+    BookingNavigationHelper.navigateToPayment(
+      context: context,
+      parking: bookingData['parking'] as ParkingModel,
+      vehicle: bookingData['vehicle'] as VehicleModel,
+      hours: bookingData['hours'] as int,
+      totalAmount: bookingData['totalAmount'] as double,
+      bookingId: bookingData['bookingId'] as int,
+      startTime: bookingData['startTime'] as DateTime?,
+      endTime: bookingData['endTime'] as DateTime?,
+    );
+  }
+
+  /// Handle booking creation failure
+  void _handleBookingFailure(
+    BuildContext context,
+    CreateBookingFailure state,
+    AppLocalizations l10n,
+  ) {
+    // Handle 409 Conflict - existing booking with same details
+    if (state.statusCode == 409 && state.responseData != null) {
+      final selectedVehicle = _vehicles.firstWhere(
+        (v) => v.vehicleId == _selectedVehicleId,
+        orElse: () => _vehicles.first,
+      );
+
+      final bookingData = BookingNavigationHelper.extractBookingDataFromError(
+        responseData: state.responseData!,
+        parking: widget.parking,
+        vehicle: selectedVehicle,
+        selectedHours: _selectedHours,
+        calculatedTotal: _calculateTotalPrice(),
+      );
+
+      if (bookingData != null) {
+        BookingNavigationHelper.navigateToPayment(
+          context: context,
+          parking: bookingData['parking'] as ParkingModel,
+          vehicle: bookingData['vehicle'] as VehicleModel,
+          hours: bookingData['hours'] as int,
+          totalAmount: bookingData['totalAmount'] as double,
+          bookingId: bookingData['bookingId'] as int,
+          startTime: bookingData['startTime'] as DateTime?,
+          endTime: bookingData['endTime'] as DateTime?,
+        );
+        return;
+      }
+    }
+
+    // Show error message for other failures
+    UnifiedSnackbar.error(
+      context,
+      message: state.error,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -182,115 +264,9 @@ class _BookingPrePaymentScreenState extends State<BookingPrePaymentScreen> {
       body: BlocListener<CreateBookingBloc, CreateBookingState>(
         listener: (context, state) {
           if (state is CreateBookingSuccess) {
-            // Extract booking_id from response
-            final bookingId = state.response.data?.bookingId;
-            final bookingData = state.response.data;
-
-            if (bookingId == null || bookingId == 0) {
-              // Show error if booking_id is missing
-              UnifiedSnackbar.error(
-                context,
-                message: l10n.errorBookingIdMissing,
-              );
-              return;
-            }
-
-            // Find selected vehicle
-            final selectedVehicle = _vehicles.firstWhere(
-              (v) => v.vehicleId == _selectedVehicleId,
-              orElse: () => _vehicles.first,
-            );
-
-            // Use total_amount from booking response if available, otherwise calculate
-            final totalAmount = bookingData?.totalAmount ?? _calculateTotalPrice();
-
-            // Parse start_time and end_time from booking response if available
-            DateTime? startTime;
-            DateTime? endTime;
-            if (bookingData != null) {
-              try {
-                startTime = DateTime.parse(bookingData.startTime);
-                endTime = DateTime.parse(bookingData.endTime);
-              } catch (e) {
-                // If parsing fails, calculate from hours
-                startTime = DateTime.now();
-                endTime = startTime.add(Duration(hours: bookingData.hours));
-              }
-            }
-
-            // Navigate to payment screen with booking_id
-            context.push(
-              Routes.paymentPath,
-              extra: {
-                'parking': widget.parking,
-                'vehicle': selectedVehicle,
-                'hours': bookingData?.hours ?? _selectedHours,
-                'totalAmount': totalAmount,
-                'bookingId': bookingId, // Pass booking_id from API response
-                if (startTime != null) 'startTime': startTime,
-                if (endTime != null) 'endTime': endTime,
-              },
-            );
+            _handleBookingSuccess(context, state, l10n);
           } else if (state is CreateBookingFailure) {
-            // Handle 409 Conflict - existing booking with same details
-            // The API returns booking_id in the error response data
-            if (state.statusCode == 409 && state.responseData != null) {
-              final responseData = state.responseData!;
-              final existingBookingId = responseData['data']?['booking_id'] as int?;
-              
-              if (existingBookingId != null && existingBookingId > 0) {
-                // Extract booking data from error response
-                final bookingDataMap = responseData['data'] as Map<String, dynamic>?;
-                
-                // Find selected vehicle
-                final selectedVehicle = _vehicles.firstWhere(
-                  (v) => v.vehicleId == _selectedVehicleId,
-                  orElse: () => _vehicles.first,
-                );
-
-                // Calculate total amount (may not be in error response)
-                final totalAmount = _calculateTotalPrice();
-                
-                // Parse times if available
-                DateTime? startTime;
-                DateTime? endTime;
-                if (bookingDataMap?['end_time'] != null) {
-                  try {
-                    // Try to parse end_time to calculate start_time
-                    final endTimeStr = bookingDataMap!['end_time'] as String;
-                    endTime = DateTime.parse(endTimeStr);
-                    startTime = endTime.subtract(Duration(hours: _selectedHours));
-                  } catch (e) {
-                    startTime = DateTime.now();
-                    endTime = startTime.add(Duration(hours: _selectedHours));
-                  }
-                } else {
-                  startTime = DateTime.now();
-                  endTime = startTime.add(Duration(hours: _selectedHours));
-                }
-
-                // Navigate to payment screen with existing booking_id
-                context.push(
-                  Routes.paymentPath,
-                  extra: {
-                    'parking': widget.parking,
-                    'vehicle': selectedVehicle,
-                    'hours': _selectedHours,
-                    'totalAmount': totalAmount,
-                    'bookingId': existingBookingId,
-                    'startTime': startTime,
-                    'endTime': endTime,
-                  },
-                );
-                return; // Exit early, navigation handled
-              }
-            }
-            
-            // Show error message for other failures
-            UnifiedSnackbar.error(
-              context,
-              message: state.error,
-            );
+            _handleBookingFailure(context, state, l10n);
           }
         },
         child: SafeArea(
