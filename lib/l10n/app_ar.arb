@@ -40,11 +40,15 @@
   "@getStarted": {
     "description": "Get started button text on last onboarding screen"
   },
+  "authAppTitle": "تطبيق مواقف",
+  "@authAppTitle": {
+    "description": "App title shown on Login and Register screens only"
+  },
   "authLoginTitle": "مرحباً بعودتك",
   "@authLoginTitle": {
     "description": "Login screen title"
   },
-  "authLoginSubtitle": "سجل الدخول للمتابعة باستخدام تطبيق مواقف السيارات",
+  "authLoginSubtitle": "سجل الدخول للمتابعة باستخدام تطبيق مواقف",
   "@authLoginSubtitle": {
     "description": "Login screen subtitle"
   },
@@ -60,7 +64,7 @@
   "@authRegisterTitle": {
     "description": "Register screen title"
   },
-  "authRegisterSubtitle": "سجل للبدء باستخدام تطبيق مواقف السيارات",
+  "authRegisterSubtitle": "سجل للبدء باستخدام تطبيق مواقف",
   "@authRegisterSubtitle": {
     "description": "Register screen subtitle"
   },
@@ -376,13 +380,33 @@
   "@profileChangeLanguageButton": {
     "description": "Button to confirm and apply language change"
   },
+  "profileErrorUnauthorized": "وصول غير مصرح",
+  "@profileErrorUnauthorized": {
+    "description": "Error message for 401 unauthorized"
+  },
+  "profileErrorNotFound": "الملف الشخصي غير موجود",
+  "@profileErrorNotFound": {
+    "description": "Error message for 404 profile not found"
+  },
+  "profileLanguageTitle": "اللغة",
+  "@profileLanguageTitle": {
+    "description": "Language switcher section title"
+  },
+  "profileLanguageEnglish": "English",
+  "@profileLanguageEnglish": {
+    "description": "English language option"
+  },
+  "profileLanguageArabic": "العربية",
+  "@profileLanguageArabic": {
+    "description": "Arabic language option"
+  },
   "parkingTitle": "مواقفي",
   "@parkingTitle": {
     "description": "Title for parking management screen"
   },
-  "parkingCreateTitle": "إنشاء موقف",
+  "parkingCreateTitle": "إضافة موقف",
   "@parkingCreateTitle": {
-    "description": "Title for create parking screen"
+    "description": "Title for add parking screen"
   },
   "parkingUpdateTitle": "تحديث موقف",
   "@parkingUpdateTitle": {
@@ -468,9 +492,9 @@
   "@parkingHourlyRateHint": {
     "description": "Hint for hourly rate field"
   },
-  "parkingCreateButton": "إنشاء موقف",
+  "parkingCreateButton": "إضافة موقف",
   "@parkingCreateButton": {
-    "description": "Button text for creating parking"
+    "description": "Button text for adding parking"
   },
   "parkingUpdateButton": "تحديث موقف",
   "@parkingUpdateButton": {
@@ -503,6 +527,14 @@
   "parkingEmptyStateSubtitle": "أنشئ موقفك الأول للبدء",
   "@parkingEmptyStateSubtitle": {
     "description": "Empty state subtitle"
+  },
+  "parkingNoResultsTitle": "لا توجد نتائج",
+  "@parkingNoResultsTitle": {
+    "description": "No search/filter results title"
+  },
+  "parkingNoResultsSubtitle": "جرب البحث بكلمات مختلفة",
+  "@parkingNoResultsSubtitle": {
+    "description": "No search/filter results subtitle"
   },
   "parkingUpdateRequiresApproval": "سيحتاج تحديث هذا الموقف إلى موافقة المدير مرة أخرى",
   "@parkingUpdateRequiresApproval": {
@@ -713,7 +745,6 @@
   "@currencySymbol": {
     "description": "Currency symbol for Syrian Pound in Arabic"
   },
-
   "vehiclesMyVehiclesTitle": "مركباتي",
   "@vehiclesMyVehiclesTitle": {
     "description": "Title for my vehicles screen"
@@ -1117,6 +1148,15 @@
   "@plateNumber": {
     "description": "Vehicle plate number label"
   },
+  "vehicleIdFallback": "مركبة #{id}",
+  "@vehicleIdFallback": {
+    "description": "Fallback when vehicle details are not available",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
   "reviewInvoice": "استعراض الفاتورة",
   "@reviewInvoice": {
     "description": "Title for invoice review screen"
@@ -1373,6 +1413,14 @@
   "@bookingPrePaymentTotalAvailable": {
     "description": "Label for total available parking spots"
   },
+  "bookingNoVehiclesAvailable": "لا توجد مركبات متاحة",
+  "@bookingNoVehiclesAvailable": {
+    "description": "Message when no vehicles available in booking flow"
+  },
+  "bookingAddNewVehicle": "إضافة مركبة جديدة",
+  "@bookingAddNewVehicle": {
+    "description": "Button to add new vehicle from booking screen"
+  },
   "paymentTitle": "الدفع",
   "@paymentTitle": {
     "description": "Payment screen title"
@@ -1433,6 +1481,10 @@
   "@paymentSimulateFailure": {
     "description": "Button text to simulate failed payment"
   },
+  "paymentErrorInvalidAmount": "المبلغ غير صالح. يرجى المحاولة مرة أخرى.",
+  "@paymentErrorInvalidAmount": {
+    "description": "Error when payment amount is invalid"
+  },
   "errorInvalidBookingId": "رقم الحجز غير صحيح. يرجى المحاولة مرة أخرى.",
   "@errorInvalidBookingId": {
     "description": "Error message when booking ID is invalid or missing"
@@ -1456,6 +1508,185 @@
   "paymentGoToHome": "الذهاب للرئيسية",
   "@paymentGoToHome": {
     "description": "Button text to go to main/home page"
+  },
+  "violationsTitle": "المخالفات",
+  "@violationsTitle": {
+    "description": "Title for violations screen"
+  },
+  "violationsTabUnpaid": "غير مدفوعة",
+  "@violationsTabUnpaid": {
+    "description": "Tab label for unpaid violations"
+  },
+  "violationsTabPaid": "مدفوعة",
+  "@violationsTabPaid": {
+    "description": "Tab label for paid violations"
+  },
+  "violationsEmptyUnpaid": "لا توجد مخالفات غير مدفوعة",
+  "@violationsEmptyUnpaid": {
+    "description": "Empty state message for unpaid violations"
+  },
+  "violationsEmptyPaid": "لا توجد مخالفات مدفوعة",
+  "@violationsEmptyPaid": {
+    "description": "Empty state message for paid violations"
+  },
+  "violationsEmptySubtitle": "ليس لديك أي مخالفات بعد",
+  "@violationsEmptySubtitle": {
+    "description": "Empty state subtitle for violations"
+  },
+  "violationsType": "نوع المخالفة",
+  "@violationsType": {
+    "description": "Label for violation type"
+  },
+  "violationsAmount": "المبلغ",
+  "@violationsAmount": {
+    "description": "Label for violation amount"
+  },
+  "violationsDate": "التاريخ",
+  "@violationsDate": {
+    "description": "Label for violation date"
+  },
+  "violationsStatus": "الحالة",
+  "@violationsStatus": {
+    "description": "Label for violation status"
+  },
+  "violationsStatusPaid": "مدفوعة",
+  "@violationsStatusPaid": {
+    "description": "Paid status label"
+  },
+  "violationsStatusUnpaid": "غير مدفوعة",
+  "@violationsStatusUnpaid": {
+    "description": "Unpaid status label"
+  },
+  "violationsPayButton": "دفع الآن",
+  "@violationsPayButton": {
+    "description": "Button text to pay violation"
+  },
+  "violationsPayDialogTitle": "دفع المخالفة",
+  "@violationsPayDialogTitle": {
+    "description": "Title for pay violation dialog"
+  },
+  "violationsPayDialogMessage": "هل أنت متأكد من رغبتك في دفع هذه المخالفة؟",
+  "@violationsPayDialogMessage": {
+    "description": "Message for pay violation dialog"
+  },
+  "violationsPaySuccess": "تم دفع المخالفة بنجاح",
+  "@violationsPaySuccess": {
+    "description": "Success message after paying violation"
+  },
+  "violationsPayError": "فشل دفع المخالفة",
+  "@violationsPayError": {
+    "description": "Error message when payment fails"
+  },
+  "violationsErrorTitle": "خطأ في تحميل المخالفات",
+  "@violationsErrorTitle": {
+    "description": "Error state title for violations"
+  },
+  "violationsRetryButton": "إعادة المحاولة",
+  "@violationsRetryButton": {
+    "description": "Retry button text for violations error state"
+  },
+  "notificationsTitle": "الإشعارات",
+  "@notificationsTitle": {
+    "description": "Title for notifications screen"
+  },
+  "notificationsEmpty": "لا توجد إشعارات",
+  "@notificationsEmpty": {
+    "description": "Empty state message for notifications"
+  },
+  "notificationsEmptySubtitle": "أنت محدث! لا توجد إشعارات جديدة",
+  "@notificationsEmptySubtitle": {
+    "description": "Empty state subtitle for notifications"
+  },
+  "notificationsMarkAsRead": "تمييز كمقروء",
+  "@notificationsMarkAsRead": {
+    "description": "Action to mark notification as read"
+  },
+  "notificationsDetailsTitle": "تفاصيل الإشعار",
+  "@notificationsDetailsTitle": {
+    "description": "Title for notification details screen"
+  },
+  "notificationsDate": "التاريخ",
+  "@notificationsDate": {
+    "description": "Label for notification date"
+  },
+  "notificationsTime": "الوقت",
+  "@notificationsTime": {
+    "description": "Label for notification time"
+  },
+  "notificationsErrorTitle": "خطأ في تحميل الإشعارات",
+  "@notificationsErrorTitle": {
+    "description": "Error state title when notifications fail to load"
+  },
+  "notificationsNotFound": "الإشعار غير موجود",
+  "@notificationsNotFound": {
+    "description": "Message when notification is not found or invalid"
+  },
+  "commonYesterday": "أمس",
+  "@commonYesterday": {
+    "description": "Relative date label for previous day"
+  },
+  "violationsVehicle": "المركبة",
+  "@violationsVehicle": {
+    "description": "Label for vehicle in violation card"
+  },
+  "violationsParkingLot": "موقف السيارات",
+  "@violationsParkingLot": {
+    "description": "Label for parking lot in violation card"
+  },
+  "violationsViolationDate": "تاريخ المخالفة",
+  "@violationsViolationDate": {
+    "description": "Label for violation date"
+  },
+  "violationsPaidDate": "تاريخ الدفع",
+  "@violationsPaidDate": {
+    "description": "Label for paid date"
+  },
+  "violationsPaymentMethod": "طريقة الدفع",
+  "@violationsPaymentMethod": {
+    "description": "Label for payment method"
+  },
+  "violationsPaymentMethodCash": "نقداً",
+  "@violationsPaymentMethodCash": {
+    "description": "Cash payment method"
+  },
+  "violationsPaymentMethodCard": "بطاقة",
+  "@violationsPaymentMethodCard": {
+    "description": "Card payment method"
+  },
+  "serverHostDialogTitle": "عنوان الخادم",
+  "@serverHostDialogTitle": {
+    "description": "Title for server IP input dialog"
+  },
+  "serverHostDialogHint": "مثال: 192.168.1.5",
+  "@serverHostDialogHint": {
+    "description": "Hint for server host input"
+  },
+  "serverHostDialogConfirm": "تأكيد",
+  "@serverHostDialogConfirm": {
+    "description": "Confirm button in server host dialog"
+  },
+  "serverHostDialogCancel": "إلغاء",
+  "@serverHostDialogCancel": {
+    "description": "Cancel button"
+  },
+  "serverHostInvalidFormat": "أدخل IP أو عنوان خادم صحيح (مثال: 192.168.1.5)",
+  "@serverHostInvalidFormat": {
+    "description": "Validation error for invalid host format"
+  },
+  "connectionErrorDialogTitle": "فشل الاتصال",
+  "@connectionErrorDialogTitle": {
+    "description": "Title for connection error dialog"
+  },
+  "connectionErrorDialogHint": "تحقق من الشبكة أو جرّب عنوان خادم آخر.",
+  "@connectionErrorDialogHint": {
+    "description": "Hint text in connection error dialog"
+  },
+  "connectionErrorRetry": "إعادة المحاولة",
+  "@connectionErrorRetry": {
+    "description": "Retry button in connection error dialog"
+  },
+  "connectionErrorChangeIp": "تغيير العنوان",
+  "@connectionErrorChangeIp": {
+    "description": "Change IP button in connection error dialog"
   }
 }
-

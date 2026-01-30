@@ -281,7 +281,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               return SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+                padding: EdgeInsetsDirectional.only(
+                  start: 20.w,
+                  end: 20.w,
+                  top: 20.h,
+                  bottom: 20.h,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -328,19 +333,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SizedBox(height: 16.h),
 
                           // Number of Vehicles (Read-only) - Only show for users, not owners
-                          if (profileData.data.userType.toLowerCase() == 'user') ...[
+                          if (profileData.data.userType.toLowerCase() ==
+                              'user') ...[
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 14.h),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 18.w,
+                                vertical: 14.h,
+                              ),
                               decoration: BoxDecoration(
-                                color: AppColors.backgroundSecondary.withValues(alpha: 0.5),
+                                color: AppColors.backgroundSecondary.withValues(
+                                  alpha: 0.5,
+                                ),
                                 borderRadius: BorderRadius.circular(16.r),
                                 border: Border.all(
-                                  color: AppColors.border.withValues(alpha: 0.3),
+                                  color: AppColors.border.withValues(
+                                    alpha: 0.3,
+                                  ),
                                   width: 1,
                                 ),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     l10n.profileNumberOfVehicles,
@@ -415,6 +429,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     SizedBox(height: 16.h),
 
+                    // Violations Button (only for user, not owner)
+                    if (profileData.data.userType.toLowerCase() == 'user')
+                      CustomElevatedButton(
+                        title: l10n.violationsTitle,
+                        onPressed: () => context.push(Routes.violationsPath),
+                        backgroundColor: AppColors.surface,
+                        foregroundColor: AppColors.primary,
+                        useGradient: false,
+                        icon: const Icon(Icons.receipt_long_outlined, size: 20),
+                      ),
+                    if (profileData.data.userType.toLowerCase() == 'user')
+                      SizedBox(height: 16.h),
+
                     // Logout Button
                     BlocBuilder<LogoutBloc, LogoutState>(
                       builder: (context, logoutState) {
@@ -469,4 +496,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-

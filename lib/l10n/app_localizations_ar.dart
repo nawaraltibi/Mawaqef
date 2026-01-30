@@ -42,11 +42,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get getStarted => 'ابدأ الآن';
 
   @override
+  String get authAppTitle => 'تطبيق مواقف';
+
+  @override
   String get authLoginTitle => 'مرحباً بعودتك';
 
   @override
-  String get authLoginSubtitle =>
-      'سجل الدخول للمتابعة باستخدام تطبيق مواقف السيارات';
+  String get authLoginSubtitle => 'سجل الدخول للمتابعة باستخدام تطبيق مواقف';
 
   @override
   String get authLoginButton => 'تسجيل الدخول';
@@ -58,7 +60,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authRegisterTitle => 'إنشاء حساب';
 
   @override
-  String get authRegisterSubtitle => 'سجل للبدء باستخدام تطبيق مواقف السيارات';
+  String get authRegisterSubtitle => 'سجل للبدء باستخدام تطبيق مواقف';
 
   @override
   String get authRegisterButton => 'إنشاء حساب';
@@ -310,10 +312,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileChangeLanguageButton => 'تغيير اللغة';
 
   @override
+  String get profileErrorUnauthorized => 'وصول غير مصرح';
+
+  @override
+  String get profileErrorNotFound => 'الملف الشخصي غير موجود';
+
+  @override
+  String get profileLanguageTitle => 'اللغة';
+
+  @override
+  String get profileLanguageEnglish => 'English';
+
+  @override
+  String get profileLanguageArabic => 'العربية';
+
+  @override
   String get parkingTitle => 'مواقفي';
 
   @override
-  String get parkingCreateTitle => 'إنشاء موقف';
+  String get parkingCreateTitle => 'إضافة موقف';
 
   @override
   String get parkingUpdateTitle => 'تحديث موقف';
@@ -381,7 +398,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get parkingHourlyRateHint => 'أدخل السعر بالساعة';
 
   @override
-  String get parkingCreateButton => 'إنشاء موقف';
+  String get parkingCreateButton => 'إضافة موقف';
 
   @override
   String get parkingUpdateButton => 'تحديث موقف';
@@ -406,6 +423,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get parkingEmptyStateSubtitle => 'أنشئ موقفك الأول للبدء';
+
+  @override
+  String get parkingNoResultsTitle => 'لا توجد نتائج';
+
+  @override
+  String get parkingNoResultsSubtitle => 'جرب البحث بكلمات مختلفة';
 
   @override
   String get parkingUpdateRequiresApproval =>
@@ -988,6 +1011,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get plateNumber => 'رقم اللوحة';
 
   @override
+  String vehicleIdFallback(int id) {
+    return 'مركبة #$id';
+  }
+
+  @override
   String get reviewInvoice => 'استعراض الفاتورة';
 
   @override
@@ -1181,6 +1209,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bookingPrePaymentTotalAvailable => 'إجمالي المواقف المتاحة';
 
   @override
+  String get bookingNoVehiclesAvailable => 'لا توجد مركبات متاحة';
+
+  @override
+  String get bookingAddNewVehicle => 'إضافة مركبة جديدة';
+
+  @override
   String get paymentTitle => 'الدفع';
 
   @override
@@ -1227,6 +1261,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get paymentSimulateFailure => 'فشل الدفع';
 
   @override
+  String get paymentErrorInvalidAmount =>
+      'المبلغ غير صالح. يرجى المحاولة مرة أخرى.';
+
+  @override
   String get errorInvalidBookingId =>
       'رقم الحجز غير صحيح. يرجى المحاولة مرة أخرى.';
 
@@ -1246,4 +1284,142 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get paymentGoToHome => 'الذهاب للرئيسية';
+
+  @override
+  String get violationsTitle => 'المخالفات';
+
+  @override
+  String get violationsTabUnpaid => 'غير مدفوعة';
+
+  @override
+  String get violationsTabPaid => 'مدفوعة';
+
+  @override
+  String get violationsEmptyUnpaid => 'لا توجد مخالفات غير مدفوعة';
+
+  @override
+  String get violationsEmptyPaid => 'لا توجد مخالفات مدفوعة';
+
+  @override
+  String get violationsEmptySubtitle => 'ليس لديك أي مخالفات بعد';
+
+  @override
+  String get violationsType => 'نوع المخالفة';
+
+  @override
+  String get violationsAmount => 'المبلغ';
+
+  @override
+  String get violationsDate => 'التاريخ';
+
+  @override
+  String get violationsStatus => 'الحالة';
+
+  @override
+  String get violationsStatusPaid => 'مدفوعة';
+
+  @override
+  String get violationsStatusUnpaid => 'غير مدفوعة';
+
+  @override
+  String get violationsPayButton => 'دفع الآن';
+
+  @override
+  String get violationsPayDialogTitle => 'دفع المخالفة';
+
+  @override
+  String get violationsPayDialogMessage =>
+      'هل أنت متأكد من رغبتك في دفع هذه المخالفة؟';
+
+  @override
+  String get violationsPaySuccess => 'تم دفع المخالفة بنجاح';
+
+  @override
+  String get violationsPayError => 'فشل دفع المخالفة';
+
+  @override
+  String get violationsErrorTitle => 'خطأ في تحميل المخالفات';
+
+  @override
+  String get violationsRetryButton => 'إعادة المحاولة';
+
+  @override
+  String get notificationsTitle => 'الإشعارات';
+
+  @override
+  String get notificationsEmpty => 'لا توجد إشعارات';
+
+  @override
+  String get notificationsEmptySubtitle => 'أنت محدث! لا توجد إشعارات جديدة';
+
+  @override
+  String get notificationsMarkAsRead => 'تمييز كمقروء';
+
+  @override
+  String get notificationsDetailsTitle => 'تفاصيل الإشعار';
+
+  @override
+  String get notificationsDate => 'التاريخ';
+
+  @override
+  String get notificationsTime => 'الوقت';
+
+  @override
+  String get notificationsErrorTitle => 'خطأ في تحميل الإشعارات';
+
+  @override
+  String get notificationsNotFound => 'الإشعار غير موجود';
+
+  @override
+  String get commonYesterday => 'أمس';
+
+  @override
+  String get violationsVehicle => 'المركبة';
+
+  @override
+  String get violationsParkingLot => 'موقف السيارات';
+
+  @override
+  String get violationsViolationDate => 'تاريخ المخالفة';
+
+  @override
+  String get violationsPaidDate => 'تاريخ الدفع';
+
+  @override
+  String get violationsPaymentMethod => 'طريقة الدفع';
+
+  @override
+  String get violationsPaymentMethodCash => 'نقداً';
+
+  @override
+  String get violationsPaymentMethodCard => 'بطاقة';
+
+  @override
+  String get serverHostDialogTitle => 'عنوان الخادم';
+
+  @override
+  String get serverHostDialogHint => 'مثال: 192.168.1.5';
+
+  @override
+  String get serverHostDialogConfirm => 'تأكيد';
+
+  @override
+  String get serverHostDialogCancel => 'إلغاء';
+
+  @override
+  String get serverHostInvalidFormat =>
+      'أدخل IP أو عنوان خادم صحيح (مثال: 192.168.1.5)';
+
+  @override
+  String get connectionErrorDialogTitle => 'فشل الاتصال';
+
+  @override
+  String get connectionErrorDialogHint =>
+      'تحقق من الشبكة أو جرّب عنوان خادم آخر.';
+
+  @override
+  String get connectionErrorRetry => 'إعادة المحاولة';
+
+  @override
+  String get connectionErrorChangeIp => 'تغيير العنوان';
 }

@@ -42,10 +42,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get getStarted => 'Get Started';
 
   @override
+  String get authAppTitle => 'Mawaqef';
+
+  @override
   String get authLoginTitle => 'Welcome Back';
 
   @override
-  String get authLoginSubtitle => 'Sign in to continue using the parking app';
+  String get authLoginSubtitle => 'Sign in to continue using Mawaqef';
 
   @override
   String get authLoginButton => 'Login';
@@ -57,7 +60,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authRegisterTitle => 'Create Account';
 
   @override
-  String get authRegisterSubtitle => 'Sign up to start using the parking app';
+  String get authRegisterSubtitle => 'Sign up to start using Mawaqef';
 
   @override
   String get authRegisterButton => 'Register';
@@ -311,10 +314,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileChangeLanguageButton => 'Change Language';
 
   @override
+  String get profileErrorUnauthorized => 'Unauthorized access';
+
+  @override
+  String get profileErrorNotFound => 'Profile not found';
+
+  @override
+  String get profileLanguageTitle => 'Language';
+
+  @override
+  String get profileLanguageEnglish => 'English';
+
+  @override
+  String get profileLanguageArabic => 'العربية';
+
+  @override
   String get parkingTitle => 'My Parkings';
 
   @override
-  String get parkingCreateTitle => 'Create Parking';
+  String get parkingCreateTitle => 'Add Parking';
 
   @override
   String get parkingUpdateTitle => 'Update Parking';
@@ -382,7 +400,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get parkingHourlyRateHint => 'Enter hourly rate';
 
   @override
-  String get parkingCreateButton => 'Create Parking';
+  String get parkingCreateButton => 'Add Parking';
 
   @override
   String get parkingUpdateButton => 'Update Parking';
@@ -408,6 +426,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get parkingEmptyStateSubtitle =>
       'Create your first parking lot to get started';
+
+  @override
+  String get parkingNoResultsTitle => 'No results';
+
+  @override
+  String get parkingNoResultsSubtitle =>
+      'Try searching with different keywords';
 
   @override
   String get parkingUpdateRequiresApproval =>
@@ -991,6 +1016,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get plateNumber => 'Plate Number';
 
   @override
+  String vehicleIdFallback(int id) {
+    return 'Vehicle #$id';
+  }
+
+  @override
   String get reviewInvoice => 'Review Invoice';
 
   @override
@@ -1185,6 +1215,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookingPrePaymentTotalAvailable => 'Total Available Parking Spots';
 
   @override
+  String get bookingNoVehiclesAvailable => 'No vehicles available';
+
+  @override
+  String get bookingAddNewVehicle => 'Add New Vehicle';
+
+  @override
   String get paymentTitle => 'Payment';
 
   @override
@@ -1231,6 +1267,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentSimulateFailure => 'Simulate Failure';
 
   @override
+  String get paymentErrorInvalidAmount => 'Invalid amount. Please try again.';
+
+  @override
   String get errorInvalidBookingId => 'Invalid booking ID. Please try again.';
 
   @override
@@ -1249,4 +1288,143 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentGoToHome => 'Go to Main Page';
+
+  @override
+  String get violationsTitle => 'Violations';
+
+  @override
+  String get violationsTabUnpaid => 'Unpaid';
+
+  @override
+  String get violationsTabPaid => 'Paid';
+
+  @override
+  String get violationsEmptyUnpaid => 'No unpaid violations';
+
+  @override
+  String get violationsEmptyPaid => 'No paid violations';
+
+  @override
+  String get violationsEmptySubtitle => 'You don\'t have any violations yet';
+
+  @override
+  String get violationsType => 'Violation Type';
+
+  @override
+  String get violationsAmount => 'Amount';
+
+  @override
+  String get violationsDate => 'Date';
+
+  @override
+  String get violationsStatus => 'Status';
+
+  @override
+  String get violationsStatusPaid => 'Paid';
+
+  @override
+  String get violationsStatusUnpaid => 'Unpaid';
+
+  @override
+  String get violationsPayButton => 'Pay Now';
+
+  @override
+  String get violationsPayDialogTitle => 'Pay Violation';
+
+  @override
+  String get violationsPayDialogMessage =>
+      'Are you sure you want to pay this violation?';
+
+  @override
+  String get violationsPaySuccess => 'Violation paid successfully';
+
+  @override
+  String get violationsPayError => 'Failed to pay violation';
+
+  @override
+  String get violationsErrorTitle => 'Error Loading Violations';
+
+  @override
+  String get violationsRetryButton => 'Retry';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsEmpty => 'No notifications';
+
+  @override
+  String get notificationsEmptySubtitle =>
+      'You\'re all caught up! No new notifications';
+
+  @override
+  String get notificationsMarkAsRead => 'Mark as read';
+
+  @override
+  String get notificationsDetailsTitle => 'Notification Details';
+
+  @override
+  String get notificationsDate => 'Date';
+
+  @override
+  String get notificationsTime => 'Time';
+
+  @override
+  String get notificationsErrorTitle => 'Error Loading Notifications';
+
+  @override
+  String get notificationsNotFound => 'Notification not found';
+
+  @override
+  String get commonYesterday => 'Yesterday';
+
+  @override
+  String get violationsVehicle => 'Vehicle';
+
+  @override
+  String get violationsParkingLot => 'Parking Lot';
+
+  @override
+  String get violationsViolationDate => 'Violation Date';
+
+  @override
+  String get violationsPaidDate => 'Paid Date';
+
+  @override
+  String get violationsPaymentMethod => 'Payment Method';
+
+  @override
+  String get violationsPaymentMethodCash => 'Cash';
+
+  @override
+  String get violationsPaymentMethodCard => 'Card';
+
+  @override
+  String get serverHostDialogTitle => 'Server address';
+
+  @override
+  String get serverHostDialogHint => 'e.g. 192.168.1.5';
+
+  @override
+  String get serverHostDialogConfirm => 'Confirm';
+
+  @override
+  String get serverHostDialogCancel => 'Cancel';
+
+  @override
+  String get serverHostInvalidFormat =>
+      'Enter a valid IP or host (e.g. 192.168.1.5)';
+
+  @override
+  String get connectionErrorDialogTitle => 'Connection failed';
+
+  @override
+  String get connectionErrorDialogHint =>
+      'Check your network or try a different server address.';
+
+  @override
+  String get connectionErrorRetry => 'Retry';
+
+  @override
+  String get connectionErrorChangeIp => 'Change IP';
 }

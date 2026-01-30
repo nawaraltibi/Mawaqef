@@ -30,7 +30,24 @@ import '../../features/parking_map/presentation/bloc/parking_map_bloc.dart';
 import '../../features/booking/bloc/payment/payment_bloc.dart';
 import '../../features/booking/bloc/booking_action/booking_action_bloc.dart';
 import '../../features/booking/bloc/bookings_list/bookings_list_bloc.dart';
+import '../../features/violations/data/datasources/violations_remote_datasource.dart';
+import '../../features/violations/data/repositories/violations_repository_impl.dart';
+import '../../features/violations/domain/repositories/violations_repository.dart';
+import '../../features/violations/domain/usecases/get_unpaid_violations.dart';
+import '../../features/violations/domain/usecases/get_paid_violations.dart';
+import '../../features/violations/domain/usecases/pay_violation.dart';
+import '../../features/violations/presentation/bloc/violations_bloc.dart';
+import '../../features/notifications/data/datasources/notifications_remote_datasource.dart';
+import '../../features/notifications/data/repositories/notifications_repository_impl.dart';
+import '../../features/notifications/domain/repositories/notifications_repository.dart';
+import '../../features/notifications/domain/usecases/get_all_notifications.dart';
+import '../../features/notifications/domain/usecases/mark_notification_as_read.dart';
+import '../../features/notifications/presentation/bloc/notifications_bloc.dart';
 import '../../core/location/location_repository.dart';
+import '../../core/services/parking_list_refresh_notifier.dart';
+import '../../core/services/vehicles_list_refresh_notifier.dart';
+import '../../core/services/home_refresh_notifier.dart';
+import '../../core/services/bookings_list_refresh_notifier.dart';
 import '../../core/location/location_service.dart';
 import '../../core/location/get_current_location_usecase.dart';
 
@@ -45,6 +62,20 @@ final getIt = GetIt.instance;
 /// Must be called before running the app
 Future<void> setupServiceLocator() async {
   // Core Services
+  getIt.registerLazySingleton<ParkingListRefreshNotifier>(
+    () => ParkingListRefreshNotifier(),
+  );
+
+  getIt.registerLazySingleton<VehiclesListRefreshNotifier>(
+    () => VehiclesListRefreshNotifier(),
+  );
+
+  getIt.registerLazySingleton<HomeRefreshNotifier>(() => HomeRefreshNotifier());
+
+  getIt.registerLazySingleton<BookingsListRefreshNotifier>(
+    () => BookingsListRefreshNotifier(),
+  );
+
   // DioProvider is already a singleton, but we register it for consistency
   // Note: DioProvider.instance is used directly in APIRequest, so we keep that pattern
   // We register it here for potential future use or testing
@@ -56,6 +87,14 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton<ParkingMapRemoteDataSource>(
     () => ParkingMapRemoteDataSource(),
+  );
+
+  getIt.registerLazySingleton<ViolationsRemoteDataSource>(
+    () => ViolationsRemoteDataSource(),
+  );
+
+  getIt.registerLazySingleton<NotificationsRemoteDataSource>(
+    () => NotificationsRemoteDataSource(),
   );
 
   // Location Service
@@ -71,6 +110,18 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<ParkingMapRepository>(
     () => ParkingMapRepositoryImpl(
       remoteDataSource: getIt<ParkingMapRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<ViolationsRepository>(
+    () => ViolationsRepositoryImpl(
+      remoteDataSource: getIt<ViolationsRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<NotificationsRepository>(
+    () => NotificationsRepositoryImpl(
+      remoteDataSource: getIt<NotificationsRemoteDataSource>(),
     ),
   );
 
@@ -103,6 +154,28 @@ Future<void> setupServiceLocator() async {
   // Use Cases (Location)
   getIt.registerLazySingleton<GetCurrentLocationUseCase>(
     () => GetCurrentLocationUseCase(getIt<LocationRepository>()),
+  );
+
+  // Use Cases (Violations feature)
+  getIt.registerLazySingleton<GetUnpaidViolationsUseCase>(
+    () => GetUnpaidViolationsUseCase(getIt<ViolationsRepository>()),
+  );
+
+  getIt.registerLazySingleton<GetPaidViolationsUseCase>(
+    () => GetPaidViolationsUseCase(getIt<ViolationsRepository>()),
+  );
+
+  getIt.registerLazySingleton<PayViolationUseCase>(
+    () => PayViolationUseCase(getIt<ViolationsRepository>()),
+  );
+
+  // Use Cases (Notifications feature)
+  getIt.registerLazySingleton<GetAllNotificationsUseCase>(
+    () => GetAllNotificationsUseCase(getIt<NotificationsRepository>()),
+  );
+
+  getIt.registerLazySingleton<MarkNotificationAsReadUseCase>(
+    () => MarkNotificationAsReadUseCase(getIt<NotificationsRepository>()),
   );
 
   // BLoCs / Cubits
@@ -162,6 +235,21 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory<BookingActionBloc>(() => BookingActionBloc());
 
   getIt.registerFactory<BookingsListBloc>(() => BookingsListBloc());
+
+  getIt.registerFactory<ViolationsBloc>(
+    () => ViolationsBloc(
+      getUnpaidViolationsUseCase: getIt<GetUnpaidViolationsUseCase>(),
+      getPaidViolationsUseCase: getIt<GetPaidViolationsUseCase>(),
+      payViolationUseCase: getIt<PayViolationUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory<NotificationsBloc>(
+    () => NotificationsBloc(
+      getAllNotificationsUseCase: getIt<GetAllNotificationsUseCase>(),
+      markNotificationAsReadUseCase: getIt<MarkNotificationAsReadUseCase>(),
+    ),
+  );
 }
 
 /// Reset service locator (useful for testing)

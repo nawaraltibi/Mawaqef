@@ -40,11 +40,15 @@
   "@getStarted": {
     "description": "Get started button text on last onboarding screen"
   },
+  "authAppTitle": "Mawaqef",
+  "@authAppTitle": {
+    "description": "App title shown on Login and Register screens only"
+  },
   "authLoginTitle": "Welcome Back",
   "@authLoginTitle": {
     "description": "Login screen title"
   },
-  "authLoginSubtitle": "Sign in to continue using the parking app",
+  "authLoginSubtitle": "Sign in to continue using Mawaqef",
   "@authLoginSubtitle": {
     "description": "Login screen subtitle"
   },
@@ -60,7 +64,7 @@
   "@authRegisterTitle": {
     "description": "Register screen title"
   },
-  "authRegisterSubtitle": "Sign up to start using the parking app",
+  "authRegisterSubtitle": "Sign up to start using Mawaqef",
   "@authRegisterSubtitle": {
     "description": "Register screen subtitle"
   },
@@ -376,13 +380,33 @@
   "@profileChangeLanguageButton": {
     "description": "Button to confirm and apply language change"
   },
+  "profileErrorUnauthorized": "Unauthorized access",
+  "@profileErrorUnauthorized": {
+    "description": "Error message for 401 unauthorized"
+  },
+  "profileErrorNotFound": "Profile not found",
+  "@profileErrorNotFound": {
+    "description": "Error message for 404 profile not found"
+  },
+  "profileLanguageTitle": "Language",
+  "@profileLanguageTitle": {
+    "description": "Language switcher section title"
+  },
+  "profileLanguageEnglish": "English",
+  "@profileLanguageEnglish": {
+    "description": "English language option"
+  },
+  "profileLanguageArabic": "العربية",
+  "@profileLanguageArabic": {
+    "description": "Arabic language option"
+  },
   "parkingTitle": "My Parkings",
   "@parkingTitle": {
     "description": "Title for parking management screen"
   },
-  "parkingCreateTitle": "Create Parking",
+  "parkingCreateTitle": "Add Parking",
   "@parkingCreateTitle": {
-    "description": "Title for create parking screen"
+    "description": "Title for add parking screen"
   },
   "parkingUpdateTitle": "Update Parking",
   "@parkingUpdateTitle": {
@@ -468,9 +492,9 @@
   "@parkingHourlyRateHint": {
     "description": "Hint for hourly rate field"
   },
-  "parkingCreateButton": "Create Parking",
+  "parkingCreateButton": "Add Parking",
   "@parkingCreateButton": {
-    "description": "Button text for creating parking"
+    "description": "Button text for adding parking"
   },
   "parkingUpdateButton": "Update Parking",
   "@parkingUpdateButton": {
@@ -503,6 +527,14 @@
   "parkingEmptyStateSubtitle": "Create your first parking lot to get started",
   "@parkingEmptyStateSubtitle": {
     "description": "Empty state subtitle"
+  },
+  "parkingNoResultsTitle": "No results",
+  "@parkingNoResultsTitle": {
+    "description": "No search/filter results title"
+  },
+  "parkingNoResultsSubtitle": "Try searching with different keywords",
+  "@parkingNoResultsSubtitle": {
+    "description": "No search/filter results subtitle"
   },
   "parkingUpdateRequiresApproval": "Updating this parking will require admin approval again",
   "@parkingUpdateRequiresApproval": {
@@ -713,7 +745,6 @@
   "@currencySymbol": {
     "description": "Currency symbol for Syrian Pound in English"
   },
-
   "vehiclesMyVehiclesTitle": "My Vehicles",
   "@vehiclesMyVehiclesTitle": {
     "description": "Title for my vehicles screen"
@@ -1117,6 +1148,15 @@
   "@plateNumber": {
     "description": "Vehicle plate number label"
   },
+  "vehicleIdFallback": "Vehicle #{id}",
+  "@vehicleIdFallback": {
+    "description": "Fallback when vehicle details are not available",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
   "reviewInvoice": "Review Invoice",
   "@reviewInvoice": {
     "description": "Title for invoice review screen"
@@ -1373,6 +1413,14 @@
   "@bookingPrePaymentTotalAvailable": {
     "description": "Label for total available parking spots"
   },
+  "bookingNoVehiclesAvailable": "No vehicles available",
+  "@bookingNoVehiclesAvailable": {
+    "description": "Message when no vehicles available in booking flow"
+  },
+  "bookingAddNewVehicle": "Add New Vehicle",
+  "@bookingAddNewVehicle": {
+    "description": "Button to add new vehicle from booking screen"
+  },
   "paymentTitle": "Payment",
   "@paymentTitle": {
     "description": "Payment screen title"
@@ -1433,6 +1481,10 @@
   "@paymentSimulateFailure": {
     "description": "Button text to simulate failed payment"
   },
+  "paymentErrorInvalidAmount": "Invalid amount. Please try again.",
+  "@paymentErrorInvalidAmount": {
+    "description": "Error when payment amount is invalid"
+  },
   "errorInvalidBookingId": "Invalid booking ID. Please try again.",
   "@errorInvalidBookingId": {
     "description": "Error message when booking ID is invalid or missing"
@@ -1456,6 +1508,185 @@
   "paymentGoToHome": "Go to Main Page",
   "@paymentGoToHome": {
     "description": "Button text to go to main/home page"
+  },
+  "violationsTitle": "Violations",
+  "@violationsTitle": {
+    "description": "Title for violations screen"
+  },
+  "violationsTabUnpaid": "Unpaid",
+  "@violationsTabUnpaid": {
+    "description": "Tab label for unpaid violations"
+  },
+  "violationsTabPaid": "Paid",
+  "@violationsTabPaid": {
+    "description": "Tab label for paid violations"
+  },
+  "violationsEmptyUnpaid": "No unpaid violations",
+  "@violationsEmptyUnpaid": {
+    "description": "Empty state message for unpaid violations"
+  },
+  "violationsEmptyPaid": "No paid violations",
+  "@violationsEmptyPaid": {
+    "description": "Empty state message for paid violations"
+  },
+  "violationsEmptySubtitle": "You don't have any violations yet",
+  "@violationsEmptySubtitle": {
+    "description": "Empty state subtitle for violations"
+  },
+  "violationsType": "Violation Type",
+  "@violationsType": {
+    "description": "Label for violation type"
+  },
+  "violationsAmount": "Amount",
+  "@violationsAmount": {
+    "description": "Label for violation amount"
+  },
+  "violationsDate": "Date",
+  "@violationsDate": {
+    "description": "Label for violation date"
+  },
+  "violationsStatus": "Status",
+  "@violationsStatus": {
+    "description": "Label for violation status"
+  },
+  "violationsStatusPaid": "Paid",
+  "@violationsStatusPaid": {
+    "description": "Paid status label"
+  },
+  "violationsStatusUnpaid": "Unpaid",
+  "@violationsStatusUnpaid": {
+    "description": "Unpaid status label"
+  },
+  "violationsPayButton": "Pay Now",
+  "@violationsPayButton": {
+    "description": "Button text to pay violation"
+  },
+  "violationsPayDialogTitle": "Pay Violation",
+  "@violationsPayDialogTitle": {
+    "description": "Title for pay violation dialog"
+  },
+  "violationsPayDialogMessage": "Are you sure you want to pay this violation?",
+  "@violationsPayDialogMessage": {
+    "description": "Message for pay violation dialog"
+  },
+  "violationsPaySuccess": "Violation paid successfully",
+  "@violationsPaySuccess": {
+    "description": "Success message after paying violation"
+  },
+  "violationsPayError": "Failed to pay violation",
+  "@violationsPayError": {
+    "description": "Error message when payment fails"
+  },
+  "violationsErrorTitle": "Error Loading Violations",
+  "@violationsErrorTitle": {
+    "description": "Error state title for violations"
+  },
+  "violationsRetryButton": "Retry",
+  "@violationsRetryButton": {
+    "description": "Retry button text for violations error state"
+  },
+  "notificationsTitle": "Notifications",
+  "@notificationsTitle": {
+    "description": "Title for notifications screen"
+  },
+  "notificationsEmpty": "No notifications",
+  "@notificationsEmpty": {
+    "description": "Empty state message for notifications"
+  },
+  "notificationsEmptySubtitle": "You're all caught up! No new notifications",
+  "@notificationsEmptySubtitle": {
+    "description": "Empty state subtitle for notifications"
+  },
+  "notificationsMarkAsRead": "Mark as read",
+  "@notificationsMarkAsRead": {
+    "description": "Action to mark notification as read"
+  },
+  "notificationsDetailsTitle": "Notification Details",
+  "@notificationsDetailsTitle": {
+    "description": "Title for notification details screen"
+  },
+  "notificationsDate": "Date",
+  "@notificationsDate": {
+    "description": "Label for notification date"
+  },
+  "notificationsTime": "Time",
+  "@notificationsTime": {
+    "description": "Label for notification time"
+  },
+  "notificationsErrorTitle": "Error Loading Notifications",
+  "@notificationsErrorTitle": {
+    "description": "Error state title when notifications fail to load"
+  },
+  "notificationsNotFound": "Notification not found",
+  "@notificationsNotFound": {
+    "description": "Message when notification is not found or invalid"
+  },
+  "commonYesterday": "Yesterday",
+  "@commonYesterday": {
+    "description": "Relative date label for previous day"
+  },
+  "violationsVehicle": "Vehicle",
+  "@violationsVehicle": {
+    "description": "Label for vehicle in violation card"
+  },
+  "violationsParkingLot": "Parking Lot",
+  "@violationsParkingLot": {
+    "description": "Label for parking lot in violation card"
+  },
+  "violationsViolationDate": "Violation Date",
+  "@violationsViolationDate": {
+    "description": "Label for violation date"
+  },
+  "violationsPaidDate": "Paid Date",
+  "@violationsPaidDate": {
+    "description": "Label for paid date"
+  },
+  "violationsPaymentMethod": "Payment Method",
+  "@violationsPaymentMethod": {
+    "description": "Label for payment method"
+  },
+  "violationsPaymentMethodCash": "Cash",
+  "@violationsPaymentMethodCash": {
+    "description": "Cash payment method"
+  },
+  "violationsPaymentMethodCard": "Card",
+  "@violationsPaymentMethodCard": {
+    "description": "Card payment method"
+  },
+  "serverHostDialogTitle": "Server address",
+  "@serverHostDialogTitle": {
+    "description": "Title for server IP input dialog"
+  },
+  "serverHostDialogHint": "e.g. 192.168.1.5",
+  "@serverHostDialogHint": {
+    "description": "Hint for server host input"
+  },
+  "serverHostDialogConfirm": "Confirm",
+  "@serverHostDialogConfirm": {
+    "description": "Confirm button in server host dialog"
+  },
+  "serverHostDialogCancel": "Cancel",
+  "@serverHostDialogCancel": {
+    "description": "Cancel button"
+  },
+  "serverHostInvalidFormat": "Enter a valid IP or host (e.g. 192.168.1.5)",
+  "@serverHostInvalidFormat": {
+    "description": "Validation error for invalid host format"
+  },
+  "connectionErrorDialogTitle": "Connection failed",
+  "@connectionErrorDialogTitle": {
+    "description": "Title for connection error dialog"
+  },
+  "connectionErrorDialogHint": "Check your network or try a different server address.",
+  "@connectionErrorDialogHint": {
+    "description": "Hint text in connection error dialog"
+  },
+  "connectionErrorRetry": "Retry",
+  "@connectionErrorRetry": {
+    "description": "Retry button in connection error dialog"
+  },
+  "connectionErrorChangeIp": "Change IP",
+  "@connectionErrorChangeIp": {
+    "description": "Change IP button in connection error dialog"
   }
 }
-

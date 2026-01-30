@@ -158,6 +158,12 @@ abstract class AppLocalizations {
   /// **'Get Started'**
   String get getStarted;
 
+  /// App title shown on Login and Register screens only
+  ///
+  /// In en, this message translates to:
+  /// **'Mawaqef'**
+  String get authAppTitle;
+
   /// Login screen title
   ///
   /// In en, this message translates to:
@@ -167,7 +173,7 @@ abstract class AppLocalizations {
   /// Login screen subtitle
   ///
   /// In en, this message translates to:
-  /// **'Sign in to continue using the parking app'**
+  /// **'Sign in to continue using Mawaqef'**
   String get authLoginSubtitle;
 
   /// Login button text
@@ -191,7 +197,7 @@ abstract class AppLocalizations {
   /// Register screen subtitle
   ///
   /// In en, this message translates to:
-  /// **'Sign up to start using the parking app'**
+  /// **'Sign up to start using Mawaqef'**
   String get authRegisterSubtitle;
 
   /// Register button text
@@ -662,16 +668,46 @@ abstract class AppLocalizations {
   /// **'Change Language'**
   String get profileChangeLanguageButton;
 
+  /// Error message for 401 unauthorized
+  ///
+  /// In en, this message translates to:
+  /// **'Unauthorized access'**
+  String get profileErrorUnauthorized;
+
+  /// Error message for 404 profile not found
+  ///
+  /// In en, this message translates to:
+  /// **'Profile not found'**
+  String get profileErrorNotFound;
+
+  /// Language switcher section title
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get profileLanguageTitle;
+
+  /// English language option
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get profileLanguageEnglish;
+
+  /// Arabic language option
+  ///
+  /// In en, this message translates to:
+  /// **'العربية'**
+  String get profileLanguageArabic;
+
   /// Title for parking management screen
   ///
   /// In en, this message translates to:
   /// **'My Parkings'**
   String get parkingTitle;
 
-  /// Title for create parking screen
+  /// Title for add parking screen
   ///
   /// In en, this message translates to:
-  /// **'Create Parking'**
+  /// **'Add Parking'**
   String get parkingCreateTitle;
 
   /// Title for update parking screen
@@ -800,10 +836,10 @@ abstract class AppLocalizations {
   /// **'Enter hourly rate'**
   String get parkingHourlyRateHint;
 
-  /// Button text for creating parking
+  /// Button text for adding parking
   ///
   /// In en, this message translates to:
-  /// **'Create Parking'**
+  /// **'Add Parking'**
   String get parkingCreateButton;
 
   /// Button text for updating parking
@@ -853,6 +889,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create your first parking lot to get started'**
   String get parkingEmptyStateSubtitle;
+
+  /// No search/filter results title
+  ///
+  /// In en, this message translates to:
+  /// **'No results'**
+  String get parkingNoResultsTitle;
+
+  /// No search/filter results subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Try searching with different keywords'**
+  String get parkingNoResultsSubtitle;
 
   /// Message shown when updating parking
   ///
@@ -1970,6 +2018,12 @@ abstract class AppLocalizations {
   /// **'Plate Number'**
   String get plateNumber;
 
+  /// Fallback when vehicle details are not available
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle #{id}'**
+  String vehicleIdFallback(int id);
+
   /// Title for invoice review screen
   ///
   /// In en, this message translates to:
@@ -2354,6 +2408,18 @@ abstract class AppLocalizations {
   /// **'Total Available Parking Spots'**
   String get bookingPrePaymentTotalAvailable;
 
+  /// Message when no vehicles available in booking flow
+  ///
+  /// In en, this message translates to:
+  /// **'No vehicles available'**
+  String get bookingNoVehiclesAvailable;
+
+  /// Button to add new vehicle from booking screen
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Vehicle'**
+  String get bookingAddNewVehicle;
+
   /// Payment screen title
   ///
   /// In en, this message translates to:
@@ -2444,6 +2510,12 @@ abstract class AppLocalizations {
   /// **'Simulate Failure'**
   String get paymentSimulateFailure;
 
+  /// Error when payment amount is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid amount. Please try again.'**
+  String get paymentErrorInvalidAmount;
+
   /// Error message when booking ID is invalid or missing
   ///
   /// In en, this message translates to:
@@ -2479,6 +2551,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go to Main Page'**
   String get paymentGoToHome;
+
+  /// Title for violations screen
+  ///
+  /// In en, this message translates to:
+  /// **'Violations'**
+  String get violationsTitle;
+
+  /// Tab label for unpaid violations
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get violationsTabUnpaid;
+
+  /// Tab label for paid violations
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get violationsTabPaid;
+
+  /// Empty state message for unpaid violations
+  ///
+  /// In en, this message translates to:
+  /// **'No unpaid violations'**
+  String get violationsEmptyUnpaid;
+
+  /// Empty state message for paid violations
+  ///
+  /// In en, this message translates to:
+  /// **'No paid violations'**
+  String get violationsEmptyPaid;
+
+  /// Empty state subtitle for violations
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have any violations yet'**
+  String get violationsEmptySubtitle;
+
+  /// Label for violation type
+  ///
+  /// In en, this message translates to:
+  /// **'Violation Type'**
+  String get violationsType;
+
+  /// Label for violation amount
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get violationsAmount;
+
+  /// Label for violation date
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get violationsDate;
+
+  /// Label for violation status
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get violationsStatus;
+
+  /// Paid status label
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get violationsStatusPaid;
+
+  /// Unpaid status label
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get violationsStatusUnpaid;
+
+  /// Button text to pay violation
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get violationsPayButton;
+
+  /// Title for pay violation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Violation'**
+  String get violationsPayDialogTitle;
+
+  /// Message for pay violation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to pay this violation?'**
+  String get violationsPayDialogMessage;
+
+  /// Success message after paying violation
+  ///
+  /// In en, this message translates to:
+  /// **'Violation paid successfully'**
+  String get violationsPaySuccess;
+
+  /// Error message when payment fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pay violation'**
+  String get violationsPayError;
+
+  /// Error state title for violations
+  ///
+  /// In en, this message translates to:
+  /// **'Error Loading Violations'**
+  String get violationsErrorTitle;
+
+  /// Retry button text for violations error state
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get violationsRetryButton;
+
+  /// Title for notifications screen
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// Empty state message for notifications
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications'**
+  String get notificationsEmpty;
+
+  /// Empty state subtitle for notifications
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up! No new notifications'**
+  String get notificationsEmptySubtitle;
+
+  /// Action to mark notification as read
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as read'**
+  String get notificationsMarkAsRead;
+
+  /// Title for notification details screen
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Details'**
+  String get notificationsDetailsTitle;
+
+  /// Label for notification date
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get notificationsDate;
+
+  /// Label for notification time
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get notificationsTime;
+
+  /// Error state title when notifications fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error Loading Notifications'**
+  String get notificationsErrorTitle;
+
+  /// Message when notification is not found or invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Notification not found'**
+  String get notificationsNotFound;
+
+  /// Relative date label for previous day
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get commonYesterday;
+
+  /// Label for vehicle in violation card
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle'**
+  String get violationsVehicle;
+
+  /// Label for parking lot in violation card
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Lot'**
+  String get violationsParkingLot;
+
+  /// Label for violation date
+  ///
+  /// In en, this message translates to:
+  /// **'Violation Date'**
+  String get violationsViolationDate;
+
+  /// Label for paid date
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Date'**
+  String get violationsPaidDate;
+
+  /// Label for payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get violationsPaymentMethod;
+
+  /// Cash payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get violationsPaymentMethodCash;
+
+  /// Card payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Card'**
+  String get violationsPaymentMethodCard;
+
+  /// Title for server IP input dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Server address'**
+  String get serverHostDialogTitle;
+
+  /// Hint for server host input
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 192.168.1.5'**
+  String get serverHostDialogHint;
+
+  /// Confirm button in server host dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get serverHostDialogConfirm;
+
+  /// Cancel button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get serverHostDialogCancel;
+
+  /// Validation error for invalid host format
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid IP or host (e.g. 192.168.1.5)'**
+  String get serverHostInvalidFormat;
+
+  /// Title for connection error dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Connection failed'**
+  String get connectionErrorDialogTitle;
+
+  /// Hint text in connection error dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Check your network or try a different server address.'**
+  String get connectionErrorDialogHint;
+
+  /// Retry button in connection error dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get connectionErrorRetry;
+
+  /// Change IP button in connection error dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Change IP'**
+  String get connectionErrorChangeIp;
 }
 
 class _AppLocalizationsDelegate
