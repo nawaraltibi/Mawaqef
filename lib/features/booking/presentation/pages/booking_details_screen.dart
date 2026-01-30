@@ -112,10 +112,14 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
         },
         child: BlocListener<BookingActionBloc, BookingActionState>(
           listener: (context, state) {
+            final l10n = AppLocalizations.of(context);
             if (state is BookingActionSuccess) {
               if (state.action == BookingActionType.cancel) {
                 _bookingDetailsBloc.add(const StopRemainingTimeTimer());
-                UnifiedSnackbar.success(context, message: state.message);
+                UnifiedSnackbar.success(
+                  context,
+                  message: l10n?.bookingCancelledSuccess ?? state.message,
+                );
                 final fromBookings =
                     widget.openedFrom == 'bookings';
                 if (fromBookings) {
@@ -132,9 +136,18 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
               }
             } else if (state is BookingActionFailure) {
               if (state.action == BookingActionType.cancel) {
-                final message = state.error == 'invalid_hours'
-                    ? (AppLocalizations.of(context)?.errorInvalidHours ?? state.error)
-                    : state.error;
+                String message;
+                if (state.error == 'invalid_hours') {
+                  message = l10n?.errorInvalidHours ?? state.error;
+                } else if (state.error.toLowerCase().contains('already') &&
+                    state.error.toLowerCase().contains('cancel')) {
+                  message = l10n?.bookingAlreadyCancelled ?? state.error;
+                } else if (state.error.toLowerCase().contains('cannot') &&
+                    state.error.toLowerCase().contains('cancel')) {
+                  message = l10n?.bookingCannotBeCancelled ?? state.error;
+                } else {
+                  message = state.error;
+                }
                 UnifiedSnackbar.error(context, message: message);
               }
             }

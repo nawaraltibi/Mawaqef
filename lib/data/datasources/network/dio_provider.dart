@@ -16,7 +16,7 @@ import 'api_request.dart';
 /// - Request/response logging in debug mode
 /// - Handles all Dio exceptions and converts them to AppException
 class DioProvider {
-  static const requestTimeout = Duration(seconds: 20);
+  static const requestTimeout = Duration(seconds: 10);
   final Dio _dio;
 
   static final DioProvider instance = DioProvider._internal();
@@ -102,8 +102,10 @@ class DioProvider {
       if (APIConfig.useDynamicApiHost &&
           (e.type == DioExceptionType.connectionTimeout ||
               e.type == DioExceptionType.connectionError)) {
-        final message = e.message ?? 'Connection failed';
-        final result = await showConnectionErrorDialog(message);
+        final errorType = e.type == DioExceptionType.connectionTimeout
+            ? ConnectionErrorType.timeout
+            : ConnectionErrorType.connectionError;
+        final result = await showConnectionErrorDialog(errorType);
         if (result is ConnectionErrorRetryWithNewHost) {
           await APIConfig.setHost(result.host);
         }

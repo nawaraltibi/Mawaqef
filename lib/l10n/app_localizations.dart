@@ -2821,6 +2821,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change IP'**
   String get connectionErrorChangeIp;
+
+  /// Generic unexpected error message
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred'**
+  String get errorUnexpected;
+
+  /// Connection timeout error message
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timed out. Please check your network and try again.'**
+  String get errorConnectionTimeout;
+
+  /// Connection failed error message
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect to server. Please check your network or server address.'**
+  String get errorConnectionFailed;
 }
 
 class _AppLocalizationsDelegate

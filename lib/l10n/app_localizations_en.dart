@@ -1427,4 +1427,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get connectionErrorChangeIp => 'Change IP';
+
+  @override
+  String get errorUnexpected => 'An unexpected error occurred';
+
+  @override
+  String get errorConnectionTimeout =>
+      'Connection timed out. Please check your network and try again.';
+
+  @override
+  String get errorConnectionFailed =>
+      'Could not connect to server. Please check your network or server address.';
 }

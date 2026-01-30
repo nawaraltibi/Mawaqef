@@ -1688,5 +1688,17 @@
   "connectionErrorChangeIp": "تغيير العنوان",
   "@connectionErrorChangeIp": {
     "description": "Change IP button in connection error dialog"
+  },
+  "errorUnexpected": "حدث خطأ غير متوقع",
+  "@errorUnexpected": {
+    "description": "Generic unexpected error message"
+  },
+  "errorConnectionTimeout": "انتهت مهلة الاتصال. يرجى التحقق من الشبكة والمحاولة مرة أخرى.",
+  "@errorConnectionTimeout": {
+    "description": "Connection timeout error message"
+  },
+  "errorConnectionFailed": "تعذر الاتصال بالخادم. يرجى التحقق من الشبكة أو عنوان الخادم.",
+  "@errorConnectionFailed": {
+    "description": "Connection failed error message"
   }
 }

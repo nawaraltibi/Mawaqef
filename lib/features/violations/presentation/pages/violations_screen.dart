@@ -168,6 +168,17 @@ class _ViolationsScreenState extends State<ViolationsScreen>
                         });
                       }
                     });
+                  } else if (state is ViolationsEmpty &&
+                      _tabController.index == 1) {
+                    // Update cache when empty state is emitted for paid tab
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) {
+                        setState(() {
+                          _cachedPaidViolations = [];
+                          _cachedPaidEmpty = true;
+                        });
+                      }
+                    });
                   }
                 },
                 child: TabBarView(
@@ -288,14 +299,20 @@ class _PaidViolationsTab extends StatelessWidget {
         Widget child;
 
         if (state is PaidViolationsLoaded) {
-          child = _ViolationsList(
-            violations: state.violations,
-            isPaidTab: true,
-            onRefresh: () async {
-              context.read<ViolationsBloc>().add(GetPaidViolationsRequested());
-            },
-          );
-        } else if (state is ViolationsEmpty && cachedEmpty) {
+          // Show list or empty state based on violations count
+          if (state.violations.isEmpty) {
+            child = const ViolationsEmptyState(isPaidTab: true);
+          } else {
+            child = _ViolationsList(
+              violations: state.violations,
+              isPaidTab: true,
+              onRefresh: () async {
+                context.read<ViolationsBloc>().add(GetPaidViolationsRequested());
+              },
+            );
+          }
+        } else if (state is ViolationsEmpty) {
+          // Always show empty state when ViolationsEmpty is emitted
           child = const ViolationsEmptyState(isPaidTab: true);
         } else if (state is ViolationsError) {
           child = ViolationsErrorState(

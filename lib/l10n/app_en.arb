@@ -1688,5 +1688,17 @@
   "connectionErrorChangeIp": "Change IP",
   "@connectionErrorChangeIp": {
     "description": "Change IP button in connection error dialog"
+  },
+  "errorUnexpected": "An unexpected error occurred",
+  "@errorUnexpected": {
+    "description": "Generic unexpected error message"
+  },
+  "errorConnectionTimeout": "Connection timed out. Please check your network and try again.",
+  "@errorConnectionTimeout": {
+    "description": "Connection timeout error message"
+  },
+  "errorConnectionFailed": "Could not connect to server. Please check your network or server address.",
+  "@errorConnectionFailed": {
+    "description": "Connection failed error message"
   }
 }

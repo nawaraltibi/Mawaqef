@@ -36,6 +36,7 @@ class _SplashPageState extends State<SplashPage> {
     final host = await ServerHostInputDialog.show(
       context,
       initialValue: APIConfig.host,
+      hintText: '192.168.1.6',
     );
     if (!mounted) return;
     if (host != null && host.isNotEmpty) {

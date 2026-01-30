@@ -1422,4 +1422,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get connectionErrorChangeIp => 'تغيير العنوان';
+
+  @override
+  String get errorUnexpected => 'حدث خطأ غير متوقع';
+
+  @override
+  String get errorConnectionTimeout =>
+      'انتهت مهلة الاتصال. يرجى التحقق من الشبكة والمحاولة مرة أخرى.';
+
+  @override
+  String get errorConnectionFailed =>
+      'تعذر الاتصال بالخادم. يرجى التحقق من الشبكة أو عنوان الخادم.';
 }
