@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/map/map_adapter.dart';
 import '../../../../core/styles/app_colors.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../../core/injection/service_locator.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/parking_lot_entity.dart';
 import '../bloc/parking_map_bloc.dart';
 import '../widgets/parking_details_bottom_sheet.dart';
+import '../../../../features/notifications/presentation/bloc/notifications_bloc.dart';
 
 /// Parking Map Screen
 /// Displays parking lots on a map with bottom sheet for details
@@ -109,28 +113,16 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
 
   /// Go to my location button handler
   Future<void> _goToMyLocation() async {
-    // Wait for map to be ready if not ready yet
     if (!_mapIsReady) {
-      debugPrint('⏳ Waiting for map to be ready...');
-      // Wait up to 3 seconds for map to be ready
       for (int i = 0; i < 30; i++) {
         await Future.delayed(const Duration(milliseconds: 100));
-        if (_mapIsReady && _mapController != null) {
-          break;
-        }
+        if (_mapIsReady && _mapController != null) break;
         if (!mounted) return;
       }
-      
-      if (!_mapIsReady || _mapController == null) {
-        debugPrint('⚠️ Map still not ready after waiting');
-        return;
-      }
+      if (!_mapIsReady || _mapController == null) return;
     }
 
-    if (_mapController == null) {
-      debugPrint('⚠️ Map controller is null');
-      return;
-    }
+    if (_mapController == null) return;
 
     final state = context.read<ParkingMapBloc>().state;
     
@@ -150,21 +142,16 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
       if (updatedState.userLocation != null) {
         final userLocation = MapAdapter.toGeoPoint(updatedState.userLocation!);
         await _centerOnUserLocation(userLocation, force: true);
-      } else {
-        debugPrint('⚠️ User location not available after request');
       }
     }
   }
 
   /// Add parking lot markers to map with selection support
   Future<void> _addParkingMarkers(
-    List<dynamic> parkingLots,
+    List<ParkingLotEntity> parkingLots,
     int? selectedLotId,
   ) async {
-    if (_mapController == null || !_mapIsReady) {
-      debugPrint('⚠️ Cannot add markers: mapController=${_mapController != null}, mapIsReady=$_mapIsReady');
-      return;
-    }
+    if (_mapController == null || !_mapIsReady) return;
 
     try {
       // Get current lot IDs
@@ -236,10 +223,7 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
             ),
           );
 
-          // Mark as added
           _addedMarkerLotIds.add(lot.lotId);
-          
-          debugPrint('✅ Added marker for parking lot ${lot.lotId} at (${geoPoint.latitude}, ${geoPoint.longitude})');
 
           // Animate marker when selected
           if (isSelected) {
@@ -248,18 +232,16 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
             });
           }
         } catch (markerError) {
-          debugPrint('❌ Error adding marker for lot ${lot.lotId}: $markerError');
+          // Marker add failed for this lot; continue with others
         }
       }
-      
-      debugPrint('📍 Total markers added: ${_addedMarkerLotIds.length}');
     } catch (e) {
-      debugPrint('❌ Error in _addParkingMarkers: $e');
+      debugPrint('Error in _addParkingMarkers: $e');
     }
   }
 
   /// Find parking lot near clicked point and select it
-  void _handleMapTap(GeoPoint point, List<dynamic> parkingLots) {
+  void _handleMapTap(GeoPoint point, List<ParkingLotEntity> parkingLots) {
     if (parkingLots.isEmpty) {
       // If tapping empty map, deselect
       context.read<ParkingMapBloc>().add(DeselectParkingLot());
@@ -306,14 +288,22 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(AppLocalizations.of(context)!.parkingMapTitle),
+        title: Text(l10n.parkingMapTitle),
         actions: [
+          _NotificationsIconButton(),
           IconButton(
             icon: const Icon(Icons.my_location),
-            tooltip: AppLocalizations.of(context)!.goToMyLocation,
+            tooltip: l10n.goToMyLocation,
             onPressed: _goToMyLocation,
           ),
         ],
@@ -351,6 +341,7 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
   }
 
   Widget _buildMapView(BuildContext context, ParkingMapState state) {
+    final l10n = AppLocalizations.of(context);
     // Show loading state
     if (state.isLoadingParkingLots && !state.hasParkingLots) {
       return const Center(child: CircularProgressIndicator());
@@ -362,10 +353,10 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 64, color: Colors.red),
+            Icon(Icons.error_outline, size: 64, color: AppColors.error),
             const SizedBox(height: 16),
             Text(
-              '${AppLocalizations.of(context)!.error}: ${state.errorMessage}',
+              '${l10n?.error ?? 'Error'}: ${state.errorMessage}',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -373,7 +364,7 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
               onPressed: () {
                 context.read<ParkingMapBloc>().add(LoadParkingLots());
               },
-              child: Text(AppLocalizations.of(context)!.retry),
+              child: Text(l10n?.retry ?? 'Retry'),
             ),
           ],
         ),
@@ -388,9 +379,13 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.local_parking_outlined, size: 64, color: Colors.grey),
+            Icon(
+              Icons.local_parking_outlined,
+              size: 64,
+              color: AppColors.secondaryText,
+            ),
             const SizedBox(height: 16),
-            Text(AppLocalizations.of(context)!.noParkingLotsFound),
+            Text(l10n?.noParkingLotsFound ?? 'No parking lots found'),
           ],
         ),
       );
@@ -458,9 +453,9 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
       builder: (bottomSheetContext) => BlocProvider.value(
         value: bloc, // Provide the bloc to the bottom sheet context
         child: DraggableScrollableSheet(
-          initialChildSize: 0.55, // Higher initial position
+          initialChildSize: 0.59, // Higher initial position
           minChildSize: 0.50, // Lower minimum to allow more scrolling
-          maxChildSize: 0.55,
+          maxChildSize: 0.60,
           builder: (sheetContext, scrollController) {
             // Use BlocBuilder to rebuild when state changes
             return BlocBuilder<ParkingMapBloc, ParkingMapState>(
@@ -498,6 +493,88 @@ class _ParkingMapScreenState extends State<ParkingMapScreen>
         bloc.add(DeselectParkingLot());
       }
     });
+  }
+}
+
+/// Notifications Icon Button Widget
+/// Displays notification icon with unread count badge
+class _NotificationsIconButton extends StatefulWidget {
+  const _NotificationsIconButton();
+
+  @override
+  State<_NotificationsIconButton> createState() =>
+      _NotificationsIconButtonState();
+}
+
+class _NotificationsIconButtonState extends State<_NotificationsIconButton> {
+  late NotificationsBloc _notificationsBloc;
+  bool _hasLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationsBloc = getIt<NotificationsBloc>();
+    // Load notifications once
+    if (!_hasLoaded) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _notificationsBloc.add(GetAllNotificationsRequested());
+        _hasLoaded = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: _notificationsBloc,
+      child: BlocBuilder<NotificationsBloc, NotificationsState>(
+        builder: (context, state) {
+          int unreadCount = 0;
+          if (state is NotificationsLoaded) {
+            unreadCount = state.notifications.length;
+          }
+
+          final l10n = AppLocalizations.of(context);
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.notifications_outlined),
+                tooltip: l10n?.notificationsTitle ?? 'Notifications',
+                onPressed: () {
+                  context.push(Routes.notificationsPath);
+                },
+              ),
+              if (unreadCount > 0)
+                Positioned(
+                  right: 6,
+                  top: 6,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: AppColors.error,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      unreadCount > 9 ? '9+' : unreadCount.toString(),
+                      style: const TextStyle(
+                        color: AppColors.textOnPrimary,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
 
