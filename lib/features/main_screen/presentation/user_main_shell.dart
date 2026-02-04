@@ -6,7 +6,6 @@ import '../../../../core/services/bookings_list_refresh_notifier.dart';
 import '../../../../core/services/home_refresh_notifier.dart';
 import '../../../../core/services/vehicles_list_refresh_notifier.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/utils/auth_route_transitions.dart';
 import '../../../../core/utils/navigation_utils.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../models/user_tab.dart';
@@ -15,6 +14,9 @@ import '../widgets/modern_bottom_nav_bar.dart';
 /// Shell for user main flow: persistent bottom nav + branch content.
 /// Used with StatefulShellRoute so detail screens (booking details, vehicle add, etc.)
 /// keep the bottom nav visible.
+///
+/// Note: Do NOT wrap [navigationShell] in AnimatedSwitcher/KeyedSubtree — it has
+/// an internal GlobalKey; wrapping causes "Duplicate GlobalKey" during tab switches.
 class UserMainShell extends StatelessWidget {
   const UserMainShell({super.key, required this.navigationShell});
 
@@ -35,21 +37,7 @@ class UserMainShell extends StatelessWidget {
       extendBody: true,
       body: SafeArea(
         bottom: true,
-        child: AnimatedSwitcher(
-          duration: AuthRouteTransitions.duration,
-          switchInCurve: AuthRouteTransitions.curve,
-          switchOutCurve: AuthRouteTransitions.curve,
-          transitionBuilder: (child, animation) =>
-              AuthRouteTransitions.buildTabTransition(
-                context,
-                child,
-                animation,
-              ),
-          child: KeyedSubtree(
-            key: ValueKey<int>(navigationShell.currentIndex),
-            child: navigationShell,
-          ),
-        ),
+        child: navigationShell,
       ),
       bottomNavigationBar: ModernBottomNavBar(
         items: _bottomNavTabs.map((tab) {

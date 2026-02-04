@@ -2222,6 +2222,12 @@ abstract class AppLocalizations {
   /// **'Online Payment'**
   String get paymentMethodOnline;
 
+  /// Sham Cash payment method
+  ///
+  /// In en, this message translates to:
+  /// **'Sham Cash'**
+  String get paymentMethodShamCash;
+
   /// Transaction ID label
   ///
   /// In en, this message translates to:
@@ -2777,7 +2783,7 @@ abstract class AppLocalizations {
   /// Hint for server host input
   ///
   /// In en, this message translates to:
-  /// **'e.g. 192.168.1.5'**
+  /// **'192.168.1.6'**
   String get serverHostDialogHint;
 
   /// Confirm button in server host dialog

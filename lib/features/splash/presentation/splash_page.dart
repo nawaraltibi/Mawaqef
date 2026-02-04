@@ -33,9 +33,10 @@ class _SplashPageState extends State<SplashPage> {
       context.read<SplashRoutingBloc>().add(const SplashCheckStatus());
       return;
     }
+    // First launch: empty field + hint 192.168.1.6 so user can type directly without deleting
     final host = await ServerHostInputDialog.show(
       context,
-      initialValue: APIConfig.host,
+      initialValue: APIConfig.hasStoredHost ? APIConfig.host : null,
       hintText: '192.168.1.6',
     );
     if (!mounted) return;

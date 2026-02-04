@@ -6,7 +6,7 @@ import '../../../../l10n/app_localizations.dart';
 /// Payment Method Tile Widget
 /// Displays a payment method option with radio button
 class PaymentMethodTile extends StatelessWidget {
-  final String paymentMethod; // 'cash', 'credit', 'online'
+  final String paymentMethod; // 'cash', 'credit', 'online', 'sham_cash'
   final bool isSelected;
   final VoidCallback onTap;
   final String? cardNumber; // For credit card (last 4 digits)
@@ -133,6 +133,8 @@ class PaymentMethodTile extends StatelessWidget {
         return l10n.paymentMethodCredit;
       case 'online':
         return l10n.paymentMethodOnline;
+      case 'sham_cash':
+        return l10n.paymentMethodShamCash;
       case 'add_card':
         return l10n.paymentAddCard;
       default:
@@ -152,17 +154,17 @@ class PaymentMethodTile extends StatelessWidget {
         child: Icon(Icons.payments, size: 32.sp, color: AppColors.success),
       );
     } else if (paymentMethod == 'online') {
-      // Show PayPal logo for online payment
+      // دفع إلكتروني: شعار PayPal
       return Container(
-        constraints: BoxConstraints(maxWidth: 80.w, maxHeight: 40.h),
+        constraints: BoxConstraints(maxWidth: 50.w, maxHeight: 36.h),
         child: Image.asset(
           'assets/images/paypal.png',
           fit: BoxFit.contain,
           filterQuality: FilterQuality.high,
           errorBuilder: (context, error, stackTrace) {
             return Container(
-              width: 80.w,
-              height: 40.h,
+              width: 50.w,
+              height: 36.h,
               decoration: BoxDecoration(
                 color: AppColors.lightBlue,
                 borderRadius: BorderRadius.circular(4.r),
@@ -172,7 +174,37 @@ class PaymentMethodTile extends StatelessWidget {
                   'PayPal',
                   style: TextStyle(
                     color: AppColors.primary,
-                    fontSize: 12.sp,
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    } else if (paymentMethod == 'sham_cash') {
+      // شام كاش: لوغو sham_cash فقط
+      return Container(
+        constraints: BoxConstraints(maxWidth: 50.w, maxHeight: 36.h),
+        child: Image.asset(
+          'assets/images/sham_cash.png',
+          fit: BoxFit.contain,
+          filterQuality: FilterQuality.high,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              width: 50.w,
+              height: 36.h,
+              decoration: BoxDecoration(
+                color: AppColors.lightBlue,
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+              child: Center(
+                child: Text(
+                  'Sham Cash',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 10.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

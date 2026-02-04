@@ -39,7 +39,7 @@ class PayViolationDialog extends StatefulWidget {
 }
 
 class _PayViolationDialogState extends State<PayViolationDialog> {
-  /// API allowed: cash | credit | online. Default cash.
+  /// API allowed: cash | credit | online. UI: sham_cash يبعت كـ online.
   String _selectedPaymentMethod = 'cash';
 
   @override
@@ -60,103 +60,135 @@ class _PayViolationDialogState extends State<PayViolationDialog> {
         }
       },
       child: Dialog(
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: 20.w,
+          vertical: 24.h,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24.r),
         ),
         child: Container(
+          width: double.infinity,
+          constraints: BoxConstraints(
+            maxWidth: 400.w,
+            maxHeight: MediaQuery.of(context).size.height * 0.85,
+          ),
           padding: EdgeInsetsDirectional.all(24.w),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    l10n.violationsPayDialogTitle,
-                    style: AppTextStyles.titleLarge(context),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      EvaIcons.close,
-                      size: 24.sp,
-                      color: AppColors.secondaryText,
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.h),
-              // Violation Info
-              Container(
-                padding: EdgeInsetsDirectional.all(16.w),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundSecondary,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.violation.violationType,
-                      style: AppTextStyles.titleMedium(context),
-                    ),
-                    SizedBox(height: 8.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // Scrollable content - scrolls when screen is small
+              Flexible(
+                fit: FlexFit.loose,
+                child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${l10n.violationsAmount}:',
-                          style: AppTextStyles.bodyMedium(
-                            context,
-                            color: AppColors.secondaryText,
+                        // Header
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                l10n.violationsPayDialogTitle,
+                                style: AppTextStyles.titleLarge(context),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                EvaIcons.close,
+                                size: 24.sp,
+                                color: AppColors.secondaryText,
+                              ),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16.h),
+                        // Violation Info
+                        Container(
+                          padding: EdgeInsetsDirectional.all(16.w),
+                          decoration: BoxDecoration(
+                            color: AppColors.backgroundSecondary,
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.violation.violationType,
+                                style: AppTextStyles.titleMedium(context),
+                              ),
+                              SizedBox(height: 8.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${l10n.violationsAmount}:',
+                                    style: AppTextStyles.bodyMedium(
+                                      context,
+                                      color: AppColors.secondaryText,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${widget.violation.amount.toStringAsFixed(2)} ${l10n.currencySymbol}',
+                                    style: AppTextStyles.titleMedium(
+                                      context,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
+                        SizedBox(height: 24.h),
+                        // Payment Method Selection (API: cash, credit, online)
                         Text(
-                          '${widget.violation.amount.toStringAsFixed(2)} ${l10n.currencySymbol}',
-                          style: AppTextStyles.titleMedium(
-                            context,
-                            color: AppColors.primary,
-                          ),
+                          l10n.violationsPaymentMethod,
+                          style: AppTextStyles.labelLarge(context),
+                        ),
+                        SizedBox(height: 12.h),
+                        PaymentMethodTile(
+                          paymentMethod: 'cash',
+                          isSelected: _selectedPaymentMethod == 'cash',
+                          onTap: () {
+                            setState(() => _selectedPaymentMethod = 'cash');
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        PaymentMethodTile(
+                          paymentMethod: 'credit',
+                          isSelected: _selectedPaymentMethod == 'credit',
+                          onTap: () {
+                            setState(() => _selectedPaymentMethod = 'credit');
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        PaymentMethodTile(
+                          paymentMethod: 'online',
+                          isSelected: _selectedPaymentMethod == 'online',
+                          onTap: () {
+                            setState(() => _selectedPaymentMethod = 'online');
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        PaymentMethodTile(
+                          paymentMethod: 'sham_cash',
+                          isSelected: _selectedPaymentMethod == 'sham_cash',
+                          onTap: () {
+                            setState(() =>
+                                _selectedPaymentMethod = 'sham_cash');
+                          },
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 24.h),
-              // Payment Method Selection (API: cash, credit, online)
-              Text(
-                l10n.violationsPaymentMethod,
-                style: AppTextStyles.labelLarge(context),
-              ),
-              SizedBox(height: 12.h),
-              PaymentMethodTile(
-                paymentMethod: 'cash',
-                isSelected: _selectedPaymentMethod == 'cash',
-                onTap: () {
-                  setState(() => _selectedPaymentMethod = 'cash');
-                },
-              ),
-              SizedBox(height: 12.h),
-              PaymentMethodTile(
-                paymentMethod: 'credit',
-                isSelected: _selectedPaymentMethod == 'credit',
-                onTap: () {
-                  setState(() => _selectedPaymentMethod = 'credit');
-                },
-              ),
-              SizedBox(height: 12.h),
-              PaymentMethodTile(
-                paymentMethod: 'online',
-                isSelected: _selectedPaymentMethod == 'online',
-                onTap: () {
-                  setState(() => _selectedPaymentMethod = 'online');
-                },
-              ),
-              SizedBox(height: 24.h),
-              // Pay Button
+                SizedBox(height: 20.h),
+                // Pay Button (fixed at bottom - always visible and tappable)
               BlocBuilder<ViolationsBloc, ViolationsState>(
                 builder: (context, state) {
                   final isLoading = state is ViolationActionLoading;
@@ -186,11 +218,16 @@ class _PayViolationDialogState extends State<PayViolationDialog> {
                         onTap: isLoading
                             ? null
                             : () {
+                                // دفع إلكتروني وشام كاش يبعثان للسيرفر كـ online
+                                final apiPaymentMethod =
+                                    (_selectedPaymentMethod == 'sham_cash' ||
+                                            _selectedPaymentMethod == 'online')
+                                        ? 'online'
+                                        : _selectedPaymentMethod;
                                 context.read<ViolationsBloc>().add(
                                   PayViolationRequested(
                                     violationId: widget.violation.violationId,
-                                    paymentMethod:
-                                        _selectedPaymentMethod, // cash | credit | online
+                                    paymentMethod: apiPaymentMethod,
                                   ),
                                 );
                               },

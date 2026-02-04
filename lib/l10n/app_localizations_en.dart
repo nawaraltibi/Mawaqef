@@ -1120,6 +1120,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get paymentMethodOnline => 'Online Payment';
 
   @override
+  String get paymentMethodShamCash => 'Sham Cash';
+
+  @override
   String get transactionId => 'Transaction ID';
 
   @override
@@ -1403,7 +1406,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get serverHostDialogTitle => 'Server address';
 
   @override
-  String get serverHostDialogHint => 'e.g. 192.168.1.5';
+  String get serverHostDialogHint => '192.168.1.6';
 
   @override
   String get serverHostDialogConfirm => 'Confirm';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/core.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../models/booking_model.dart';
+import 'shared/shared_widgets.dart';
 import '../../models/remaining_time_response.dart';
 import '../../../vehicles/presentation/utils/vehicle_translations.dart';
 
@@ -31,8 +31,9 @@ class ActiveBookingCard extends StatelessWidget {
     if (remainingSeconds <= 0) return 0.0;
 
     try {
-      final startTime = DateTime.parse(booking.startTime);
-      final endTime = DateTime.parse(booking.endTime);
+      final startTime = DateTimeFormatter.parseDateTime(booking.startTime);
+      final endTime = DateTimeFormatter.parseDateTime(booking.endTime);
+      if (startTime == null || endTime == null) return 0.0;
       final totalDuration = endTime.difference(startTime).inSeconds;
 
       if (totalDuration <= 0) return 0.0;
@@ -210,7 +211,7 @@ class ActiveBookingCard extends StatelessWidget {
                       SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
-                          '${l10n.expiresAt} ${_formatEndTime(booking.endTime)}',
+                          '${l10n.expiresAt} ${_formatEndTime(context, booking.endTime)}',
                           style: AppTextStyles.bodySmall(
                             context,
                             color: AppColors.secondaryText,
@@ -273,13 +274,7 @@ class ActiveBookingCard extends StatelessWidget {
     return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
   }
 
-  String _formatEndTime(String endTimeString) {
-    try {
-      final endTime = DateTime.parse(endTimeString);
-      final formatter = DateFormat('hh:mm a', 'ar');
-      return formatter.format(endTime);
-    } catch (e) {
-      return endTimeString;
-    }
+  String _formatEndTime(BuildContext context, String endTimeString) {
+    return DateTimeFormatter.formatTime(endTimeString, context);
   }
 }

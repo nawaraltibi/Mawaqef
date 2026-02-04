@@ -25,6 +25,7 @@ import '../../../file_downloader/bloc/file_download_state.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 import '../widgets/remaining_time_card.dart';
 import '../widgets/booking_info_card.dart';
+import '../widgets/shared/date_time_formatter.dart';
 import '../widgets/vehicle_info_card.dart';
 import '../widgets/time_info_section.dart';
 import '../widgets/payment_summary_card.dart';
@@ -303,12 +304,10 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                                   isLoading: false,
                                   hasWarning: hasWarning,
                                   hasExpired: hasExpired,
-                                  startTime: booking.startTime.isNotEmpty
-                                      ? DateTime.tryParse(booking.startTime)
-                                      : null,
-                                  endTime: booking.endTime.isNotEmpty
-                                      ? DateTime.tryParse(booking.endTime)
-                                      : null,
+                                  startTime: DateTimeFormatter.parseDateTime(
+                                      booking.startTime),
+                                  endTime: DateTimeFormatter.parseDateTime(
+                                      booking.endTime),
                                 ),
 
                               if (isActive && !isPending)

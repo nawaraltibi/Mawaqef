@@ -1115,6 +1115,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get paymentMethodOnline => 'دفع إلكتروني';
 
   @override
+  String get paymentMethodShamCash => 'شام كاش';
+
+  @override
   String get transactionId => 'رقم المعاملة';
 
   @override
@@ -1398,7 +1401,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get serverHostDialogTitle => 'عنوان الخادم';
 
   @override
-  String get serverHostDialogHint => 'مثال: 192.168.1.5';
+  String get serverHostDialogHint => '192.168.1.6';
 
   @override
   String get serverHostDialogConfirm => 'تأكيد';

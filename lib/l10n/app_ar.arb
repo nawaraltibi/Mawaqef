@@ -1289,6 +1289,10 @@
   "@paymentMethodOnline": {
     "description": "Online payment method"
   },
+  "paymentMethodShamCash": "شام كاش",
+  "@paymentMethodShamCash": {
+    "description": "Sham Cash payment method"
+  },
   "transactionId": "رقم المعاملة",
   "@transactionId": {
     "description": "Transaction ID label"
@@ -1657,7 +1661,7 @@
   "@serverHostDialogTitle": {
     "description": "Title for server IP input dialog"
   },
-  "serverHostDialogHint": "مثال: 192.168.1.5",
+  "serverHostDialogHint": "192.168.1.6",
   "@serverHostDialogHint": {
     "description": "Hint for server host input"
   },

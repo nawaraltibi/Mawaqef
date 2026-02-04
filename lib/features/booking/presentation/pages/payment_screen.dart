@@ -48,17 +48,21 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  String _selectedPaymentMethod = 'online'; // Default: online
+  String _selectedPaymentMethod = 'online'; // Default: دفع إلكتروني
   DateTime? _startTime;
   DateTime? _endTime;
 
   @override
   void initState() {
     super.initState();
-    // Use start_time and end_time from booking response if available,
-    // otherwise calculate from hours
-    _startTime = widget.startTime ?? DateTime.now();
-    _endTime = widget.endTime ?? _startTime!.add(Duration(hours: widget.hours));
+    // يبدأ من وقت الحجز (من الـ API أو الوقت الحالي)، وينتهي بعد عدد الساعات المختارة
+    if (widget.startTime != null && widget.endTime != null) {
+      _startTime = widget.startTime;
+      _endTime = widget.endTime;
+    } else {
+      _startTime = DateTime.now();
+      _endTime = _startTime!.add(Duration(hours: widget.hours));
+    }
   }
 
   void _onPaymentMethodSelected(String method) {
@@ -110,12 +114,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final transactionId =
         'TXN_SIMULATED_${DateTime.now().millisecondsSinceEpoch}';
 
+    // دفع إلكتروني وشام كاش يبعثان للسيرفر كـ online
+    final apiPaymentMethod = (_selectedPaymentMethod == 'sham_cash' ||
+            _selectedPaymentMethod == 'online')
+        ? 'online'
+        : _selectedPaymentMethod;
+
     // Process payment success (simulation)
     blocContext.read<PaymentBloc>().add(
       ProcessPaymentSuccess(
         bookingId: widget.bookingId,
         amount: widget.totalAmount,
-        paymentMethod: _selectedPaymentMethod,
+        paymentMethod: apiPaymentMethod,
         transactionId: transactionId,
       ),
     );
@@ -247,6 +257,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               paymentMethod: 'online',
                               isSelected: _selectedPaymentMethod == 'online',
                               onTap: () => _onPaymentMethodSelected('online'),
+                            ),
+                            SizedBox(height: 12.h),
+
+                            PaymentMethodTile(
+                              paymentMethod: 'sham_cash',
+                              isSelected: _selectedPaymentMethod == 'sham_cash',
+                              onTap: () => _onPaymentMethodSelected('sham_cash'),
                             ),
 
                             SizedBox(height: 20.h),
