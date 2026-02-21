@@ -1,9 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/async_runner.dart';
 import '../../../../core/utils/app_exception.dart';
 import '../../domain/entities/notification_entity.dart';
-import '../../domain/usecases/get_all_notifications.dart';
-import '../../domain/usecases/mark_notification_as_read.dart';
+import '../../domain/entities/notifications_result.dart';
+import '../../domain/usecases/get_all_notifications_usecase.dart';
+import '../../domain/usecases/mark_notification_as_read_usecase.dart';
 import 'mixins/notifications_error_handler_mixin.dart';
 
 part 'notifications_event.dart';
@@ -11,42 +13,48 @@ part 'notifications_state.dart';
 
 /// Notifications Bloc
 /// Manages notifications state and business logic using Bloc pattern with AsyncRunner
+/// 
+/// Handles both read and unread notifications with optimistic updates
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState>
     with NotificationsErrorHandlerMixin {
   final GetAllNotificationsUseCase getAllNotificationsUseCase;
   final MarkNotificationAsReadUseCase markNotificationAsReadUseCase;
 
-  final AsyncRunner<List<NotificationEntity>> getAllNotificationsRunner =
-      AsyncRunner<List<NotificationEntity>>();
+  final AsyncRunner<NotificationsResult> getAllNotificationsRunner =
+      AsyncRunner<NotificationsResult>();
   final AsyncRunner<NotificationEntity> markNotificationAsReadRunner =
       AsyncRunner<NotificationEntity>();
 
   NotificationsBloc({
     required this.getAllNotificationsUseCase,
     required this.markNotificationAsReadUseCase,
-  }) : super(NotificationsInitial()) {
+  }) : super(const NotificationsInitial()) {
     on<GetAllNotificationsRequested>(_onGetAllNotificationsRequested);
     on<NotificationClickedEvent>(_onNotificationClickedEvent);
     on<ResetNotificationsState>(_onResetNotificationsState);
   }
 
-  /// Get all unread notifications for the authenticated user
+  /// Get all notifications (read and unread) for the authenticated user
   Future<void> _onGetAllNotificationsRequested(
     GetAllNotificationsRequested event,
     Emitter<NotificationsState> emit,
   ) async {
-    emit(NotificationsLoading());
+    emit(const NotificationsLoading());
 
     await getAllNotificationsRunner.run(
       onlineTask: (previousResult) async {
         return await getAllNotificationsUseCase();
       },
-      onSuccess: (notifications) async {
+      onSuccess: (result) async {
         if (!emit.isDone) {
-          if (notifications.isEmpty) {
-            emit(NotificationsEmpty());
+          if (result.isEmpty) {
+            emit(const NotificationsEmpty());
           } else {
-            emit(NotificationsLoaded(notifications: notifications));
+            emit(NotificationsLoaded(
+              unreadNotifications: result.unreadNotifications,
+              readNotifications: result.readNotifications,
+              unreadCount: result.unreadCount,
+            ));
           }
         }
       },
@@ -58,7 +66,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState>
     );
   }
 
-  /// Handle notification click - mark as read and remove from list
+  /// Handle notification click - mark as read and move from unread to read section
   Future<void> _onNotificationClickedEvent(
     NotificationClickedEvent event,
     Emitter<NotificationsState> emit,
@@ -66,23 +74,45 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState>
     // Save current state for potential rollback
     final previousState = state;
 
-    // Optimistically remove notification from list if we're in loaded state
+    // Optimistically move notification from unread to read if we're in loaded state
     if (previousState is NotificationsLoaded) {
-      final currentNotifications = previousState.notifications;
-      final updatedNotifications = currentNotifications
-          .where((n) => n.notificationId != event.notificationId)
-          .toList();
+      // Find the notification in unread list
+      final clickedNotification = previousState.unreadNotifications
+          .where((n) => n.notificationId == event.notificationId)
+          .firstOrNull;
 
-      // Update UI immediately (optimistic update)
-      if (updatedNotifications.isEmpty) {
-        emit(NotificationsEmpty());
-      } else {
-        emit(NotificationsLoaded(notifications: updatedNotifications));
+      if (clickedNotification != null) {
+        // Remove from unread list
+        final updatedUnread = previousState.unreadNotifications
+            .where((n) => n.notificationId != event.notificationId)
+            .toList();
+
+        // Add to read list (at the beginning, marked as read)
+        final updatedRead = [
+          clickedNotification.copyWith(isRead: true),
+          ...previousState.readNotifications,
+        ];
+
+        // Calculate new unread count
+        final newUnreadCount = previousState.unreadCount > 0 
+            ? previousState.unreadCount - 1 
+            : 0;
+
+        // Emit updated state (optimistic update)
+        if (updatedUnread.isEmpty && updatedRead.isEmpty) {
+          emit(const NotificationsEmpty());
+        } else {
+          emit(NotificationsLoaded(
+            unreadNotifications: updatedUnread,
+            readNotifications: updatedRead,
+            unreadCount: newUnreadCount,
+          ));
+        }
       }
     } else if (previousState is! NotificationsLoading &&
         previousState is! NotificationActionLoading) {
       // Only emit loading if we're not already in a loading state
-      emit(NotificationActionLoading());
+      emit(const NotificationActionLoading());
     }
 
     await markNotificationAsReadRunner.run(
@@ -129,13 +159,14 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState>
     Emitter<NotificationsState> emit,
   ) {
     if (state is NotificationsLoaded) {
-      emit(
-        NotificationsLoaded(
-          notifications: (state as NotificationsLoaded).notifications,
-        ),
-      );
+      final loadedState = state as NotificationsLoaded;
+      emit(NotificationsLoaded(
+        unreadNotifications: loadedState.unreadNotifications,
+        readNotifications: loadedState.readNotifications,
+        unreadCount: loadedState.unreadCount,
+      ));
     } else {
-      emit(NotificationsInitial());
+      emit(const NotificationsInitial());
     }
   }
 }

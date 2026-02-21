@@ -290,6 +290,36 @@ abstract class AppLocalizations {
   /// **'Re-enter your password'**
   String get authConfirmPasswordHint;
 
+  /// Helper text for email field (instructional, not error)
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get authHelperEmail;
+
+  /// Helper text for password field (instructional, not error)
+  ///
+  /// In en, this message translates to:
+  /// **'Must be at least 8 characters'**
+  String get authHelperPassword;
+
+  /// Helper text for full name field (instructional, not error)
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your full name (max 255 characters)'**
+  String get authHelperFullName;
+
+  /// Helper text for phone field (instructional, not error)
+  ///
+  /// In en, this message translates to:
+  /// **'Include country code (e.g., +966)'**
+  String get authHelperPhone;
+
+  /// Helper text for confirm password field (instructional, not error)
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter your password to confirm'**
+  String get authHelperConfirmPassword;
+
   /// Text before register link on login screen
   ///
   /// In en, this message translates to:
@@ -929,7 +959,7 @@ abstract class AppLocalizations {
   /// Success message after updating parking
   ///
   /// In en, this message translates to:
-  /// **'Parking update request submitted. Waiting for admin approval.'**
+  /// **'Parking updated successfully'**
   String get parkingSuccessUpdate;
 
   /// Error message for unauthorized access
@@ -2726,6 +2756,18 @@ abstract class AppLocalizations {
   /// **'Notification not found'**
   String get notificationsNotFound;
 
+  /// Section header for unread notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get notificationsUnread;
+
+  /// Section header for read notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Read'**
+  String get notificationsRead;
+
   /// Relative date label for previous day
   ///
   /// In en, this message translates to:
@@ -2845,6 +2887,360 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not connect to server. Please check your network or server address.'**
   String get errorConnectionFailed;
+
+  /// Button text for searching nearby parking
+  ///
+  /// In en, this message translates to:
+  /// **'Search Nearby'**
+  String get searchNearbyParking;
+
+  /// Loading message when searching nearby parking
+  ///
+  /// In en, this message translates to:
+  /// **'Searching nearby parking...'**
+  String get searchingNearbyParking;
+
+  /// Message when no nearby parking found
+  ///
+  /// In en, this message translates to:
+  /// **'No nearby parking found'**
+  String get noNearbyParkingFound;
+
+  /// Found label for search results
+  ///
+  /// In en, this message translates to:
+  /// **'Found'**
+  String get foundNearbyParking;
+
+  /// Parking lots label
+  ///
+  /// In en, this message translates to:
+  /// **'parking lots'**
+  String get parkingLots;
+
+  /// Error message when search fails
+  ///
+  /// In en, this message translates to:
+  /// **'Search failed'**
+  String get searchError;
+
+  /// Cancel search button text
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel search'**
+  String get cancelSearch;
+
+  /// Empty state message for unread notifications tab
+  ///
+  /// In en, this message translates to:
+  /// **'No unread notifications'**
+  String get noUnreadNotifications;
+
+  /// Empty state message for read notifications tab
+  ///
+  /// In en, this message translates to:
+  /// **'No read notifications'**
+  String get noReadNotifications;
+
+  /// Full status label for parking lots with no availability
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get full;
+
+  /// Indicator that displayed data is from camera detection
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Data'**
+  String get parkingDashboardCameraData;
+
+  /// Label for booking-based available spaces count
+  ///
+  /// In en, this message translates to:
+  /// **'Bookable Spaces'**
+  String get parkingDashboardBookingAvailable;
+
+  /// Label for camera-detected availability
+  ///
+  /// In en, this message translates to:
+  /// **'Camera Availability'**
+  String get cameraAvailability;
+
+  /// Label for booking-based availability
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Availability'**
+  String get bookingAvailability;
+
+  /// Occupancy status when spaces are available
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get occupancyStatusAvailable;
+
+  /// Occupancy status when spaces are limited
+  ///
+  /// In en, this message translates to:
+  /// **'Limited'**
+  String get occupancyStatusLimited;
+
+  /// Occupancy status when parking is full
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get occupancyStatusFull;
+
+  /// Error message when user cancels a network request
+  ///
+  /// In en, this message translates to:
+  /// **'Request was cancelled by the user.'**
+  String get networkErrorRequestCancelled;
+
+  /// Error message when network request times out
+  ///
+  /// In en, this message translates to:
+  /// **'Request timed out. Please try again later.'**
+  String get networkErrorTimeout;
+
+  /// Error message when there is no internet connection
+  ///
+  /// In en, this message translates to:
+  /// **'No Internet connection. Please check your network.'**
+  String get networkErrorNoInternet;
+
+  /// Error message for generic connection errors
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error occurred. Please try again.'**
+  String get networkErrorConnection;
+
+  /// Error message for SSL/certificate errors
+  ///
+  /// In en, this message translates to:
+  /// **'Security certificate error occurred.'**
+  String get networkErrorBadCertificate;
+
+  /// Error message for bad server responses
+  ///
+  /// In en, this message translates to:
+  /// **'Server returned an unexpected response.'**
+  String get networkErrorBadResponse;
+
+  /// Error message for unknown network errors
+  ///
+  /// In en, this message translates to:
+  /// **'An unknown network error occurred.'**
+  String get networkErrorUnknown;
+
+  /// Error message when API response format is unexpected
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected response format from server.'**
+  String get networkErrorUnexpectedFormat;
+
+  /// Error message for unexpected HTTP status codes
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected response status: {statusCode}'**
+  String networkErrorUnexpectedStatus(int statusCode);
+
+  /// Error when location services are disabled on device
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are disabled. Please enable location services.'**
+  String get locationErrorServicesDisabled;
+
+  /// Error when location permission is denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permissions are denied. Please grant location permission.'**
+  String get locationErrorPermissionDenied;
+
+  /// Error when location permission is permanently denied
+  ///
+  /// In en, this message translates to:
+  /// **'Location permissions are permanently denied. Please enable them in app settings.'**
+  String get locationErrorPermissionPermanentlyDenied;
+
+  /// Generic error when getting location fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get current location. Please try again.'**
+  String get locationErrorFailed;
+
+  /// Error when getting location fails with details
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get current location: {details}'**
+  String locationErrorFailedWithDetails(String details);
+
+  /// Validation error when plate number is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Plate number is required'**
+  String get validationErrorPlateNumberRequired;
+
+  /// Validation error when car make is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Car make is required'**
+  String get validationErrorCarMakeRequired;
+
+  /// Validation error when car model is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Car model is required'**
+  String get validationErrorCarModelRequired;
+
+  /// Validation error when vehicle color is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Color is required'**
+  String get validationErrorColorRequired;
+
+  /// Validation error for invalid vehicle ID
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid vehicle ID'**
+  String get validationErrorInvalidVehicleId;
+
+  /// Error when adding vehicle fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to add vehicle. Please try again.'**
+  String get operationErrorFailedToAddVehicle;
+
+  /// Error when updating vehicle fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update vehicle. Please try again.'**
+  String get operationErrorFailedToUpdateVehicle;
+
+  /// Error when deleting vehicle fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete vehicle. Please try again.'**
+  String get operationErrorFailedToDeleteVehicle;
+
+  /// Error when fetching vehicles fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get vehicles. Please try again.'**
+  String get operationErrorFailedToGetVehicles;
+
+  /// Error when fetching parking lots fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get parking lots. Please try again.'**
+  String get operationErrorFailedToParkingLots;
+
+  /// Error when fetching parking details fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get parking details. Please try again.'**
+  String get operationErrorFailedToGetParkingDetails;
+
+  /// Error when searching nearby parking fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to search nearby parking. Please try again.'**
+  String get operationErrorFailedToSearchNearby;
+
+  /// Error when parking lot with given ID is not found
+  ///
+  /// In en, this message translates to:
+  /// **'Parking lot not found.'**
+  String get operationErrorParkingNotFound;
+
+  /// Error when fetching notifications fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get notifications. Please try again.'**
+  String get operationErrorFailedToGetNotifications;
+
+  /// Error when marking notification as read fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to mark notification as read.'**
+  String get operationErrorFailedToMarkNotificationRead;
+
+  /// Error when paying violation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pay violation. Please try again.'**
+  String get operationErrorFailedToPayViolation;
+
+  /// Error when fetching violations fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get violations. Please try again.'**
+  String get operationErrorFailedToGetViolations;
+
+  /// Error when booking data is null
+  ///
+  /// In en, this message translates to:
+  /// **'Booking data is not available.'**
+  String get operationErrorBookingDataNull;
+
+  /// Error when map initialization fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to initialize map. Please try again.'**
+  String get operationErrorFailedToInitializeMap;
+
+  /// Error when download directory is not accessible
+  ///
+  /// In en, this message translates to:
+  /// **'Could not access download directory.'**
+  String get operationErrorDownloadDirectory;
+
+  /// Success message after adding a vehicle
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle added successfully'**
+  String get successVehicleAdded;
+
+  /// Success message after requesting vehicle update
+  ///
+  /// In en, this message translates to:
+  /// **'Update request submitted. Waiting for admin approval.'**
+  String get successVehicleUpdateRequested;
+
+  /// Success message after deleting a vehicle
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle deleted successfully'**
+  String get successVehicleDeleted;
+
+  /// Success message after paying a violation
+  ///
+  /// In en, this message translates to:
+  /// **'Violation paid successfully'**
+  String get successViolationPaid;
+
+  /// Message shown when owner account is pending approval
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is pending admin approval. Please wait until your account is activated.'**
+  String get ownerPendingApprovalMessage;
+
+  /// Home page title
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homePage;
+
+  /// Placeholder text for home page under development
+  ///
+  /// In en, this message translates to:
+  /// **'Home Page - Coming soon'**
+  String get homePagePlaceholder;
+
+  /// Short format for hourly rate display
+  ///
+  /// In en, this message translates to:
+  /// **'{rate}/hr'**
+  String perHourShort(String rate);
 }
 
 class _AppLocalizationsDelegate

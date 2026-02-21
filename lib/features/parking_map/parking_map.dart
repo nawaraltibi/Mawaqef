@@ -4,6 +4,7 @@ export 'domain/entities/parking_details_entity.dart';
 export 'domain/repositories/parking_map_repository.dart';
 export 'domain/usecases/get_all_parking_lots_usecase.dart';
 export 'domain/usecases/get_parking_details_usecase.dart';
+export 'domain/usecases/search_nearby_parking_usecase.dart';
 
 // Data Layer Exports (for dependency injection and testing)
 export 'data/datasources/parking_map_remote_datasource.dart';

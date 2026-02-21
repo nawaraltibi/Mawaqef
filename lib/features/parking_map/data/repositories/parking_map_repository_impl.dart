@@ -62,6 +62,8 @@ class ParkingMapRepositoryImpl implements ParkingMapRepository {
       longitude: model.longitude,
       totalSpaces: model.totalSpaces,
       availableSpaces: model.availableSpaces,
+      occupiedSpaces: model.occupiedSpaces,
+      vacantSpaces: model.vacantSpaces,
       hourlyRate: model.hourlyRate,
       status: model.status,
     );
@@ -78,6 +80,8 @@ class ParkingMapRepositoryImpl implements ParkingMapRepository {
       longitude: model.longitude,
       totalSpaces: model.totalSpaces,
       availableSpaces: model.availableSpaces,
+      occupiedSpaces: model.occupiedSpaces,
+      vacantSpaces: model.vacantSpaces,
       hourlyRate: model.hourlyRate,
       status: model.status,
       statusRequest: model.statusRequest,
@@ -85,6 +89,36 @@ class ParkingMapRepositoryImpl implements ParkingMapRepository {
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
     );
+  }
+
+  @override
+  Future<List<ParkingLotEntity>> searchNearbyParking({
+    required double latitude,
+    required double longitude,
+    required double radiusKm,
+  }) async {
+    try {
+      final response = await remoteDataSource.searchNearbyParking(
+        latitude: latitude,
+        longitude: longitude,
+        radiusKm: radiusKm.toInt(),
+      );
+      
+      // Note: Backend now handles filtering of full parking lots
+      // We still apply a safety filter here for additional protection
+      return response.parkingLots
+          .where((model) => !model.isFull) // Use model's isFull getter
+          .map((model) => _lotModelToEntity(model))
+          .toList();
+    } on AppException {
+      rethrow;
+    } catch (e) {
+      throw AppException(
+        statusCode: 500,
+        errorCode: 'unexpected-error',
+        message: e.toString(),
+      );
+    }
   }
 }
 

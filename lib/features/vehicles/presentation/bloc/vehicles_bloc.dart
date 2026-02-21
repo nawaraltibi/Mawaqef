@@ -87,7 +87,7 @@ class VehiclesBloc extends Bloc<VehiclesEvent, VehiclesState>
       onSuccess: (vehicle) async {
         if (!emit.isDone) {
           emit(VehicleActionSuccess(
-            message: 'Vehicle added successfully',
+            successType: VehicleSuccessType.added,
             vehicle: vehicle,
           ));
           // Reload vehicles list after successful add
@@ -123,8 +123,7 @@ class VehiclesBloc extends Bloc<VehiclesEvent, VehiclesState>
       onSuccess: (vehicle) async {
         if (!emit.isDone) {
           emit(VehicleActionSuccess(
-            message:
-                'Update request submitted. Waiting for admin approval.',
+            successType: VehicleSuccessType.updateRequested,
             vehicle: vehicle,
           ));
           // Reload vehicles list after successful update request
@@ -153,7 +152,7 @@ class VehiclesBloc extends Bloc<VehiclesEvent, VehiclesState>
       onSuccess: (_) async {
         if (!emit.isDone) {
           emit(VehicleActionSuccess(
-            message: 'Vehicle deleted successfully',
+            successType: VehicleSuccessType.deleted,
           ));
           // Reload vehicles list after successful delete
           add(GetVehiclesRequested());

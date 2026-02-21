@@ -109,6 +109,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authConfirmPasswordHint => 'Re-enter your password';
 
   @override
+  String get authHelperEmail => 'Enter a valid email address';
+
+  @override
+  String get authHelperPassword => 'Must be at least 8 characters';
+
+  @override
+  String get authHelperFullName => 'Enter your full name (max 255 characters)';
+
+  @override
+  String get authHelperPhone => 'Include country code (e.g., +966)';
+
+  @override
+  String get authHelperConfirmPassword => 'Re-enter your password to confirm';
+
+  @override
   String get authNoAccount => 'Don\'t have an account? ';
 
   @override
@@ -450,8 +465,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Parking created successfully. Waiting for admin approval.';
 
   @override
-  String get parkingSuccessUpdate =>
-      'Parking update request submitted. Waiting for admin approval.';
+  String get parkingSuccessUpdate => 'Parking updated successfully';
 
   @override
   String get parkingErrorUnauthorized =>
@@ -1379,6 +1393,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notificationsNotFound => 'Notification not found';
 
   @override
+  String get notificationsUnread => 'Unread';
+
+  @override
+  String get notificationsRead => 'Read';
+
+  @override
   String get commonYesterday => 'Yesterday';
 
   @override
@@ -1441,4 +1461,213 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorConnectionFailed =>
       'Could not connect to server. Please check your network or server address.';
+
+  @override
+  String get searchNearbyParking => 'Search Nearby';
+
+  @override
+  String get searchingNearbyParking => 'Searching nearby parking...';
+
+  @override
+  String get noNearbyParkingFound => 'No nearby parking found';
+
+  @override
+  String get foundNearbyParking => 'Found';
+
+  @override
+  String get parkingLots => 'parking lots';
+
+  @override
+  String get searchError => 'Search failed';
+
+  @override
+  String get cancelSearch => 'Cancel search';
+
+  @override
+  String get noUnreadNotifications => 'No unread notifications';
+
+  @override
+  String get noReadNotifications => 'No read notifications';
+
+  @override
+  String get full => 'Full';
+
+  @override
+  String get parkingDashboardCameraData => 'Camera Data';
+
+  @override
+  String get parkingDashboardBookingAvailable => 'Bookable Spaces';
+
+  @override
+  String get cameraAvailability => 'Camera Availability';
+
+  @override
+  String get bookingAvailability => 'Booking Availability';
+
+  @override
+  String get occupancyStatusAvailable => 'Available';
+
+  @override
+  String get occupancyStatusLimited => 'Limited';
+
+  @override
+  String get occupancyStatusFull => 'Full';
+
+  @override
+  String get networkErrorRequestCancelled =>
+      'Request was cancelled by the user.';
+
+  @override
+  String get networkErrorTimeout =>
+      'Request timed out. Please try again later.';
+
+  @override
+  String get networkErrorNoInternet =>
+      'No Internet connection. Please check your network.';
+
+  @override
+  String get networkErrorConnection =>
+      'Connection error occurred. Please try again.';
+
+  @override
+  String get networkErrorBadCertificate =>
+      'Security certificate error occurred.';
+
+  @override
+  String get networkErrorBadResponse =>
+      'Server returned an unexpected response.';
+
+  @override
+  String get networkErrorUnknown => 'An unknown network error occurred.';
+
+  @override
+  String get networkErrorUnexpectedFormat =>
+      'Unexpected response format from server.';
+
+  @override
+  String networkErrorUnexpectedStatus(int statusCode) {
+    return 'Unexpected response status: $statusCode';
+  }
+
+  @override
+  String get locationErrorServicesDisabled =>
+      'Location services are disabled. Please enable location services.';
+
+  @override
+  String get locationErrorPermissionDenied =>
+      'Location permissions are denied. Please grant location permission.';
+
+  @override
+  String get locationErrorPermissionPermanentlyDenied =>
+      'Location permissions are permanently denied. Please enable them in app settings.';
+
+  @override
+  String get locationErrorFailed =>
+      'Failed to get current location. Please try again.';
+
+  @override
+  String locationErrorFailedWithDetails(String details) {
+    return 'Failed to get current location: $details';
+  }
+
+  @override
+  String get validationErrorPlateNumberRequired => 'Plate number is required';
+
+  @override
+  String get validationErrorCarMakeRequired => 'Car make is required';
+
+  @override
+  String get validationErrorCarModelRequired => 'Car model is required';
+
+  @override
+  String get validationErrorColorRequired => 'Color is required';
+
+  @override
+  String get validationErrorInvalidVehicleId => 'Invalid vehicle ID';
+
+  @override
+  String get operationErrorFailedToAddVehicle =>
+      'Failed to add vehicle. Please try again.';
+
+  @override
+  String get operationErrorFailedToUpdateVehicle =>
+      'Failed to update vehicle. Please try again.';
+
+  @override
+  String get operationErrorFailedToDeleteVehicle =>
+      'Failed to delete vehicle. Please try again.';
+
+  @override
+  String get operationErrorFailedToGetVehicles =>
+      'Failed to get vehicles. Please try again.';
+
+  @override
+  String get operationErrorFailedToParkingLots =>
+      'Failed to get parking lots. Please try again.';
+
+  @override
+  String get operationErrorFailedToGetParkingDetails =>
+      'Failed to get parking details. Please try again.';
+
+  @override
+  String get operationErrorFailedToSearchNearby =>
+      'Failed to search nearby parking. Please try again.';
+
+  @override
+  String get operationErrorParkingNotFound => 'Parking lot not found.';
+
+  @override
+  String get operationErrorFailedToGetNotifications =>
+      'Failed to get notifications. Please try again.';
+
+  @override
+  String get operationErrorFailedToMarkNotificationRead =>
+      'Failed to mark notification as read.';
+
+  @override
+  String get operationErrorFailedToPayViolation =>
+      'Failed to pay violation. Please try again.';
+
+  @override
+  String get operationErrorFailedToGetViolations =>
+      'Failed to get violations. Please try again.';
+
+  @override
+  String get operationErrorBookingDataNull => 'Booking data is not available.';
+
+  @override
+  String get operationErrorFailedToInitializeMap =>
+      'Failed to initialize map. Please try again.';
+
+  @override
+  String get operationErrorDownloadDirectory =>
+      'Could not access download directory.';
+
+  @override
+  String get successVehicleAdded => 'Vehicle added successfully';
+
+  @override
+  String get successVehicleUpdateRequested =>
+      'Update request submitted. Waiting for admin approval.';
+
+  @override
+  String get successVehicleDeleted => 'Vehicle deleted successfully';
+
+  @override
+  String get successViolationPaid => 'Violation paid successfully';
+
+  @override
+  String get ownerPendingApprovalMessage =>
+      'Your account is pending admin approval. Please wait until your account is activated.';
+
+  @override
+  String get homePage => 'Home';
+
+  @override
+  String get homePagePlaceholder => 'Home Page - Coming soon';
+
+  @override
+  String perHourShort(String rate) {
+    return '$rate/hr';
+  }
 }

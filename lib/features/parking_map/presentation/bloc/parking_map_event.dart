@@ -26,3 +26,21 @@ class SelectParkingLot extends ParkingMapEvent {
 class DeselectParkingLot extends ParkingMapEvent {
   DeselectParkingLot();
 }
+
+/// Event to search nearby parking lots based on user's current location
+class SearchNearbyParking extends ParkingMapEvent {
+  final double latitude;
+  final double longitude;
+  final double radiusKm;
+
+  SearchNearbyParking({
+    required this.latitude,
+    required this.longitude,
+    this.radiusKm = 5.0, // Default 5 KM
+  });
+}
+
+/// Event to cancel search and return to normal map view
+class CancelSearchNearbyParking extends ParkingMapEvent {
+  CancelSearchNearbyParking();
+}

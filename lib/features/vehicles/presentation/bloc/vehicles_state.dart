@@ -41,13 +41,24 @@ class VehicleActionLoading extends VehiclesState {
   VehicleActionLoading();
 }
 
+/// Success type enum for vehicle actions
+/// Used for localized message lookup in the presentation layer
+enum VehicleSuccessType {
+  added,
+  updateRequested,
+  deleted,
+}
+
 /// Success state for vehicle actions
 class VehicleActionSuccess extends VehiclesState {
-  final String message;
+  /// Success type for localized message lookup
+  final VehicleSuccessType successType;
+  
+  /// The vehicle that was affected (optional)
   final VehicleEntity? vehicle;
 
   VehicleActionSuccess({
-    required this.message,
+    required this.successType,
     this.vehicle,
   });
 }

@@ -1,5 +1,10 @@
 /// Parking Model
 /// Represents a parking lot entity
+/// 
+/// Fields:
+/// - [availableSpaces]: Booking-based availability (for business logic/validation)
+/// - [occupiedSpaces]: Booking-based occupied spaces
+/// - [vacantSpaces]: Camera-based vacant spaces (for display only)
 class ParkingModel {
   final int lotId;
   final String lotName;
@@ -7,7 +12,9 @@ class ParkingModel {
   final double latitude;
   final double longitude;
   final int totalSpaces;
-  final int? availableSpaces; // Number of available spaces (total_spaces - occupied_spaces)
+  final int? availableSpaces; // Booking-based (for validation)
+  final int? occupiedSpaces; // Booking-based occupied spaces
+  final int? vacantSpaces; // Camera-based (for display only)
   final double hourlyRate;
   final String status; // 'active' or 'inactive'
   final String? statusRequest; // 'pending', 'accept', or 'rejected'
@@ -23,6 +30,8 @@ class ParkingModel {
     required this.longitude,
     required this.totalSpaces,
     this.availableSpaces,
+    this.occupiedSpaces,
+    this.vacantSpaces,
     required this.hourlyRate,
     required this.status,
     this.statusRequest,
@@ -40,6 +49,8 @@ class ParkingModel {
       longitude: _parseDouble(json['longitude']),
       totalSpaces: _parseInt(json['total_spaces']),
       availableSpaces: json['available_spaces'] != null ? _parseInt(json['available_spaces']) : null,
+      occupiedSpaces: json['occupied_spaces'] != null ? _parseInt(json['occupied_spaces']) : null,
+      vacantSpaces: json['vacant_spaces'] != null ? _parseInt(json['vacant_spaces']) : null,
       hourlyRate: _parseDouble(json['hourly_rate']),
       status: json['status'] as String? ?? 'inactive',
       statusRequest: json['statusrequest'] as String? ?? json['status_request'] as String?,
@@ -72,6 +83,8 @@ class ParkingModel {
       'longitude': longitude,
       'total_spaces': totalSpaces,
       'available_spaces': availableSpaces,
+      'occupied_spaces': occupiedSpaces,
+      'vacant_spaces': vacantSpaces,
       'hourly_rate': hourlyRate,
       'status': status,
       'statusrequest': statusRequest,
@@ -90,6 +103,8 @@ class ParkingModel {
     double? longitude,
     int? totalSpaces,
     int? availableSpaces,
+    int? occupiedSpaces,
+    int? vacantSpaces,
     double? hourlyRate,
     String? status,
     String? statusRequest,
@@ -105,6 +120,8 @@ class ParkingModel {
       longitude: longitude ?? this.longitude,
       totalSpaces: totalSpaces ?? this.totalSpaces,
       availableSpaces: availableSpaces ?? this.availableSpaces,
+      occupiedSpaces: occupiedSpaces ?? this.occupiedSpaces,
+      vacantSpaces: vacantSpaces ?? this.vacantSpaces,
       hourlyRate: hourlyRate ?? this.hourlyRate,
       status: status ?? this.status,
       statusRequest: statusRequest ?? this.statusRequest,
@@ -137,5 +154,25 @@ class ParkingModel {
     if (isApproved && isInactive) return 'Inactive';
     return 'Unknown';
   }
-}
 
+  /// Check if parking lot has available spaces (booking-based)
+  bool get hasAvailableSpaces => (availableSpaces ?? 0) > 0;
+
+  /// Check if parking lot is full
+  bool get isFull => (availableSpaces ?? vacantSpaces ?? 0) == 0;
+
+  /// Get display-friendly available spaces
+  /// Uses camera-based vacant_spaces for display (includes all detected vehicles)
+  /// Falls back to booking-based available_spaces if camera data not available
+  int get displayAvailableSpaces => vacantSpaces ?? availableSpaces ?? 0;
+
+  /// Get display-friendly occupied spaces
+  /// Derived from camera-based vacant_spaces for display
+  /// Falls back to booking-based occupied_spaces
+  int get displayOccupiedSpaces {
+    if (vacantSpaces != null) {
+      return (totalSpaces - vacantSpaces!).clamp(0, totalSpaces);
+    }
+    return occupiedSpaces ?? 0;
+  }
+}

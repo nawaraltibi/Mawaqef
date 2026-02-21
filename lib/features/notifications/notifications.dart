@@ -3,9 +3,10 @@
 
 // Domain Layer
 export 'domain/entities/notification_entity.dart';
+export 'domain/entities/notifications_result.dart';
 export 'domain/repositories/notifications_repository.dart';
-export 'domain/usecases/get_all_notifications.dart';
-export 'domain/usecases/mark_notification_as_read.dart';
+export 'domain/usecases/get_all_notifications_usecase.dart';
+export 'domain/usecases/mark_notification_as_read_usecase.dart';
 
 // Data Layer
 export 'data/models/notification_model.dart';

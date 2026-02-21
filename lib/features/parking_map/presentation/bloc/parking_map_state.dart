@@ -21,6 +21,13 @@ class ParkingMapState {
   final int? errorStatusCode;
   final String? detailsErrorMessage;
   final int? detailsErrorStatusCode;
+  
+  // Search mode states
+  final bool isSearchMode;
+  final List<ParkingLotEntity> searchedParkingLots;
+  final bool isLoadingSearch;
+  final String? searchErrorMessage;
+  final int? searchErrorStatusCode;
 
   const ParkingMapState({
     this.parkingLots = const [],
@@ -34,6 +41,11 @@ class ParkingMapState {
     this.errorStatusCode,
     this.detailsErrorMessage,
     this.detailsErrorStatusCode,
+    this.isSearchMode = false,
+    this.searchedParkingLots = const [],
+    this.isLoadingSearch = false,
+    this.searchErrorMessage,
+    this.searchErrorStatusCode,
   });
 
   /// Initial state
@@ -94,10 +106,17 @@ class ParkingMapState {
     int? errorStatusCode,
     String? detailsErrorMessage,
     int? detailsErrorStatusCode,
+    bool? isSearchMode,
+    List<ParkingLotEntity>? searchedParkingLots,
+    bool? isLoadingSearch,
+    String? searchErrorMessage,
+    int? searchErrorStatusCode,
     bool clearSelectedLot = false,
     bool clearSelectedDetails = false,
     bool clearError = false,
     bool clearDetailsError = false,
+    bool clearSearchError = false,
+    bool clearSearchResults = false,
   }) {
     return ParkingMapState(
       parkingLots: parkingLots ?? this.parkingLots,
@@ -119,6 +138,17 @@ class ParkingMapState {
       detailsErrorStatusCode: clearDetailsError
           ? null
           : (detailsErrorStatusCode ?? this.detailsErrorStatusCode),
+      isSearchMode: isSearchMode ?? this.isSearchMode,
+      searchedParkingLots: clearSearchResults
+          ? const []
+          : (searchedParkingLots ?? this.searchedParkingLots),
+      isLoadingSearch: isLoadingSearch ?? this.isLoadingSearch,
+      searchErrorMessage: clearSearchError
+          ? null
+          : (searchErrorMessage ?? this.searchErrorMessage),
+      searchErrorStatusCode: clearSearchError
+          ? null
+          : (searchErrorStatusCode ?? this.searchErrorStatusCode),
     );
   }
 
@@ -136,5 +166,29 @@ class ParkingMapState {
 
   /// Check if currently loading anything
   bool get isLoading =>
-      isLoadingParkingLots || isLoadingDetails || isLoadingLocation;
+      isLoadingParkingLots || isLoadingDetails || isLoadingLocation || isLoadingSearch;
+
+  /// Check if search has results
+  bool get hasSearchResults => searchedParkingLots.isNotEmpty;
+
+  /// Check if there's a search error
+  bool get hasSearchError => searchErrorMessage != null;
+
+  /// Get the parking lots to display based on search mode
+  /// Returns searched parking lots when in search mode, otherwise returns all parking lots
+  /// Note: Full lots filtering is now handled by backend for search results
+  List<ParkingLotEntity> get displayedParkingLots =>
+      isSearchMode ? searchedParkingLots : parkingLots;
+
+  /// Get parking lots with available spaces only (filters out full lots)
+  /// Use this for user-facing displays where full lots should be hidden
+  List<ParkingLotEntity> get availableParkingLots =>
+      displayedParkingLots.where((lot) => !lot.isFull).toList();
+
+  /// Get count of available parking lots (excluding full ones)
+  int get availableParkingLotsCount => availableParkingLots.length;
+
+  /// Get count of full parking lots
+  int get fullParkingLotsCount => 
+      displayedParkingLots.where((lot) => lot.isFull).length;
 }

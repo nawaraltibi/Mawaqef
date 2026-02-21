@@ -9,132 +9,93 @@ import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/notification_entity.dart';
 import '../../../../core/routes/app_routes.dart';
 
-/// Notification Card Widget
-/// Displays notification information in a modern card design
+/// Optimized Notification Card Widget
+/// 
+/// Performance optimizations applied:
+/// - No AnimatedOpacity (causes full subtree rebuild)
+/// - Pre-computed decorations cached statically
+/// - Minimal widget depth
+/// - No BoxShadow during swipe (GPU expensive)
+/// - Uses DecoratedBox instead of Container where possible
 class NotificationCard extends StatelessWidget {
   final NotificationEntity notification;
   final VoidCallback? onTap;
+  final VoidCallback? onMarkAsRead;
 
-  const NotificationCard({super.key, required this.notification, this.onTap});
+  const NotificationCard({
+    super.key, 
+    required this.notification, 
+    this.onTap,
+    this.onMarkAsRead,
+  });
+
+  // Static cached decorations - created once, reused forever
+  static final _unreadDecoration = BoxDecoration(
+    color: AppColors.surface,
+    borderRadius: BorderRadius.circular(16.r),
+    border: Border.all(
+      color: AppColors.primary.withOpacity(0.2),
+      width: 1.5,
+    ),
+  );
+
+  static final _readDecoration = BoxDecoration(
+    color: AppColors.surface,
+    borderRadius: BorderRadius.circular(16.r),
+    border: Border.all(
+      color: AppColors.border.withOpacity(0.15),
+      width: 1,
+    ),
+  );
+
+  static final _borderRadius = BorderRadius.circular(16.r);
+  
+  // Cached dimensions
+  static final _cardPadding = EdgeInsets.all(16.w);
+  static final _cardMargin = EdgeInsets.only(bottom: 12.h);
+  static final _indicatorSize = 8.w;
+  static final _indicatorMargin = EdgeInsetsDirectional.only(top: 6.h, end: 12.w);
+  static final _iconSize = 22.sp;
+  static final _clockIconSize = 14.sp;
+  
+  // Cached colors
+  static final _unreadIndicatorColor = AppColors.primary;
+  static final _readIndicatorColor = AppColors.secondaryText.withOpacity(0.3);
+  static final _unreadIconColor = AppColors.primary;
+  static final _readIconColor = AppColors.secondaryText.withOpacity(0.5);
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    if (l10n == null) return const SizedBox.shrink();
-
     final isUnread = notification.isUnread;
-
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      shadowColor: Colors.black.withValues(alpha: 0.08),
-      margin: EdgeInsets.only(bottom: 12.h),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(
-            color: isUnread
-                ? AppColors.primary.withValues(alpha: 0.2)
-                : AppColors.border.withValues(alpha: 0.3),
-            width: isUnread ? 1.5 : 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-              spreadRadius: 0,
-            ),
-          ],
-        ),
+    
+    return Padding(
+      padding: _cardMargin,
+      child: DecoratedBox(
+        decoration: isUnread ? _unreadDecoration : _readDecoration,
         child: Material(
-          color: Colors.transparent,
+          type: MaterialType.transparency,
           child: InkWell(
-            onTap:
-                onTap ??
-                () {
-                  context.push(
-                    Routes.notificationDetailsPath.replaceAll(
-                      ':id',
-                      notification.notificationId.toString(),
-                    ),
-                    extra: notification,
-                  );
-                },
-            borderRadius: BorderRadius.circular(16.r),
+            onTap: onTap ?? _defaultOnTap(context),
+            borderRadius: _borderRadius,
             child: Padding(
-              padding: EdgeInsets.all(16.w),
+              padding: _cardPadding,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Unread indicator dot (RTL-aware margin)
-                  if (isUnread) ...[
-                    Container(
-                      width: 8.w,
-                      height: 8.h,
-                      margin: EdgeInsetsDirectional.only(
-                        top: 6.h,
-                        end: 12.w,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ] else
-                    SizedBox(width: 20.w),
+                  // Status indicator dot
+                  _StatusIndicator(isUnread: isUnread),
                   // Content
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Title
-                        Text(
-                          notification.title,
-                          style: AppTextStyles.titleMedium(context),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 6.h),
-                        // Message
-                        Text(
-                          notification.message,
-                          style: AppTextStyles.bodyMedium(
-                            context,
-                            color: AppColors.secondaryText,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        SizedBox(height: 8.h),
-                        // Date and time
-                        Row(
-                          children: [
-                            Icon(
-                              EvaIcons.clockOutline,
-                              size: 14.sp,
-                              color: AppColors.secondaryText,
-                            ),
-                            SizedBox(width: 6.w),
-                            Text(
-                              _formatDateTime(context, notification.createdAt),
-                              style: AppTextStyles.bodySmall(
-                                context,
-                                color: AppColors.secondaryText,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    child: _CardContent(
+                      notification: notification,
+                      isUnread: isUnread,
                     ),
                   ),
-                  SizedBox(width: 8.w),
-                  // Mark as read / done icon (read & remove from list)
-                  Icon(
-                    EvaIcons.checkmarkCircle2Outline,
-                    size: 22.sp,
-                    color: AppColors.primary,
+                  const SizedBox(width: 8),
+                  // Action button
+                  _ActionButton(
+                    isUnread: isUnread,
+                    onTap: isUnread ? onMarkAsRead : null,
                   ),
                 ],
               ),
@@ -142,6 +103,124 @@ class NotificationCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  VoidCallback _defaultOnTap(BuildContext context) {
+    return () {
+      context.push(
+        Routes.notificationDetailsPath.replaceAll(
+          ':id',
+          notification.notificationId.toString(),
+        ),
+        extra: notification,
+      );
+    };
+  }
+}
+
+/// Lightweight status indicator
+class _StatusIndicator extends StatelessWidget {
+  final bool isUnread;
+  
+  const _StatusIndicator({required this.isUnread});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: NotificationCard._indicatorSize,
+      height: NotificationCard._indicatorSize,
+      margin: NotificationCard._indicatorMargin,
+      decoration: BoxDecoration(
+        color: isUnread 
+            ? NotificationCard._unreadIndicatorColor 
+            : NotificationCard._readIndicatorColor,
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+}
+
+/// Card content with cached text styles
+class _CardContent extends StatelessWidget {
+  final NotificationEntity notification;
+  final bool isUnread;
+  
+  const _CardContent({
+    required this.notification,
+    required this.isUnread,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Apply opacity via color alpha instead of Opacity widget (GPU friendly)
+    final textOpacity = isUnread ? 1.0 : 0.7;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Title
+        Text(
+          notification.title,
+          style: AppTextStyles.titleMedium(context).copyWith(
+            fontWeight: isUnread ? FontWeight.w600 : FontWeight.w400,
+            color: AppColors.primaryText.withOpacity(textOpacity),
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 6),
+        // Message
+        Text(
+          notification.message,
+          style: AppTextStyles.bodyMedium(
+            context,
+            color: AppColors.secondaryText.withOpacity(textOpacity),
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 8),
+        // Date row
+        _DateRow(
+          dateString: notification.createdAt,
+          opacity: textOpacity,
+        ),
+      ],
+    );
+  }
+}
+
+/// Optimized date row with cached formatting
+class _DateRow extends StatelessWidget {
+  final String? dateString;
+  final double opacity;
+  
+  const _DateRow({
+    required this.dateString,
+    required this.opacity,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          EvaIcons.clockOutline,
+          size: NotificationCard._clockIconSize,
+          color: AppColors.secondaryText.withOpacity(opacity),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          _formatDateTime(context, dateString),
+          style: AppTextStyles.bodySmall(
+            context,
+            color: AppColors.secondaryText.withOpacity(opacity),
+          ),
+        ),
+      ],
     );
   }
 
@@ -155,23 +234,51 @@ class NotificationCard extends StatelessWidget {
       final isArabic = locale.languageCode == 'ar';
 
       if (difference.inDays == 0) {
-        final timeFormat = DateFormat('HH:mm', isArabic ? 'ar' : 'en');
-        return timeFormat.format(date);
+        return DateFormat('HH:mm', isArabic ? 'ar' : 'en').format(date);
       } else if (difference.inDays == 1) {
         final l10n = AppLocalizations.of(context);
         return l10n?.commonYesterday ?? 'Yesterday';
       } else if (difference.inDays < 7) {
-        final dayFormat = DateFormat('EEE', isArabic ? 'ar' : 'en');
-        return dayFormat.format(date);
+        return DateFormat('EEE', isArabic ? 'ar' : 'en').format(date);
       } else {
-        final dateTimeFormat = DateFormat(
-          isArabic ? 'd MMM yyyy • HH:mm' : 'MMM d, yyyy • HH:mm',
+        return DateFormat(
+          isArabic ? 'd MMM yyyy' : 'MMM d, yyyy',
           isArabic ? 'ar' : 'en',
-        );
-        return dateTimeFormat.format(date);
+        ).format(date);
       }
     } catch (e) {
       return dateString;
     }
+  }
+}
+
+/// Lightweight action button
+class _ActionButton extends StatelessWidget {
+  final bool isUnread;
+  final VoidCallback? onTap;
+  
+  const _ActionButton({
+    required this.isUnread,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Icon(
+          isUnread 
+              ? EvaIcons.checkmarkCircle2Outline 
+              : EvaIcons.checkmarkCircle2,
+          size: NotificationCard._iconSize,
+          color: isUnread 
+              ? NotificationCard._unreadIconColor 
+              : NotificationCard._readIconColor,
+        ),
+      ),
+    );
   }
 }

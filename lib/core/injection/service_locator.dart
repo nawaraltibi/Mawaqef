@@ -11,7 +11,7 @@ import '../../features/parking/bloc/parking_stats/parking_stats_bloc.dart';
 import '../../features/main_screen/bloc/owner_main/owner_main_bloc.dart';
 import '../../features/main_screen/bloc/user_main/user_main_bloc.dart';
 import '../../core/bloc/locale_cubit.dart';
-import '../../features/vehicles/data/datasources/vehicles_remote_data_source.dart';
+import '../../features/vehicles/data/datasources/vehicles_remote_datasource.dart';
 import '../../features/vehicles/data/repositories/vehicles_repository_impl.dart';
 import '../../features/vehicles/domain/repositories/vehicles_repository.dart';
 import '../../features/vehicles/domain/usecases/get_vehicles_usecase.dart';
@@ -26,6 +26,7 @@ import '../../features/parking_map/data/repositories/parking_map_repository_impl
 import '../../features/parking_map/domain/repositories/parking_map_repository.dart';
 import '../../features/parking_map/domain/usecases/get_all_parking_lots_usecase.dart';
 import '../../features/parking_map/domain/usecases/get_parking_details_usecase.dart';
+import '../../features/parking_map/domain/usecases/search_nearby_parking_usecase.dart';
 import '../../features/parking_map/presentation/bloc/parking_map_bloc.dart';
 import '../../features/booking/bloc/payment/payment_bloc.dart';
 import '../../features/booking/bloc/booking_action/booking_action_bloc.dart';
@@ -33,15 +34,15 @@ import '../../features/booking/bloc/bookings_list/bookings_list_bloc.dart';
 import '../../features/violations/data/datasources/violations_remote_datasource.dart';
 import '../../features/violations/data/repositories/violations_repository_impl.dart';
 import '../../features/violations/domain/repositories/violations_repository.dart';
-import '../../features/violations/domain/usecases/get_unpaid_violations.dart';
-import '../../features/violations/domain/usecases/get_paid_violations.dart';
-import '../../features/violations/domain/usecases/pay_violation.dart';
+import '../../features/violations/domain/usecases/get_unpaid_violations_usecase.dart';
+import '../../features/violations/domain/usecases/get_paid_violations_usecase.dart';
+import '../../features/violations/domain/usecases/pay_violation_usecase.dart';
 import '../../features/violations/presentation/bloc/violations_bloc.dart';
 import '../../features/notifications/data/datasources/notifications_remote_datasource.dart';
 import '../../features/notifications/data/repositories/notifications_repository_impl.dart';
 import '../../features/notifications/domain/repositories/notifications_repository.dart';
-import '../../features/notifications/domain/usecases/get_all_notifications.dart';
-import '../../features/notifications/domain/usecases/mark_notification_as_read.dart';
+import '../../features/notifications/domain/usecases/get_all_notifications_usecase.dart';
+import '../../features/notifications/domain/usecases/mark_notification_as_read_usecase.dart';
 import '../../features/notifications/presentation/bloc/notifications_bloc.dart';
 import '../../core/location/location_repository.dart';
 import '../../core/services/parking_list_refresh_notifier.dart';
@@ -151,6 +152,10 @@ Future<void> setupServiceLocator() async {
     () => GetParkingDetailsUseCase(getIt<ParkingMapRepository>()),
   );
 
+  getIt.registerLazySingleton<SearchNearbyParkingUseCase>(
+    () => SearchNearbyParkingUseCase(getIt<ParkingMapRepository>()),
+  );
+
   // Use Cases (Location)
   getIt.registerLazySingleton<GetCurrentLocationUseCase>(
     () => GetCurrentLocationUseCase(getIt<LocationRepository>()),
@@ -227,6 +232,7 @@ Future<void> setupServiceLocator() async {
       getAllParkingLotsUseCase: getIt<GetAllParkingLotsUseCase>(),
       getParkingDetailsUseCase: getIt<GetParkingDetailsUseCase>(),
       getCurrentLocationUseCase: getIt<GetCurrentLocationUseCase>(),
+      searchNearbyParkingUseCase: getIt<SearchNearbyParkingUseCase>(),
     ),
   );
 
@@ -244,7 +250,8 @@ Future<void> setupServiceLocator() async {
     ),
   );
 
-  getIt.registerFactory<NotificationsBloc>(
+  // Use LazySingleton for NotificationsBloc to persist read state across navigations
+  getIt.registerLazySingleton<NotificationsBloc>(
     () => NotificationsBloc(
       getAllNotificationsUseCase: getIt<GetAllNotificationsUseCase>(),
       markNotificationAsReadUseCase: getIt<MarkNotificationAsReadUseCase>(),

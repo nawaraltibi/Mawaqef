@@ -58,11 +58,13 @@ class ProfileFailure extends ProfileState {
   final String error;
   final int statusCode;
   final UpdateProfileRequest? updateRequest;
+  final ProfileDataResponse? profileData;
 
   ProfileFailure({
     required this.error,
     required this.statusCode,
     this.updateRequest,
+    this.profileData,
   });
 }
 

@@ -5,14 +5,15 @@ import '../bloc/notifications_bloc.dart';
 import 'notifications_screen.dart';
 
 /// Notifications Page
-/// Provides NotificationsBloc and triggers initial load
+/// Provides NotificationsBloc (singleton) and triggers initial load
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<NotificationsBloc>(
-      create: (_) => getIt<NotificationsBloc>(),
+    // Use BlocProvider.value since NotificationsBloc is a singleton
+    return BlocProvider<NotificationsBloc>.value(
+      value: getIt<NotificationsBloc>(),
       child: const NotificationsScreen(),
     );
   }

@@ -1,4 +1,5 @@
 import '../../domain/entities/notification_entity.dart';
+import '../../domain/entities/notifications_result.dart';
 import '../../domain/repositories/notifications_repository.dart';
 import '../datasources/notifications_remote_datasource.dart';
 import '../models/notification_model.dart';
@@ -14,17 +15,20 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
   });
 
   @override
-  Future<List<NotificationEntity>> getAllNotifications() async {
+  Future<NotificationsResult> getAllNotifications() async {
     try {
       final response = await remoteDataSource.getAllNotifications();
       
-      // Filter to only return unread notifications (is_read = 0)
-      final unreadNotifications = response.notifications
-          .where((model) => !model.isRead) // isRead = false means unread
+      // Return ALL notifications (both read and unread)
+      // The presentation layer will split them into sections
+      final allNotifications = response.notifications
           .map((model) => _modelToEntity(model))
           .toList();
       
-      return unreadNotifications;
+      return NotificationsResult(
+        notifications: allNotifications,
+        unreadCount: response.unreadCount,
+      );
     } on AppException {
       rethrow;
     } catch (e) {

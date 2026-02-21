@@ -193,8 +193,10 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                 }
               },
               listenWhen: (previous, current) {
-                // Only listen to BookingDetailsLoaded states
-                return current is BookingDetailsLoaded;
+                // Only listen to BookingDetailsLoaded states, NOT RemainingTimeUpdated
+                // This prevents restarting timer on every tick
+                return current is BookingDetailsLoaded &&
+                    current is! RemainingTimeUpdated;
               },
               child: BlocBuilder<BookingDetailsBloc, BookingDetailsState>(
                 builder: (context, state) {

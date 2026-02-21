@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/app_exception.dart';
+import '../../models/profile_data_response.dart';
 import '../../models/update_profile_request.dart';
 import '../profile/profile_bloc.dart';
 
@@ -7,7 +8,12 @@ import '../profile/profile_bloc.dart';
 /// Note: This mixin must be used with a Bloc<ProfileEvent, ProfileState>
 mixin ProfileErrorHandlerMixin on Bloc<ProfileEvent, ProfileState> {
   /// Handle error and emit failure state
-  void handleError(Object error, Emitter<ProfileState> emit, {UpdateProfileRequest? updateRequest}) {
+  void handleError(
+    Object error,
+    Emitter<ProfileState> emit, {
+    UpdateProfileRequest? updateRequest,
+    ProfileDataResponse? profileData,
+  }) {
     String errorMessage = '';
     int statusCode = 500;
 
@@ -32,6 +38,7 @@ mixin ProfileErrorHandlerMixin on Bloc<ProfileEvent, ProfileState> {
       error: errorMessage,
       statusCode: statusCode,
       updateRequest: updateRequest,
+      profileData: profileData,
     ));
   }
 }

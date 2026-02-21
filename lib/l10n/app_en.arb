@@ -128,6 +128,26 @@
   "@authConfirmPasswordHint": {
     "description": "Confirm password field hint text"
   },
+  "authHelperEmail": "Enter a valid email address",
+  "@authHelperEmail": {
+    "description": "Helper text for email field (instructional, not error)"
+  },
+  "authHelperPassword": "Must be at least 8 characters",
+  "@authHelperPassword": {
+    "description": "Helper text for password field (instructional, not error)"
+  },
+  "authHelperFullName": "Enter your full name (max 255 characters)",
+  "@authHelperFullName": {
+    "description": "Helper text for full name field (instructional, not error)"
+  },
+  "authHelperPhone": "Include country code (e.g., +966)",
+  "@authHelperPhone": {
+    "description": "Helper text for phone field (instructional, not error)"
+  },
+  "authHelperConfirmPassword": "Re-enter your password to confirm",
+  "@authHelperConfirmPassword": {
+    "description": "Helper text for confirm password field (instructional, not error)"
+  },
   "authNoAccount": "Don't have an account? ",
   "@authNoAccount": {
     "description": "Text before register link on login screen"
@@ -552,7 +572,7 @@
   "@parkingSuccessCreate": {
     "description": "Success message after creating parking"
   },
-  "parkingSuccessUpdate": "Parking update request submitted. Waiting for admin approval.",
+  "parkingSuccessUpdate": "Parking updated successfully",
   "@parkingSuccessUpdate": {
     "description": "Success message after updating parking"
   },
@@ -1625,6 +1645,14 @@
   "@notificationsNotFound": {
     "description": "Message when notification is not found or invalid"
   },
+  "notificationsUnread": "Unread",
+  "@notificationsUnread": {
+    "description": "Section header for unread notifications"
+  },
+  "notificationsRead": "Read",
+  "@notificationsRead": {
+    "description": "Section header for read notifications"
+  },
   "commonYesterday": "Yesterday",
   "@commonYesterday": {
     "description": "Relative date label for previous day"
@@ -1704,5 +1732,256 @@
   "errorConnectionFailed": "Could not connect to server. Please check your network or server address.",
   "@errorConnectionFailed": {
     "description": "Connection failed error message"
+  },
+  "searchNearbyParking": "Search Nearby",
+  "@searchNearbyParking": {
+    "description": "Button text for searching nearby parking"
+  },
+  "searchingNearbyParking": "Searching nearby parking...",
+  "@searchingNearbyParking": {
+    "description": "Loading message when searching nearby parking"
+  },
+  "noNearbyParkingFound": "No nearby parking found",
+  "@noNearbyParkingFound": {
+    "description": "Message when no nearby parking found"
+  },
+  "foundNearbyParking": "Found",
+  "@foundNearbyParking": {
+    "description": "Found label for search results"
+  },
+  "parkingLots": "parking lots",
+  "@parkingLots": {
+    "description": "Parking lots label"
+  },
+  "searchError": "Search failed",
+  "@searchError": {
+    "description": "Error message when search fails"
+  },
+  "cancelSearch": "Cancel search",
+  "@cancelSearch": {
+    "description": "Cancel search button text"
+  },
+  "noUnreadNotifications": "No unread notifications",
+  "@noUnreadNotifications": {
+    "description": "Empty state message for unread notifications tab"
+  },
+  "noReadNotifications": "No read notifications",
+  "@noReadNotifications": {
+    "description": "Empty state message for read notifications tab"
+  },
+  "full": "Full",
+  "@full": {
+    "description": "Full status label for parking lots with no availability"
+  },
+  "parkingDashboardCameraData": "Camera Data",
+  "@parkingDashboardCameraData": {
+    "description": "Indicator that displayed data is from camera detection"
+  },
+  "parkingDashboardBookingAvailable": "Bookable Spaces",
+  "@parkingDashboardBookingAvailable": {
+    "description": "Label for booking-based available spaces count"
+  },
+  "cameraAvailability": "Camera Availability",
+  "@cameraAvailability": {
+    "description": "Label for camera-detected availability"
+  },
+  "bookingAvailability": "Booking Availability",
+  "@bookingAvailability": {
+    "description": "Label for booking-based availability"
+  },
+  "occupancyStatusAvailable": "Available",
+  "@occupancyStatusAvailable": {
+    "description": "Occupancy status when spaces are available"
+  },
+  "occupancyStatusLimited": "Limited",
+  "@occupancyStatusLimited": {
+    "description": "Occupancy status when spaces are limited"
+  },
+  "occupancyStatusFull": "Full",
+  "@occupancyStatusFull": {
+    "description": "Occupancy status when parking is full"
+  },
+  "networkErrorRequestCancelled": "Request was cancelled by the user.",
+  "@networkErrorRequestCancelled": {
+    "description": "Error message when user cancels a network request"
+  },
+  "networkErrorTimeout": "Request timed out. Please try again later.",
+  "@networkErrorTimeout": {
+    "description": "Error message when network request times out"
+  },
+  "networkErrorNoInternet": "No Internet connection. Please check your network.",
+  "@networkErrorNoInternet": {
+    "description": "Error message when there is no internet connection"
+  },
+  "networkErrorConnection": "Connection error occurred. Please try again.",
+  "@networkErrorConnection": {
+    "description": "Error message for generic connection errors"
+  },
+  "networkErrorBadCertificate": "Security certificate error occurred.",
+  "@networkErrorBadCertificate": {
+    "description": "Error message for SSL/certificate errors"
+  },
+  "networkErrorBadResponse": "Server returned an unexpected response.",
+  "@networkErrorBadResponse": {
+    "description": "Error message for bad server responses"
+  },
+  "networkErrorUnknown": "An unknown network error occurred.",
+  "@networkErrorUnknown": {
+    "description": "Error message for unknown network errors"
+  },
+  "networkErrorUnexpectedFormat": "Unexpected response format from server.",
+  "@networkErrorUnexpectedFormat": {
+    "description": "Error message when API response format is unexpected"
+  },
+  "networkErrorUnexpectedStatus": "Unexpected response status: {statusCode}",
+  "@networkErrorUnexpectedStatus": {
+    "description": "Error message for unexpected HTTP status codes",
+    "placeholders": {
+      "statusCode": {
+        "type": "int"
+      }
+    }
+  },
+  "locationErrorServicesDisabled": "Location services are disabled. Please enable location services.",
+  "@locationErrorServicesDisabled": {
+    "description": "Error when location services are disabled on device"
+  },
+  "locationErrorPermissionDenied": "Location permissions are denied. Please grant location permission.",
+  "@locationErrorPermissionDenied": {
+    "description": "Error when location permission is denied"
+  },
+  "locationErrorPermissionPermanentlyDenied": "Location permissions are permanently denied. Please enable them in app settings.",
+  "@locationErrorPermissionPermanentlyDenied": {
+    "description": "Error when location permission is permanently denied"
+  },
+  "locationErrorFailed": "Failed to get current location. Please try again.",
+  "@locationErrorFailed": {
+    "description": "Generic error when getting location fails"
+  },
+  "locationErrorFailedWithDetails": "Failed to get current location: {details}",
+  "@locationErrorFailedWithDetails": {
+    "description": "Error when getting location fails with details",
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "validationErrorPlateNumberRequired": "Plate number is required",
+  "@validationErrorPlateNumberRequired": {
+    "description": "Validation error when plate number is empty"
+  },
+  "validationErrorCarMakeRequired": "Car make is required",
+  "@validationErrorCarMakeRequired": {
+    "description": "Validation error when car make is empty"
+  },
+  "validationErrorCarModelRequired": "Car model is required",
+  "@validationErrorCarModelRequired": {
+    "description": "Validation error when car model is empty"
+  },
+  "validationErrorColorRequired": "Color is required",
+  "@validationErrorColorRequired": {
+    "description": "Validation error when vehicle color is empty"
+  },
+  "validationErrorInvalidVehicleId": "Invalid vehicle ID",
+  "@validationErrorInvalidVehicleId": {
+    "description": "Validation error for invalid vehicle ID"
+  },
+  "operationErrorFailedToAddVehicle": "Failed to add vehicle. Please try again.",
+  "@operationErrorFailedToAddVehicle": {
+    "description": "Error when adding vehicle fails"
+  },
+  "operationErrorFailedToUpdateVehicle": "Failed to update vehicle. Please try again.",
+  "@operationErrorFailedToUpdateVehicle": {
+    "description": "Error when updating vehicle fails"
+  },
+  "operationErrorFailedToDeleteVehicle": "Failed to delete vehicle. Please try again.",
+  "@operationErrorFailedToDeleteVehicle": {
+    "description": "Error when deleting vehicle fails"
+  },
+  "operationErrorFailedToGetVehicles": "Failed to get vehicles. Please try again.",
+  "@operationErrorFailedToGetVehicles": {
+    "description": "Error when fetching vehicles fails"
+  },
+  "operationErrorFailedToParkingLots": "Failed to get parking lots. Please try again.",
+  "@operationErrorFailedToParkingLots": {
+    "description": "Error when fetching parking lots fails"
+  },
+  "operationErrorFailedToGetParkingDetails": "Failed to get parking details. Please try again.",
+  "@operationErrorFailedToGetParkingDetails": {
+    "description": "Error when fetching parking details fails"
+  },
+  "operationErrorFailedToSearchNearby": "Failed to search nearby parking. Please try again.",
+  "@operationErrorFailedToSearchNearby": {
+    "description": "Error when searching nearby parking fails"
+  },
+  "operationErrorParkingNotFound": "Parking lot not found.",
+  "@operationErrorParkingNotFound": {
+    "description": "Error when parking lot with given ID is not found"
+  },
+  "operationErrorFailedToGetNotifications": "Failed to get notifications. Please try again.",
+  "@operationErrorFailedToGetNotifications": {
+    "description": "Error when fetching notifications fails"
+  },
+  "operationErrorFailedToMarkNotificationRead": "Failed to mark notification as read.",
+  "@operationErrorFailedToMarkNotificationRead": {
+    "description": "Error when marking notification as read fails"
+  },
+  "operationErrorFailedToPayViolation": "Failed to pay violation. Please try again.",
+  "@operationErrorFailedToPayViolation": {
+    "description": "Error when paying violation fails"
+  },
+  "operationErrorFailedToGetViolations": "Failed to get violations. Please try again.",
+  "@operationErrorFailedToGetViolations": {
+    "description": "Error when fetching violations fails"
+  },
+  "operationErrorBookingDataNull": "Booking data is not available.",
+  "@operationErrorBookingDataNull": {
+    "description": "Error when booking data is null"
+  },
+  "operationErrorFailedToInitializeMap": "Failed to initialize map. Please try again.",
+  "@operationErrorFailedToInitializeMap": {
+    "description": "Error when map initialization fails"
+  },
+  "operationErrorDownloadDirectory": "Could not access download directory.",
+  "@operationErrorDownloadDirectory": {
+    "description": "Error when download directory is not accessible"
+  },
+  "successVehicleAdded": "Vehicle added successfully",
+  "@successVehicleAdded": {
+    "description": "Success message after adding a vehicle"
+  },
+  "successVehicleUpdateRequested": "Update request submitted. Waiting for admin approval.",
+  "@successVehicleUpdateRequested": {
+    "description": "Success message after requesting vehicle update"
+  },
+  "successVehicleDeleted": "Vehicle deleted successfully",
+  "@successVehicleDeleted": {
+    "description": "Success message after deleting a vehicle"
+  },
+  "successViolationPaid": "Violation paid successfully",
+  "@successViolationPaid": {
+    "description": "Success message after paying a violation"
+  },
+  "ownerPendingApprovalMessage": "Your account is pending admin approval. Please wait until your account is activated.",
+  "@ownerPendingApprovalMessage": {
+    "description": "Message shown when owner account is pending approval"
+  },
+  "homePage": "Home",
+  "@homePage": {
+    "description": "Home page title"
+  },
+  "homePagePlaceholder": "Home Page - Coming soon",
+  "@homePagePlaceholder": {
+    "description": "Placeholder text for home page under development"
+  },
+  "perHourShort": "{rate}/hr",
+  "@perHourShort": {
+    "description": "Short format for hourly rate display",
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
   }
 }

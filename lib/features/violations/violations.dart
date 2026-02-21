@@ -6,9 +6,9 @@ export 'domain/entities/violation_entity.dart';
 export 'domain/entities/parking_lot_entity.dart';
 export 'domain/entities/vehicle_entity.dart';
 export 'domain/repositories/violations_repository.dart';
-export 'domain/usecases/get_unpaid_violations.dart';
-export 'domain/usecases/get_paid_violations.dart';
-export 'domain/usecases/pay_violation.dart';
+export 'domain/usecases/get_unpaid_violations_usecase.dart';
+export 'domain/usecases/get_paid_violations_usecase.dart';
+export 'domain/usecases/pay_violation_usecase.dart';
 
 // Data Layer
 export 'data/models/violation_model.dart';

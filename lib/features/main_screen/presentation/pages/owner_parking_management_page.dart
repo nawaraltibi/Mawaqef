@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/injection/service_locator.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../notifications/presentation/bloc/notifications_bloc.dart';
 import '../../../parking/bloc/parking_list/parking_list_bloc.dart';
 import '../../../parking/bloc/parking_stats/parking_stats_bloc.dart';
 import '../../../parking/presentation/pages/parking_list_screen.dart';
@@ -62,6 +66,25 @@ class _OwnerParkingManagementPageState
         length: 2,
         child: Column(
           children: [
+            // App Bar with Title and Notifications
+            Padding(
+              padding: EdgeInsets.only(
+                left: 16.w,
+                right: 8.w,
+                top: 8.h,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    l10n.ownerTabParkingManagement,
+                    style: AppTextStyles.headlineSmall(context),
+                  ),
+                  const _OwnerNotificationsIconButton(),
+                ],
+              ),
+            ),
+            SizedBox(height: 8.h),
             // Modern TabBar with smooth design
             Container(
               margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
@@ -158,6 +181,92 @@ class _OwnerParkingManagementPageState
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Owner Notifications Icon Button Widget
+/// Displays notification icon with unread count badge for owner
+class _OwnerNotificationsIconButton extends StatefulWidget {
+  const _OwnerNotificationsIconButton();
+
+  @override
+  State<_OwnerNotificationsIconButton> createState() =>
+      _OwnerNotificationsIconButtonState();
+}
+
+class _OwnerNotificationsIconButtonState extends State<_OwnerNotificationsIconButton> {
+  late NotificationsBloc _notificationsBloc;
+  bool _hasLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationsBloc = getIt<NotificationsBloc>();
+    // Load notifications once
+    if (!_hasLoaded) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _notificationsBloc.add(GetAllNotificationsRequested());
+        _hasLoaded = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: _notificationsBloc,
+      child: BlocBuilder<NotificationsBloc, NotificationsState>(
+        builder: (context, state) {
+          // Use unreadCount from server for accurate badge count
+          int unreadCount = 0;
+          if (state is NotificationsLoaded) {
+            unreadCount = state.unreadCount;
+          }
+
+          final l10n = AppLocalizations.of(context);
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                icon: Icon(
+                  EvaIcons.bellOutline,
+                  size: 24.sp,
+                ),
+                tooltip: l10n?.notificationsTitle ?? 'Notifications',
+                onPressed: () {
+                  context.push(Routes.notificationsPath);
+                },
+              ),
+              if (unreadCount > 0)
+                Positioned(
+                  right: 6,
+                  top: 6,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: AppColors.error,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      unreadCount > 9 ? '9+' : unreadCount.toString(),
+                      style: const TextStyle(
+                        color: AppColors.textOnPrimary,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

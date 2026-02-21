@@ -16,7 +16,6 @@ import '../../bloc/parking_list/parking_list_bloc.dart';
 import '../../core/enums/parking_filter.dart';
 import '../../models/parking_model.dart';
 import '../utils/parking_error_handler.dart';
-import '../utils/parking_filter_service.dart';
 import '../widgets/parking_empty_state.dart';
 import '../widgets/parking_filter_chips.dart';
 import '../widgets/parking_no_results_state.dart';
@@ -226,14 +225,12 @@ class ModernParkingCard extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    // Calculate occupancy safely using real data from API
+    // Use backend-provided values (no frontend calculations)
     final totalSpaces = parking.totalSpaces > 0 ? parking.totalSpaces : 1;
-    // Use availableSpaces from API if available, otherwise calculate from total
-    final availableSpaces = parking.availableSpaces ?? totalSpaces;
-    final occupiedSpaces = (totalSpaces - availableSpaces).clamp(
-      0,
-      totalSpaces,
-    );
+    // Use camera-based vacant_spaces for display, fallback to booking-based
+    final availableSpaces = parking.displayAvailableSpaces;
+    // Use display occupied spaces (camera-based if available)
+    final occupiedSpaces = parking.displayOccupiedSpaces;
     final occupancyPercent = (occupiedSpaces / totalSpaces).clamp(0.0, 1.0);
 
     return Card(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import '../../../core/styles/app_durations.dart';
 import '../../../core/utils/api_connection_error_handler.dart';
 import '../../../core/utils/app_exception.dart';
 import '../../repositories/auth_local_repository.dart';
@@ -16,7 +17,6 @@ import 'api_request.dart';
 /// - Request/response logging in debug mode
 /// - Handles all Dio exceptions and converts them to AppException
 class DioProvider {
-  static const requestTimeout = Duration(seconds: 10);
   final Dio _dio;
 
   static final DioProvider instance = DioProvider._internal();
@@ -26,8 +26,8 @@ class DioProvider {
       : _dio = Dio(
           BaseOptions(
             baseUrl: APIConfig.appAPI,
-            connectTimeout: requestTimeout,
-            receiveTimeout: requestTimeout,
+            connectTimeout: AppDurations.apiConnectTimeout,
+            receiveTimeout: AppDurations.apiReceiveTimeout,
           ),
         ) {
     _initializeInterceptors();

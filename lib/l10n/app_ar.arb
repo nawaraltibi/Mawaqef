@@ -128,6 +128,26 @@
   "@authConfirmPasswordHint": {
     "description": "Confirm password field hint text"
   },
+  "authHelperEmail": "أدخل عنوان بريد إلكتروني صالح",
+  "@authHelperEmail": {
+    "description": "Helper text for email field (instructional, not error)"
+  },
+  "authHelperPassword": "يجب أن تكون 8 أحرف على الأقل",
+  "@authHelperPassword": {
+    "description": "Helper text for password field (instructional, not error)"
+  },
+  "authHelperFullName": "أدخل اسمك الكامل (255 حرف كحد أقصى)",
+  "@authHelperFullName": {
+    "description": "Helper text for full name field (instructional, not error)"
+  },
+  "authHelperPhone": "أدخل رمز الدولة (مثال: 966+)",
+  "@authHelperPhone": {
+    "description": "Helper text for phone field (instructional, not error)"
+  },
+  "authHelperConfirmPassword": "أعد إدخال كلمة المرور للتأكيد",
+  "@authHelperConfirmPassword": {
+    "description": "Helper text for confirm password field (instructional, not error)"
+  },
   "authNoAccount": "ليس لديك حساب؟ ",
   "@authNoAccount": {
     "description": "Text before register link on login screen"
@@ -552,7 +572,7 @@
   "@parkingSuccessCreate": {
     "description": "Success message after creating parking"
   },
-  "parkingSuccessUpdate": "تم إرسال طلب تحديث الموقف. في انتظار موافقة المدير.",
+  "parkingSuccessUpdate": "تم تحديث الموقف بنجاح",
   "@parkingSuccessUpdate": {
     "description": "Success message after updating parking"
   },
@@ -1625,6 +1645,14 @@
   "@notificationsNotFound": {
     "description": "Message when notification is not found or invalid"
   },
+  "notificationsUnread": "غير مقروءة",
+  "@notificationsUnread": {
+    "description": "Section header for unread notifications"
+  },
+  "notificationsRead": "مقروءة",
+  "@notificationsRead": {
+    "description": "Section header for read notifications"
+  },
   "commonYesterday": "أمس",
   "@commonYesterday": {
     "description": "Relative date label for previous day"
@@ -1704,5 +1732,256 @@
   "errorConnectionFailed": "تعذر الاتصال بالخادم. يرجى التحقق من الشبكة أو عنوان الخادم.",
   "@errorConnectionFailed": {
     "description": "Connection failed error message"
+  },
+  "searchNearbyParking": "بحث قريب",
+  "@searchNearbyParking": {
+    "description": "Button text for searching nearby parking"
+  },
+  "searchingNearbyParking": "جاري البحث عن مواقف قريبة...",
+  "@searchingNearbyParking": {
+    "description": "Loading message when searching nearby parking"
+  },
+  "noNearbyParkingFound": "لا توجد مواقف قريبة",
+  "@noNearbyParkingFound": {
+    "description": "Message when no nearby parking found"
+  },
+  "foundNearbyParking": "تم العثور على",
+  "@foundNearbyParking": {
+    "description": "Found label for search results"
+  },
+  "parkingLots": "مواقف",
+  "@parkingLots": {
+    "description": "Parking lots label"
+  },
+  "searchError": "فشل البحث",
+  "@searchError": {
+    "description": "Error message when search fails"
+  },
+  "cancelSearch": "إلغاء البحث",
+  "@cancelSearch": {
+    "description": "Cancel search button text"
+  },
+  "noUnreadNotifications": "لا توجد إشعارات غير مقروءة",
+  "@noUnreadNotifications": {
+    "description": "Empty state message for unread notifications tab"
+  },
+  "noReadNotifications": "لا توجد إشعارات مقروءة",
+  "@noReadNotifications": {
+    "description": "Empty state message for read notifications tab"
+  },
+  "full": "ممتلئ",
+  "@full": {
+    "description": "Full status label for parking lots with no availability"
+  },
+  "parkingDashboardCameraData": "بيانات الكاميرا",
+  "@parkingDashboardCameraData": {
+    "description": "Indicator that displayed data is from camera detection"
+  },
+  "parkingDashboardBookingAvailable": "أماكن قابلة للحجز",
+  "@parkingDashboardBookingAvailable": {
+    "description": "Label for booking-based available spaces count"
+  },
+  "cameraAvailability": "التوفر عبر الكاميرا",
+  "@cameraAvailability": {
+    "description": "Label for camera-detected availability"
+  },
+  "bookingAvailability": "التوفر عبر الحجز",
+  "@bookingAvailability": {
+    "description": "Label for booking-based availability"
+  },
+  "occupancyStatusAvailable": "متاح",
+  "@occupancyStatusAvailable": {
+    "description": "Occupancy status when spaces are available"
+  },
+  "occupancyStatusLimited": "محدود",
+  "@occupancyStatusLimited": {
+    "description": "Occupancy status when spaces are limited"
+  },
+  "occupancyStatusFull": "ممتلئ",
+  "@occupancyStatusFull": {
+    "description": "Occupancy status when parking is full"
+  },
+  "networkErrorRequestCancelled": "تم إلغاء الطلب من قبل المستخدم.",
+  "@networkErrorRequestCancelled": {
+    "description": "Error message when user cancels a network request"
+  },
+  "networkErrorTimeout": "انتهت مهلة الطلب. يرجى المحاولة لاحقاً.",
+  "@networkErrorTimeout": {
+    "description": "Error message when network request times out"
+  },
+  "networkErrorNoInternet": "لا يوجد اتصال بالإنترنت. يرجى التحقق من الشبكة.",
+  "@networkErrorNoInternet": {
+    "description": "Error message when there is no internet connection"
+  },
+  "networkErrorConnection": "حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.",
+  "@networkErrorConnection": {
+    "description": "Error message for generic connection errors"
+  },
+  "networkErrorBadCertificate": "حدث خطأ في شهادة الأمان.",
+  "@networkErrorBadCertificate": {
+    "description": "Error message for SSL/certificate errors"
+  },
+  "networkErrorBadResponse": "أرجع الخادم استجابة غير متوقعة.",
+  "@networkErrorBadResponse": {
+    "description": "Error message for bad server responses"
+  },
+  "networkErrorUnknown": "حدث خطأ شبكة غير معروف.",
+  "@networkErrorUnknown": {
+    "description": "Error message for unknown network errors"
+  },
+  "networkErrorUnexpectedFormat": "تنسيق استجابة غير متوقع من الخادم.",
+  "@networkErrorUnexpectedFormat": {
+    "description": "Error message when API response format is unexpected"
+  },
+  "networkErrorUnexpectedStatus": "حالة استجابة غير متوقعة: {statusCode}",
+  "@networkErrorUnexpectedStatus": {
+    "description": "Error message for unexpected HTTP status codes",
+    "placeholders": {
+      "statusCode": {
+        "type": "int"
+      }
+    }
+  },
+  "locationErrorServicesDisabled": "خدمات الموقع معطلة. يرجى تفعيل خدمات الموقع.",
+  "@locationErrorServicesDisabled": {
+    "description": "Error when location services are disabled on device"
+  },
+  "locationErrorPermissionDenied": "تم رفض أذونات الموقع. يرجى منح إذن الموقع.",
+  "@locationErrorPermissionDenied": {
+    "description": "Error when location permission is denied"
+  },
+  "locationErrorPermissionPermanentlyDenied": "تم رفض أذونات الموقع بشكل دائم. يرجى تفعيلها في إعدادات التطبيق.",
+  "@locationErrorPermissionPermanentlyDenied": {
+    "description": "Error when location permission is permanently denied"
+  },
+  "locationErrorFailed": "فشل الحصول على الموقع الحالي. يرجى المحاولة مرة أخرى.",
+  "@locationErrorFailed": {
+    "description": "Generic error when getting location fails"
+  },
+  "locationErrorFailedWithDetails": "فشل الحصول على الموقع الحالي: {details}",
+  "@locationErrorFailedWithDetails": {
+    "description": "Error when getting location fails with details",
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "validationErrorPlateNumberRequired": "رقم اللوحة مطلوب",
+  "@validationErrorPlateNumberRequired": {
+    "description": "Validation error when plate number is empty"
+  },
+  "validationErrorCarMakeRequired": "ماركة السيارة مطلوبة",
+  "@validationErrorCarMakeRequired": {
+    "description": "Validation error when car make is empty"
+  },
+  "validationErrorCarModelRequired": "طراز السيارة مطلوب",
+  "@validationErrorCarModelRequired": {
+    "description": "Validation error when car model is empty"
+  },
+  "validationErrorColorRequired": "اللون مطلوب",
+  "@validationErrorColorRequired": {
+    "description": "Validation error when vehicle color is empty"
+  },
+  "validationErrorInvalidVehicleId": "معرف المركبة غير صالح",
+  "@validationErrorInvalidVehicleId": {
+    "description": "Validation error for invalid vehicle ID"
+  },
+  "operationErrorFailedToAddVehicle": "فشلت إضافة المركبة. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToAddVehicle": {
+    "description": "Error when adding vehicle fails"
+  },
+  "operationErrorFailedToUpdateVehicle": "فشل تحديث المركبة. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToUpdateVehicle": {
+    "description": "Error when updating vehicle fails"
+  },
+  "operationErrorFailedToDeleteVehicle": "فشل حذف المركبة. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToDeleteVehicle": {
+    "description": "Error when deleting vehicle fails"
+  },
+  "operationErrorFailedToGetVehicles": "فشل جلب المركبات. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToGetVehicles": {
+    "description": "Error when fetching vehicles fails"
+  },
+  "operationErrorFailedToParkingLots": "فشل جلب المواقف. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToParkingLots": {
+    "description": "Error when fetching parking lots fails"
+  },
+  "operationErrorFailedToGetParkingDetails": "فشل جلب تفاصيل الموقف. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToGetParkingDetails": {
+    "description": "Error when fetching parking details fails"
+  },
+  "operationErrorFailedToSearchNearby": "فشل البحث عن مواقف قريبة. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToSearchNearby": {
+    "description": "Error when searching nearby parking fails"
+  },
+  "operationErrorParkingNotFound": "الموقف غير موجود.",
+  "@operationErrorParkingNotFound": {
+    "description": "Error when parking lot with given ID is not found"
+  },
+  "operationErrorFailedToGetNotifications": "فشل جلب الإشعارات. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToGetNotifications": {
+    "description": "Error when fetching notifications fails"
+  },
+  "operationErrorFailedToMarkNotificationRead": "فشل تحديد الإشعار كمقروء.",
+  "@operationErrorFailedToMarkNotificationRead": {
+    "description": "Error when marking notification as read fails"
+  },
+  "operationErrorFailedToPayViolation": "فشل دفع المخالفة. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToPayViolation": {
+    "description": "Error when paying violation fails"
+  },
+  "operationErrorFailedToGetViolations": "فشل جلب المخالفات. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToGetViolations": {
+    "description": "Error when fetching violations fails"
+  },
+  "operationErrorBookingDataNull": "بيانات الحجز غير متاحة.",
+  "@operationErrorBookingDataNull": {
+    "description": "Error when booking data is null"
+  },
+  "operationErrorFailedToInitializeMap": "فشل تهيئة الخريطة. يرجى المحاولة مرة أخرى.",
+  "@operationErrorFailedToInitializeMap": {
+    "description": "Error when map initialization fails"
+  },
+  "operationErrorDownloadDirectory": "تعذر الوصول إلى مجلد التحميل.",
+  "@operationErrorDownloadDirectory": {
+    "description": "Error when download directory is not accessible"
+  },
+  "successVehicleAdded": "تمت إضافة المركبة بنجاح",
+  "@successVehicleAdded": {
+    "description": "Success message after adding a vehicle"
+  },
+  "successVehicleUpdateRequested": "تم إرسال طلب التحديث. في انتظار موافقة المدير.",
+  "@successVehicleUpdateRequested": {
+    "description": "Success message after requesting vehicle update"
+  },
+  "successVehicleDeleted": "تم حذف المركبة بنجاح",
+  "@successVehicleDeleted": {
+    "description": "Success message after deleting a vehicle"
+  },
+  "successViolationPaid": "تم دفع المخالفة بنجاح",
+  "@successViolationPaid": {
+    "description": "Success message after paying a violation"
+  },
+  "ownerPendingApprovalMessage": "حسابك في انتظار موافقة المدير. يرجى الانتظار حتى يتم تفعيل حسابك.",
+  "@ownerPendingApprovalMessage": {
+    "description": "Message shown when owner account is pending approval"
+  },
+  "homePage": "الرئيسية",
+  "@homePage": {
+    "description": "Home page title"
+  },
+  "homePagePlaceholder": "الصفحة الرئيسية - قريباً",
+  "@homePagePlaceholder": {
+    "description": "Placeholder text for home page under development"
+  },
+  "perHourShort": "{rate}/ساعة",
+  "@perHourShort": {
+    "description": "Short format for hourly rate display",
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
   }
 }

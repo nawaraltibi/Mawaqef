@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import '../../../../core/injection/service_locator.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/services/parking_list_refresh_notifier.dart';
 import '../../../../core/utils/navigation_utils.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/utils/auth_route_transitions.dart';
-import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_elevated_button.dart';
 import '../../../../core/widgets/unified_snackbar.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -93,138 +91,6 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
   Future<void> _handleUpdate() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final l10n = AppLocalizations.of(context)!;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.4),
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24.r),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: 320.w, maxWidth: 380.w),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 24.h),
-            decoration: BoxDecoration(
-              color: AppColors.brightWhite,
-              borderRadius: BorderRadius.circular(24.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
-                  spreadRadius: 0,
-                ),
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Icon
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.warning.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    EvaIcons.alertCircleOutline,
-                    size: 32.sp,
-                    color: AppColors.warning,
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                // Title
-                Text(
-                  l10n.parkingUpdateConfirmTitle,
-                  style: AppTextStyles.titleLarge(context),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 12.h),
-                // Message
-                Text(
-                  l10n.parkingUpdateConfirmMessage,
-                  style: AppTextStyles.bodyMedium(
-                    context,
-                    color: AppColors.secondaryText,
-                  ).copyWith(height: 1.5),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 24.h),
-                // Buttons
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2, // زدنا من مساحة زر Cancel
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 14.h,
-                            horizontal: 2.w,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.r),
-                          ),
-                          side: BorderSide(
-                            color: AppColors.border.withValues(alpha: 0.5),
-                            width: 1.5,
-                          ),
-                        ),
-                        child: Text(
-                          l10n.profileCancelButton,
-                          style: AppTextStyles.labelLarge(
-                            context,
-                            color: AppColors.secondaryText,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Expanded(
-                      flex:
-                          3, // قللنا شوي من مساحة Update (مثلاً خليها 3 بدل 3.5 لو تحب)
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 14.h,
-                            horizontal: 5.w,
-                          ),
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.r),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: Text(
-                          l10n.parkingUpdateButton,
-                          style: AppTextStyles.buttonText(
-                            context,
-                            color: AppColors.textOnPrimary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-
-    if (confirmed != true) return;
-
     // Validate location is selected
     if (_selectedLocation == null) {
       final l10n = AppLocalizations.of(context)!;
@@ -298,33 +164,6 @@ class _UpdateParkingScreenState extends State<UpdateParkingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(12.w),
-                      decoration: BoxDecoration(
-                        color: AppColors.warning.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            EvaIcons.infoOutline,
-                            size: 20.sp,
-                            color: AppColors.warning,
-                          ),
-                          SizedBox(width: 8.w),
-                          Expanded(
-                            child: Text(
-                              l10n.parkingUpdateRequiresApproval,
-                              style: AppTextStyles.bodySmall(
-                                context,
-                                color: AppColors.warning,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
                     ParkingFormFields(
                       lotNameController: _lotNameController,
                       addressController: _addressController,
