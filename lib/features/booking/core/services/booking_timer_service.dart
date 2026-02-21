@@ -44,7 +44,12 @@ class BookingTimerService {
       const Duration(seconds: 1),
       (timer) {
         final seconds = _remainingSeconds[bookingId];
-        if (seconds == null || seconds <= 0) {
+        // If no data yet (null), just wait for API response
+        if (seconds == null) {
+          return;
+        }
+        
+        if (seconds <= 0) {
           // Timer expired, emit 0 and stop
           controller.add(0);
           stopTimer(bookingId);
@@ -57,9 +62,11 @@ class BookingTimerService {
       },
     );
 
-    // Emit initial value
-    final initialSeconds = _remainingSeconds[bookingId] ?? 0;
-    controller.add(initialSeconds);
+    // Emit initial value only if we have data
+    final initialSeconds = _remainingSeconds[bookingId];
+    if (initialSeconds != null) {
+      controller.add(initialSeconds);
+    }
 
     return controller.stream;
   }

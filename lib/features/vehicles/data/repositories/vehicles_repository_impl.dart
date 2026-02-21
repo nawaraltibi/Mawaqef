@@ -1,6 +1,6 @@
 import '../../domain/entities/vehicle_entity.dart';
 import '../../domain/repositories/vehicles_repository.dart';
-import '../datasources/vehicles_remote_data_source.dart';
+import '../datasources/vehicles_remote_datasource.dart';
 import '../models/add_vehicle_request.dart';
 import '../models/update_vehicle_request.dart';
 import '../models/vehicle_model.dart';

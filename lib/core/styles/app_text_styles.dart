@@ -95,6 +95,13 @@ class AppTextStyles {
             color: AppColors.error,
           );
 
+  /// Field Helper - For instructional helper text below fields
+  /// Uses muted gray color (not red) to provide guidance without stress
+  static TextStyle fieldHelper(BuildContext context) =>
+      _textTheme(context).bodySmall!.copyWith(
+            color: AppColors.secondaryText.withValues(alpha: 0.8),
+          );
+
   /// Button Text - For button labels
   static TextStyle buttonText(BuildContext context, {Color? color}) =>
       _textTheme(context).labelLarge!.copyWith(color: color);

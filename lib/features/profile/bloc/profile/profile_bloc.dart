@@ -71,6 +71,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> with ProfileErrorHand
     UpdateProfile event,
     Emitter<ProfileState> emit,
   ) async {
+    // Capture current profile data before update attempt
+    final previousProfileData = state is ProfileLoaded
+        ? (state as ProfileLoaded).profileData
+        : ProfileCacheService.getCachedProfile();
+
     // Validate request locally first
     final validationErrors = event.request.validate();
     if (validationErrors.isNotEmpty) {
@@ -78,6 +83,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> with ProfileErrorHand
         error: validationErrors.join('\n'),
         statusCode: 422,
         updateRequest: event.request,
+        profileData: previousProfileData,
       ));
       return;
     }
@@ -110,7 +116,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> with ProfileErrorHand
       },
       onError: (error) {
         if (!emit.isDone) {
-          handleError(error, emit, updateRequest: event.request);
+          handleError(
+            error,
+            emit,
+            updateRequest: event.request,
+            profileData: previousProfileData,
+          );
         }
       },
     );
@@ -248,6 +259,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> with ProfileErrorHand
   ) {
     if (state is ProfileLoaded) {
       emit(ProfileLoaded(profileData: (state as ProfileLoaded).profileData));
+    } else if (state is ProfileFailure &&
+        (state as ProfileFailure).profileData != null) {
+      emit(ProfileLoaded(
+          profileData: (state as ProfileFailure).profileData!));
     } else {
       emit(ProfileInitial());
     }

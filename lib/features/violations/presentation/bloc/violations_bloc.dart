@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/async_runner.dart';
 import '../../domain/entities/violation_entity.dart';
-import '../../domain/usecases/get_unpaid_violations.dart';
-import '../../domain/usecases/get_paid_violations.dart';
-import '../../domain/usecases/pay_violation.dart';
+import '../../domain/usecases/get_unpaid_violations_usecase.dart';
+import '../../domain/usecases/get_paid_violations_usecase.dart';
+import '../../domain/usecases/pay_violation_usecase.dart';
 import 'mixins/violations_error_handler_mixin.dart';
 
 part 'violations_event.dart';

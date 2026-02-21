@@ -31,5 +31,25 @@ abstract class ParkingMapRepository {
   Future<ParkingDetailsEntity> getParkingDetails({
     required int lotId,
   });
+
+  /// Search nearby parking lots within a radius
+  /// 
+  /// Returns a list of ParkingLotEntity objects within the specified radius.
+  /// Only returns parking lots with available spaces > 0.
+  /// This endpoint is public and does not require authentication.
+  /// 
+  /// Parameters:
+  /// - [latitude]: User's current latitude
+  /// - [longitude]: User's current longitude
+  /// - [radiusKm]: Search radius in kilometers
+  /// 
+  /// Throws AppException on error:
+  /// - 500: Server errors
+  /// - Network errors
+  Future<List<ParkingLotEntity>> searchNearbyParking({
+    required double latitude,
+    required double longitude,
+    required double radiusKm,
+  });
 }
 

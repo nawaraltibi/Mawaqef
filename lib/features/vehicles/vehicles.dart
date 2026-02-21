@@ -17,7 +17,7 @@ export 'data/models/update_vehicle_request.dart';
 export 'data/models/update_vehicle_response.dart';
 export 'data/models/vehicles_list_response.dart';
 export 'data/models/delete_vehicle_response.dart';
-export 'data/datasources/vehicles_remote_data_source.dart';
+export 'data/datasources/vehicles_remote_datasource.dart';
 export 'data/repositories/vehicles_repository_impl.dart';
 
 // Presentation Layer - BLoC

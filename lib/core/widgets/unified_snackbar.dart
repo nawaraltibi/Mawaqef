@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../styles/app_colors.dart';
+import '../styles/app_dimens.dart';
+import '../styles/app_durations.dart';
 import '../styles/app_text_styles.dart';
 
 /// Unified Snackbar Types
@@ -18,9 +20,9 @@ class SnackbarConfig {
   final VoidCallback? onActionTap;
 
   const SnackbarConfig({
-    this.duration = const Duration(seconds: 3),
+    this.duration = AppDurations.snackbarStandard,
     this.behavior = SnackBarBehavior.floating,
-    this.margin = const EdgeInsets.all(16),
+    this.margin = const EdgeInsets.all(AppDimens.paddingL),
     this.width,
     this.showCloseButton = false,
     this.onTap,
@@ -45,7 +47,7 @@ class UnifiedSnackbar {
   }) {
     final snackbarConfig = config ??
         const SnackbarConfig(
-          duration: Duration(seconds: 2),
+          duration: AppDurations.snackbarShort,
           showCloseButton: false,
         );
 
@@ -208,15 +210,18 @@ class _SnackbarContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppDimens.paddingL.w,
+        vertical: AppDimens.paddingM.h,
+      ),
       decoration: BoxDecoration(
         color: _getBackgroundColor(),
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: _getBorderColor(), width: 1),
+        borderRadius: AppDimens.borderRadiusL,
+        border: Border.all(color: _getBorderColor(), width: AppDimens.dividerThickness),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryText.withValues(alpha: 0.1), // Use theme color instead of hardcoded black
-            blurRadius: 8,
+            color: AppColors.primaryText.withValues(alpha: 0.1),
+            blurRadius: AppDimens.spacingM,
             offset: const Offset(0, 2),
           ),
         ],
@@ -226,7 +231,7 @@ class _SnackbarContent extends StatelessWidget {
         children: [
           // Icon
           _buildIcon(),
-          SizedBox(width: 12.w),
+          SizedBox(width: AppDimens.spacingL.w),
 
           // Message
           Expanded(
@@ -241,13 +246,13 @@ class _SnackbarContent extends StatelessWidget {
 
           // Action Button
           if (actionLabel != null && onActionTap != null) ...[
-            SizedBox(width: 8.w),
+            SizedBox(width: AppDimens.spacingM.w),
             _buildActionButton(context),
           ],
 
           // Close Button
           if (showCloseButton) ...[
-            SizedBox(width: 8.w),
+            SizedBox(width: AppDimens.spacingM.w),
             _buildCloseButton(context),
           ],
         ],
@@ -257,13 +262,13 @@ class _SnackbarContent extends StatelessWidget {
 
   Widget _buildIcon() {
     return Container(
-      width: 24.w,
-      height: 24.h,
+      width: AppDimens.iconXXL.w,
+      height: AppDimens.iconXXL.h,
       decoration: BoxDecoration(
         color: _getIconBackgroundColor(),
         shape: BoxShape.circle,
       ),
-      child: Icon(_getIcon(), size: 16.sp, color: _getIconColor()),
+      child: Icon(_getIcon(), size: AppDimens.iconM.sp, color: _getIconColor()),
     );
   }
 
@@ -271,10 +276,13 @@ class _SnackbarContent extends StatelessWidget {
     return GestureDetector(
       onTap: onActionTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppDimens.paddingM.w,
+          vertical: AppDimens.paddingS.h / 2,
+        ),
         decoration: BoxDecoration(
           color: _getActionButtonColor(),
-          borderRadius: BorderRadius.circular(6.r),
+          borderRadius: AppDimens.borderRadiusS,
         ),
         child: Text(
           actionLabel!,
@@ -292,15 +300,15 @@ class _SnackbarContent extends StatelessWidget {
       onTap:
           onClose ?? () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
       child: Container(
-        width: 20.w,
-        height: 20.h,
+        width: AppDimens.iconL.w,
+        height: AppDimens.iconL.h,
         decoration: BoxDecoration(
           color: _getCloseButtonColor(),
           shape: BoxShape.circle,
         ),
         child: Icon(
           Icons.close,
-          size: 12.sp,
+          size: AppDimens.iconXS.sp,
           color: _getCloseButtonIconColor(),
         ),
       ),
@@ -311,11 +319,11 @@ class _SnackbarContent extends StatelessWidget {
   Color _getBackgroundColor() {
     switch (type) {
       case SnackbarType.success:
-        return const Color(0xFFF0F9F4);
+        return AppColors.snackbarSuccessBackground;
       case SnackbarType.error:
-        return const Color(0xFFFEF2F2);
+        return AppColors.snackbarErrorBackground;
       case SnackbarType.warning:
-        return const Color(0xFFFEFBF0);
+        return AppColors.snackbarWarningBackground;
       case SnackbarType.info:
         return AppColors.lightBlue;
     }
@@ -324,11 +332,11 @@ class _SnackbarContent extends StatelessWidget {
   Color _getBorderColor() {
     switch (type) {
       case SnackbarType.success:
-        return const Color(0xFFD1FAE5);
+        return AppColors.snackbarSuccessBorder;
       case SnackbarType.error:
-        return const Color(0xFFFECACA);
+        return AppColors.snackbarErrorBorder;
       case SnackbarType.warning:
-        return const Color(0xFFFDE68A);
+        return AppColors.snackbarWarningBorder;
       case SnackbarType.info:
         return AppColors.mediumBlue;
     }
@@ -337,11 +345,11 @@ class _SnackbarContent extends StatelessWidget {
   Color _getTextColor() {
     switch (type) {
       case SnackbarType.success:
-        return const Color(0xFF065F46);
+        return AppColors.snackbarSuccessText;
       case SnackbarType.error:
-        return const Color(0xFF991B1B);
+        return AppColors.snackbarErrorText;
       case SnackbarType.warning:
-        return const Color(0xFF92400E);
+        return AppColors.snackbarWarningText;
       case SnackbarType.info:
         return AppColors.primaryDark;
     }
@@ -350,11 +358,11 @@ class _SnackbarContent extends StatelessWidget {
   Color _getIconBackgroundColor() {
     switch (type) {
       case SnackbarType.success:
-        return const Color(0xFF10B981);
+        return AppColors.success;
       case SnackbarType.error:
         return AppColors.error;
       case SnackbarType.warning:
-        return const Color(0xFFF59E0B);
+        return AppColors.warning;
       case SnackbarType.info:
         return AppColors.primary;
     }
@@ -380,11 +388,11 @@ class _SnackbarContent extends StatelessWidget {
   Color _getActionButtonColor() {
     switch (type) {
       case SnackbarType.success:
-        return const Color(0xFF10B981);
+        return AppColors.success;
       case SnackbarType.error:
         return AppColors.error;
       case SnackbarType.warning:
-        return const Color(0xFFF59E0B);
+        return AppColors.warning;
       case SnackbarType.info:
         return AppColors.primary;
     }
@@ -431,7 +439,7 @@ class _OverlaySnackbarWidgetState extends State<_OverlaySnackbarWidget>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: AppDurations.standard,
       vsync: this,
     );
 
@@ -457,7 +465,7 @@ class _OverlaySnackbarWidgetState extends State<_OverlaySnackbarWidget>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: MediaQuery.of(context).padding.bottom + 16.h,
+      bottom: MediaQuery.of(context).padding.bottom + AppDimens.paddingL.h,
       left: widget.config.margin.left,
       right: widget.config.margin.right,
       child: SlideTransition(

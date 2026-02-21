@@ -18,6 +18,8 @@ class BookingDetailsBloc
   StreamSubscription<int>? _timerSubscription;
   BookingDetailsResponse? _cachedBookingDetails;
   int? _currentBookingId;
+  bool _isTimerStarted = false;
+  bool _isLoadingRemainingTime = false;
 
   BookingDetailsBloc({BookingTimerService? timerService})
       : _timerService = timerService ?? BookingTimerService(),
@@ -76,7 +78,7 @@ class BookingDetailsBloc
           errorCode: e.errorCode,
         ));
       }
-    } catch (e, stackTrace) {
+    } catch (e) {
       if (!emit.isDone) {
         emit(BookingDetailsError(
           bookingId: event.bookingId,
@@ -91,12 +93,18 @@ class BookingDetailsBloc
     LoadRemainingTime event,
     Emitter<BookingDetailsState> emit,
   ) async {
+    // Prevent duplicate API calls
+    if (_isLoadingRemainingTime) return;
+    _isLoadingRemainingTime = true;
+
     emit(RemainingTimeLoading(bookingId: event.bookingId));
 
     try {
       final response = await BookingRepository.getRemainingTime(
         bookingId: event.bookingId,
       );
+
+      _isLoadingRemainingTime = false;
 
       if (!emit.isDone && response.remainingSeconds != null) {
         // Store remaining seconds in timer service
@@ -132,6 +140,7 @@ class BookingDetailsBloc
         }
       }
     } on AppException catch (e) {
+      _isLoadingRemainingTime = false;
       if (!emit.isDone) {
         emit(BookingDetailsError(
           bookingId: event.bookingId,
@@ -141,6 +150,7 @@ class BookingDetailsBloc
         ));
       }
     } catch (e) {
+      _isLoadingRemainingTime = false;
       if (!emit.isDone) {
         emit(BookingDetailsError(
           bookingId: event.bookingId,
@@ -169,13 +179,20 @@ class BookingDetailsBloc
     StartRemainingTimeTimer event,
     Emitter<BookingDetailsState> emit,
   ) {
+    // Prevent starting timer multiple times
+    if (_isTimerStarted && _currentBookingId == event.bookingId) {
+      return;
+    }
+
     _currentBookingId = event.bookingId;
+    _isTimerStarted = true;
 
     // Cancel existing subscription
     _timerSubscription?.cancel();
 
-    // Fetch from API if needed
-    if (_timerService.shouldFetchFromApi(event.bookingId)) {
+    // Fetch from API if needed (only once)
+    if (_timerService.shouldFetchFromApi(event.bookingId) &&
+        !_isLoadingRemainingTime) {
       add(LoadRemainingTime(bookingId: event.bookingId));
     }
 
@@ -199,6 +216,7 @@ class BookingDetailsBloc
   ) {
     _timerSubscription?.cancel();
     _timerSubscription = null;
+    _isTimerStarted = false;
     if (_currentBookingId != null) {
       _timerService.stopTimer(_currentBookingId!);
     }
@@ -211,10 +229,11 @@ class BookingDetailsBloc
   ) async {
     final remainingSeconds = _timerService.getRemainingSeconds(event.bookingId);
     
+    // If no data yet, wait for API response
     if (remainingSeconds == null) return;
 
-    // If expired, fetch from API to verify
-    if (remainingSeconds <= 0) {
+    // If expired, fetch from API to verify (but only once)
+    if (remainingSeconds <= 0 && !_isLoadingRemainingTime) {
       add(LoadRemainingTime(bookingId: event.bookingId));
       return;
     }

@@ -108,6 +108,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get authConfirmPasswordHint => 'أعد إدخال كلمة المرور';
 
   @override
+  String get authHelperEmail => 'أدخل عنوان بريد إلكتروني صالح';
+
+  @override
+  String get authHelperPassword => 'يجب أن تكون 8 أحرف على الأقل';
+
+  @override
+  String get authHelperFullName => 'أدخل اسمك الكامل (255 حرف كحد أقصى)';
+
+  @override
+  String get authHelperPhone => 'أدخل رمز الدولة (مثال: 966+)';
+
+  @override
+  String get authHelperConfirmPassword => 'أعد إدخال كلمة المرور للتأكيد';
+
+  @override
   String get authNoAccount => 'ليس لديك حساب؟ ';
 
   @override
@@ -446,8 +461,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم إنشاء الموقف بنجاح. في انتظار موافقة المدير.';
 
   @override
-  String get parkingSuccessUpdate =>
-      'تم إرسال طلب تحديث الموقف. في انتظار موافقة المدير.';
+  String get parkingSuccessUpdate => 'تم تحديث الموقف بنجاح';
 
   @override
   String get parkingErrorUnauthorized => 'غير مصرح لك بتنفيذ هذا الإجراء';
@@ -1374,6 +1388,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationsNotFound => 'الإشعار غير موجود';
 
   @override
+  String get notificationsUnread => 'غير مقروءة';
+
+  @override
+  String get notificationsRead => 'مقروءة';
+
+  @override
   String get commonYesterday => 'أمس';
 
   @override
@@ -1436,4 +1456,208 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get errorConnectionFailed =>
       'تعذر الاتصال بالخادم. يرجى التحقق من الشبكة أو عنوان الخادم.';
+
+  @override
+  String get searchNearbyParking => 'بحث قريب';
+
+  @override
+  String get searchingNearbyParking => 'جاري البحث عن مواقف قريبة...';
+
+  @override
+  String get noNearbyParkingFound => 'لا توجد مواقف قريبة';
+
+  @override
+  String get foundNearbyParking => 'تم العثور على';
+
+  @override
+  String get parkingLots => 'مواقف';
+
+  @override
+  String get searchError => 'فشل البحث';
+
+  @override
+  String get cancelSearch => 'إلغاء البحث';
+
+  @override
+  String get noUnreadNotifications => 'لا توجد إشعارات غير مقروءة';
+
+  @override
+  String get noReadNotifications => 'لا توجد إشعارات مقروءة';
+
+  @override
+  String get full => 'ممتلئ';
+
+  @override
+  String get parkingDashboardCameraData => 'بيانات الكاميرا';
+
+  @override
+  String get parkingDashboardBookingAvailable => 'أماكن قابلة للحجز';
+
+  @override
+  String get cameraAvailability => 'التوفر عبر الكاميرا';
+
+  @override
+  String get bookingAvailability => 'التوفر عبر الحجز';
+
+  @override
+  String get occupancyStatusAvailable => 'متاح';
+
+  @override
+  String get occupancyStatusLimited => 'محدود';
+
+  @override
+  String get occupancyStatusFull => 'ممتلئ';
+
+  @override
+  String get networkErrorRequestCancelled => 'تم إلغاء الطلب من قبل المستخدم.';
+
+  @override
+  String get networkErrorTimeout => 'انتهت مهلة الطلب. يرجى المحاولة لاحقاً.';
+
+  @override
+  String get networkErrorNoInternet =>
+      'لا يوجد اتصال بالإنترنت. يرجى التحقق من الشبكة.';
+
+  @override
+  String get networkErrorConnection =>
+      'حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get networkErrorBadCertificate => 'حدث خطأ في شهادة الأمان.';
+
+  @override
+  String get networkErrorBadResponse => 'أرجع الخادم استجابة غير متوقعة.';
+
+  @override
+  String get networkErrorUnknown => 'حدث خطأ شبكة غير معروف.';
+
+  @override
+  String get networkErrorUnexpectedFormat =>
+      'تنسيق استجابة غير متوقع من الخادم.';
+
+  @override
+  String networkErrorUnexpectedStatus(int statusCode) {
+    return 'حالة استجابة غير متوقعة: $statusCode';
+  }
+
+  @override
+  String get locationErrorServicesDisabled =>
+      'خدمات الموقع معطلة. يرجى تفعيل خدمات الموقع.';
+
+  @override
+  String get locationErrorPermissionDenied =>
+      'تم رفض أذونات الموقع. يرجى منح إذن الموقع.';
+
+  @override
+  String get locationErrorPermissionPermanentlyDenied =>
+      'تم رفض أذونات الموقع بشكل دائم. يرجى تفعيلها في إعدادات التطبيق.';
+
+  @override
+  String get locationErrorFailed =>
+      'فشل الحصول على الموقع الحالي. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String locationErrorFailedWithDetails(String details) {
+    return 'فشل الحصول على الموقع الحالي: $details';
+  }
+
+  @override
+  String get validationErrorPlateNumberRequired => 'رقم اللوحة مطلوب';
+
+  @override
+  String get validationErrorCarMakeRequired => 'ماركة السيارة مطلوبة';
+
+  @override
+  String get validationErrorCarModelRequired => 'طراز السيارة مطلوب';
+
+  @override
+  String get validationErrorColorRequired => 'اللون مطلوب';
+
+  @override
+  String get validationErrorInvalidVehicleId => 'معرف المركبة غير صالح';
+
+  @override
+  String get operationErrorFailedToAddVehicle =>
+      'فشلت إضافة المركبة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorFailedToUpdateVehicle =>
+      'فشل تحديث المركبة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorFailedToDeleteVehicle =>
+      'فشل حذف المركبة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorFailedToGetVehicles =>
+      'فشل جلب المركبات. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorFailedToParkingLots =>
+      'فشل جلب المواقف. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorFailedToGetParkingDetails =>
+      'فشل جلب تفاصيل الموقف. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorFailedToSearchNearby =>
+      'فشل البحث عن مواقف قريبة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorParkingNotFound => 'الموقف غير موجود.';
+
+  @override
+  String get operationErrorFailedToGetNotifications =>
+      'فشل جلب الإشعارات. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorFailedToMarkNotificationRead =>
+      'فشل تحديد الإشعار كمقروء.';
+
+  @override
+  String get operationErrorFailedToPayViolation =>
+      'فشل دفع المخالفة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorFailedToGetViolations =>
+      'فشل جلب المخالفات. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorBookingDataNull => 'بيانات الحجز غير متاحة.';
+
+  @override
+  String get operationErrorFailedToInitializeMap =>
+      'فشل تهيئة الخريطة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get operationErrorDownloadDirectory => 'تعذر الوصول إلى مجلد التحميل.';
+
+  @override
+  String get successVehicleAdded => 'تمت إضافة المركبة بنجاح';
+
+  @override
+  String get successVehicleUpdateRequested =>
+      'تم إرسال طلب التحديث. في انتظار موافقة المدير.';
+
+  @override
+  String get successVehicleDeleted => 'تم حذف المركبة بنجاح';
+
+  @override
+  String get successViolationPaid => 'تم دفع المخالفة بنجاح';
+
+  @override
+  String get ownerPendingApprovalMessage =>
+      'حسابك في انتظار موافقة المدير. يرجى الانتظار حتى يتم تفعيل حسابك.';
+
+  @override
+  String get homePage => 'الرئيسية';
+
+  @override
+  String get homePagePlaceholder => 'الصفحة الرئيسية - قريباً';
+
+  @override
+  String perHourShort(String rate) {
+    return '$rate/ساعة';
+  }
 }

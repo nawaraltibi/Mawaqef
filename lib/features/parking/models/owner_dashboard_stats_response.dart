@@ -121,6 +121,10 @@ class SummaryStats {
 }
 
 /// Occupancy Statistics Model
+/// 
+/// Contains availability computed from camera-based vacant_spaces:
+/// - [availableSpaces]: Available spaces (from sum of vacant_spaces)
+/// - [occupiedSpaces]: Occupied spaces (from sum of vacant_spaces)
 class OccupancyStats {
   final int totalSpaces;
   final int availableSpaces;
@@ -162,6 +166,12 @@ class OccupancyStats {
       'occupancy_level': occupancyLevel,
     };
   }
+
+  /// Get display-friendly available spaces
+  int get displayAvailableSpaces => availableSpaces;
+
+  /// Get display-friendly occupied spaces
+  int get displayOccupiedSpaces => occupiedSpaces;
 }
 
 /// Financial Statistics Model

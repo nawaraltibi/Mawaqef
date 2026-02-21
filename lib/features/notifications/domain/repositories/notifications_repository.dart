@@ -1,4 +1,5 @@
 import '../entities/notification_entity.dart';
+import '../entities/notifications_result.dart';
 
 /// Notifications Repository Interface
 /// Abstract repository for notification operations
@@ -8,15 +9,16 @@ import '../entities/notification_entity.dart';
 /// - Data layer implementations
 /// - External libraries (except core utilities)
 abstract class NotificationsRepository {
-  /// Get all unread notifications for the authenticated user
+  /// Get all notifications for the authenticated user
   /// 
-  /// Returns a list of NotificationEntity objects.
-  /// Only unread notifications (isRead = false) are returned.
+  /// Returns a NotificationsResult containing:
+  /// - All notifications (both read and unread)
+  /// - unreadCount from server for badge display
   /// 
   /// Throws AppException on error:
   /// - 401: Unauthenticated
   /// - 500: Server errors
-  Future<List<NotificationEntity>> getAllNotifications();
+  Future<NotificationsResult> getAllNotifications();
 
   /// Mark a notification as read
   /// 

@@ -15,6 +15,11 @@ import 'widgets/login_form_fields.dart';
 
 /// Login Screen
 /// UI component for user login
+/// 
+/// UX Validation Model:
+/// - No red errors while typing (errors cleared on value change)
+/// - Errors shown only on blur (field unfocused) or submit
+/// - Helper text displayed by default, replaced by error when validation fails
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -25,26 +30,34 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  
+  // FocusNodes for detecting blur events
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
     super.dispose();
   }
 
+  /// Handle login button press
+  /// Updates bloc with current values and dispatches submit event
   void _handleLogin() {
-    if (formKey.currentState!.validate()) {
-      final bloc = context.read<LoginBloc>();
+    // Unfocus all fields first to trigger any pending validation
+    FocusScope.of(context).unfocus();
+    
+    final bloc = context.read<LoginBloc>();
 
-      // Update email and password in the bloc state
-      bloc.add(UpdateEmail(emailController.text.trim()));
-      bloc.add(UpdatePassword(passwordController.text));
+    // Update email and password in the bloc state
+    bloc.add(UpdateEmail(emailController.text.trim()));
+    bloc.add(UpdatePassword(passwordController.text));
 
-      // Send login request
-      bloc.add(SendLoginRequest());
-    }
+    // Send login request (bloc will validate and show errors if needed)
+    bloc.add(SendLoginRequest());
   }
 
   @override
@@ -101,86 +114,94 @@ class _LoginScreenState extends State<LoginScreen> {
               physics: const BouncingScrollPhysics(),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: 20.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 20.h),
 
-                      // Login Image
-                      Center(
-                        child: Image.asset(
-                          Assets.imagesLogin,
-                          height: 180.h,
-                          width: double.infinity,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      SizedBox(height: 18.h),
-
-                      // Welcome Title
-                      Text(
-                        l10n.authLoginTitle,
-                        style: AppTextStyles.headlineLarge(
-                          context,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        l10n.authLoginSubtitle,
-                        style: AppTextStyles.bodyMedium(
-                          context,
-                          color: AppColors.secondaryText,
-                        ),
-                      ),
-                      SizedBox(height: 30.h),
-
-                      // Login Form Fields
-                      LoginFormFields(
-                        emailController: emailController,
-                        passwordController: passwordController,
-                      ),
-                      SizedBox(height: 24.h),
-
-                      // Login Button
-                      SizedBox(
+                    // Login Image
+                    Center(
+                      child: Image.asset(
+                        Assets.imagesLogin,
+                        height: 180.h,
                         width: double.infinity,
-                        child: CustomElevatedButton(
-                          title: l10n.authLoginButton,
-                          isLoading: state is LoginLoading,
-                          onPressed: _handleLogin,
-                        ),
+                        fit: BoxFit.contain,
                       ),
-                      SizedBox(height: 15.h),
+                    ),
+                    SizedBox(height: 18.h),
 
-                      // Register Link
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            l10n.authNoAccount,
-                            style: AppTextStyles.bodyMedium(
-                              context,
-                              color: AppColors.secondaryText,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () => context.push(Routes.registerPath),
-                            child: Text(
-                              l10n.authRegisterButton,
-                              style: AppTextStyles.labelLarge(
-                                context,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ),
-                        ],
+                    // Welcome Title
+                    Text(
+                      l10n.authLoginTitle,
+                      style: AppTextStyles.headlineLarge(
+                        context,
+                        color: AppColors.primary,
                       ),
-                      SizedBox(height: 25.h),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      l10n.authLoginSubtitle,
+                      style: AppTextStyles.bodyMedium(
+                        context,
+                        color: AppColors.secondaryText,
+                      ),
+                    ),
+                    SizedBox(height: 30.h),
+
+                    // Login Form Fields
+                    // Validation errors from Bloc state (shown on blur or submit)
+                    LoginFormFields(
+                      emailController: emailController,
+                      passwordController: passwordController,
+                      emailFocusNode: emailFocusNode,
+                      passwordFocusNode: passwordFocusNode,
+                      emailError: state.emailError,
+                      passwordError: state.passwordError,
+                      onEmailChanged: (value) {
+                        context.read<LoginBloc>().add(UpdateEmail(value));
+                      },
+                      onPasswordChanged: (value) {
+                        context.read<LoginBloc>().add(UpdatePassword(value));
+                      },
+                    ),
+                    SizedBox(height: 24.h),
+
+                    // Login Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: CustomElevatedButton(
+                        title: l10n.authLoginButton,
+                        isLoading: state is LoginLoading,
+                        onPressed: _handleLogin,
+                      ),
+                    ),
+                    SizedBox(height: 15.h),
+
+                    // Register Link
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          l10n.authNoAccount,
+                          style: AppTextStyles.bodyMedium(
+                            context,
+                            color: AppColors.secondaryText,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => context.push(Routes.registerPath),
+                          child: Text(
+                            l10n.authRegisterButton,
+                            style: AppTextStyles.labelLarge(
+                              context,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 25.h),
+                  ],
                 ),
               ),
             );

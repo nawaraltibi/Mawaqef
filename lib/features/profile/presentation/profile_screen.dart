@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/styles/app_colors.dart';
+import '../../../core/styles/app_dimens.dart';
+import '../../../core/styles/app_durations.dart';
 import '../../../core/styles/app_text_styles.dart';
 import '../../../core/widgets/custom_elevated_button.dart';
 import '../../../core/widgets/unified_snackbar.dart';
@@ -166,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                   // Navigate to login after password update (tokens are invalidated)
                   // Clear entire navigation stack
-                  Future.delayed(const Duration(seconds: 2), () {
+                  Future.delayed(AppDurations.snackbarShort, () {
                     if (mounted) {
                       context.go(Routes.loginPath);
                     }
@@ -178,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                   // Navigate to login after account deletion
                   // Clear entire navigation stack
-                  Future.delayed(const Duration(seconds: 2), () {
+                  Future.delayed(AppDurations.snackbarShort, () {
                     if (mounted) {
                       context.go(Routes.loginPath);
                     }
@@ -190,6 +192,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     l10n,
                   );
                   UnifiedSnackbar.error(context, message: errorMessage);
+                  // Restore form fields to original profile data on update failure
+                  if (state.profileData != null) {
+                    _fullNameController.text =
+                        state.profileData!.data.fullName;
+                    _emailController.text =
+                        state.profileData!.data.email;
+                    _phoneController.text =
+                        state.profileData!.data.phone;
+                  }
                 }
               },
             ),
@@ -202,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                   // Navigate to login screen after logout
                   // Clear entire navigation stack
-                  Future.delayed(const Duration(seconds: 1), () {
+                  Future.delayed(AppDurations.longDelay, () {
                     if (mounted) {
                       context.go(Routes.loginPath);
                     }
@@ -211,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // Handle 401 (Unauthenticated) - clear data and navigate
                   // Clear entire navigation stack
                   if (state.statusCode == 401) {
-                    Future.delayed(const Duration(seconds: 1), () {
+                    Future.delayed(AppDurations.longDelay, () {
                       if (mounted) {
                         context.go(Routes.loginPath);
                       }
@@ -261,6 +272,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               } else if (state is ProfileUpdateSuccess &&
                   state.profileData != null) {
                 profileData = state.profileData;
+              } else if (state is ProfileFailure &&
+                  state.profileData != null) {
+                profileData = state.profileData;
               }
 
               if (profileData == null) {
@@ -282,22 +296,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 padding: EdgeInsetsDirectional.only(
-                  start: 20.w,
-                  end: 20.w,
-                  top: 20.h,
-                  bottom: 20.h,
+                  start: AppDimens.paddingXL.w,
+                  end: AppDimens.paddingXL.w,
+                  top: AppDimens.paddingXL.h,
+                  bottom: AppDimens.paddingXL.h,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 8.h),
+                    SizedBox(height: AppDimens.spacingM.h),
 
                     // Profile Info Card
                     Container(
-                      padding: EdgeInsets.all(24.w),
+                      padding: EdgeInsets.all(AppDimens.paddingXXL.w),
                       decoration: BoxDecoration(
                         color: AppColors.surface,
-                        borderRadius: BorderRadius.circular(24.r),
+                        borderRadius: BorderRadius.circular(AppDimens.radiusMax.r),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withValues(alpha: 0.04),

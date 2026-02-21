@@ -14,7 +14,7 @@ class LocationService implements LocationRepository {
       if (!serviceEnabled) {
         throw AppException(
           statusCode: 503,
-          errorCode: 'location-service-disabled',
+          errorCode: 'location-services-disabled',
           message: 'Location services are disabled. Please enable location services.',
         );
       }

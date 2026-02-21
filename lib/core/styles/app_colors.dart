@@ -118,6 +118,36 @@ class AppColors {
   /// Info color - Used for informational messages (matches primary)
   static const Color info = primary;
 
+  // ============================================
+  // SNACKBAR / TOAST COLORS
+  // ============================================
+  /// Success snackbar background - Light green
+  static const Color snackbarSuccessBackground = Color(0xFFF0F9F4);
+
+  /// Success snackbar border - Green border
+  static const Color snackbarSuccessBorder = Color(0xFFD1FAE5);
+
+  /// Success snackbar text - Dark green text
+  static const Color snackbarSuccessText = Color(0xFF065F46);
+
+  /// Error snackbar background - Light red
+  static const Color snackbarErrorBackground = Color(0xFFFEF2F2);
+
+  /// Error snackbar border - Red border
+  static const Color snackbarErrorBorder = Color(0xFFFECACA);
+
+  /// Error snackbar text - Dark red text
+  static const Color snackbarErrorText = Color(0xFF991B1B);
+
+  /// Warning snackbar background - Light amber
+  static const Color snackbarWarningBackground = Color(0xFFFEFBF0);
+
+  /// Warning snackbar border - Amber border
+  static const Color snackbarWarningBorder = Color(0xFFFDE68A);
+
+  /// Warning snackbar text - Dark amber text
+  static const Color snackbarWarningText = Color(0xFF92400E);
+
   // White Shades
   static const Color brightWhite = Color(0xFFFFFFFF);
   static const Color darkWhite = Color(0xFFF9FAFB);
@@ -188,4 +218,64 @@ class AppColors {
 
   /// Button disabled text - Gray text for disabled buttons
   static const Color buttonDisabledText = disabledText;
+}
+
+/// Parking Occupancy Colors
+/// Provides dynamic coloring based on occupancy status
+/// Used for map markers and availability indicators
+class ParkingOccupancyColors {
+  /// Get color based on occupancy status string
+  /// - 'available' → Green (success)
+  /// - 'limited' → Orange (warning)
+  /// - 'full' → Red (error)
+  /// - default → Primary (teal)
+  static Color fromStatus(String? occupancyStatus) {
+    switch (occupancyStatus?.toLowerCase()) {
+      case 'available':
+        return AppColors.success; // Green
+      case 'limited':
+        return AppColors.warning; // Orange
+      case 'full':
+        return AppColors.error; // Red
+      default:
+        return AppColors.primary; // Default teal
+    }
+  }
+
+  /// Get color based on available spaces count and total spaces
+  /// Provides fallback when occupancy_status is not available
+  static Color fromAvailability(int availableSpaces, int totalSpaces) {
+    if (totalSpaces == 0) return AppColors.primary;
+    
+    final occupancyPercent = (totalSpaces - availableSpaces) / totalSpaces;
+    
+    if (availableSpaces == 0 || occupancyPercent >= 0.95) {
+      return AppColors.error; // Full (red)
+    } else if (occupancyPercent >= 0.70) {
+      return AppColors.warning; // Limited (orange)
+    } else {
+      return AppColors.success; // Available (green)
+    }
+  }
+
+  /// Get color with smart fallback
+  /// Uses occupancy_status if available, otherwise calculates from spaces
+  static Color getColor({
+    String? occupancyStatus,
+    int? availableSpaces,
+    int? totalSpaces,
+  }) {
+    // If occupancy status is provided, use it
+    if (occupancyStatus != null && occupancyStatus.isNotEmpty) {
+      return fromStatus(occupancyStatus);
+    }
+    
+    // Otherwise, calculate from available spaces
+    if (availableSpaces != null && totalSpaces != null && totalSpaces > 0) {
+      return fromAvailability(availableSpaces, totalSpaces);
+    }
+    
+    // Default fallback
+    return AppColors.primary;
+  }
 }

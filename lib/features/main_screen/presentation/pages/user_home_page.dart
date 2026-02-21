@@ -29,6 +29,8 @@ class _UserHomePageState extends State<UserHomePage> {
   final Map<int, int?> _remainingSecondsCache = {};
   // تخزين الـ timestamp عند استدعاء API الأخير
   final Map<int, DateTime> _lastFetchTime = {};
+  // لمنع الاستدعاءات المتكررة أثناء جلب البيانات
+  final Set<int> _fetchingInProgress = {};
 
   @override
   void initState() {
@@ -42,6 +44,7 @@ class _UserHomePageState extends State<UserHomePage> {
     setState(() {
       _remainingSecondsCache.clear();
       _lastFetchTime.clear();
+      _fetchingInProgress.clear();
     });
   }
 
@@ -78,6 +81,11 @@ class _UserHomePageState extends State<UserHomePage> {
 
   /// استدعاء API مرة واحدة فقط
   Future<void> _fetchRemainingTime(int bookingId) async {
+    // منع الاستدعاءات المتكررة إذا كان الطلب قيد التنفيذ
+    if (_fetchingInProgress.contains(bookingId)) return;
+    
+    _fetchingInProgress.add(bookingId);
+    
     try {
       final response = await BookingRepository.getRemainingTime(
         bookingId: bookingId,
@@ -90,6 +98,8 @@ class _UserHomePageState extends State<UserHomePage> {
       }
     } catch (e) {
       // Silently handle errors
+    } finally {
+      _fetchingInProgress.remove(bookingId);
     }
   }
 

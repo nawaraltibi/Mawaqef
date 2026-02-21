@@ -495,36 +495,52 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
   }
 
   Widget _buildBasicInfo(BuildContext context, ParkingLotEntity lot) {
+    // Get color based on availability
+    final occupancyColor = ParkingOccupancyColors.getColor(
+      availableSpaces: lot.displayAvailableSpaces,
+      totalSpaces: lot.totalSpaces,
+    );
+    
+    // Determine status text based on occupancy
+    String statusText;
+    if (lot.isFull) {
+      statusText = AppLocalizations.of(context)!.full;
+    } else if (lot.displayAvailableSpaces < (lot.totalSpaces * 0.3).ceil()) {
+      statusText = AppLocalizations.of(context)!.limited;
+    } else {
+      statusText = AppLocalizations.of(context)!.available;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Available spaces
+        // Available spaces - using camera-based display values
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.green[50],
+            color: occupancyColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.green[200]!),
+            border: Border.all(color: occupancyColor.withValues(alpha: 0.3)),
           ),
           child: Row(
             children: [
-              Icon(Icons.local_parking, color: Colors.green[700]),
+              Icon(Icons.local_parking, color: occupancyColor),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${lot.availableSpacesCount} / ${lot.totalSpaces}',
+                      '${lot.displayAvailableSpaces} / ${lot.totalSpaces}',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green[700],
+                        color: occupancyColor,
                       ),
                     ),
                     Text(
                       AppLocalizations.of(context)!.availableParkingSpaces,
-                      style: TextStyle(fontSize: 12, color: Colors.green[600]),
+                      style: TextStyle(fontSize: 12, color: occupancyColor.withValues(alpha: 0.8)),
                     ),
                   ],
                 ),
@@ -535,11 +551,11 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: occupancyColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.available,
+                  statusText,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
@@ -571,30 +587,40 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
     BuildContext context,
     ParkingDetailsEntity details,
   ) {
+    // Get color based on availability
+    final occupancyColor = ParkingOccupancyColors.getColor(
+      availableSpaces: details.displayAvailableSpaces,
+      totalSpaces: details.totalSpaces,
+    );
+    
+    // Determine status text based on occupancy
+    String statusText;
+    if (details.isFull) {
+      statusText = AppLocalizations.of(context)!.full;
+    } else if (details.displayAvailableSpaces < (details.totalSpaces * 0.3).ceil()) {
+      statusText = AppLocalizations.of(context)!.limited;
+    } else {
+      statusText = AppLocalizations.of(context)!.available;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Available spaces with details
+        // Available spaces with details - using camera-based display values
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: details.hasAvailableSpaces
-                ? Colors.green[50]
-                : Colors.orange[50],
+            color: occupancyColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: details.hasAvailableSpaces
-                  ? Colors.green[200]!
-                  : Colors.orange[200]!,
+              color: occupancyColor.withValues(alpha: 0.3),
             ),
           ),
           child: Row(
             children: [
               Icon(
                 Icons.local_parking,
-                color: details.hasAvailableSpaces
-                    ? Colors.green[700]
-                    : Colors.orange[700],
+                color: occupancyColor,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -602,22 +628,18 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${details.availableSpacesCount} / ${details.totalSpaces}',
+                      '${details.displayAvailableSpaces} / ${details.totalSpaces}',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: details.hasAvailableSpaces
-                            ? Colors.green[700]
-                            : Colors.orange[700],
+                        color: occupancyColor,
                       ),
                     ),
                     Text(
                       AppLocalizations.of(context)!.availableParkingSpaces,
                       style: TextStyle(
                         fontSize: 12,
-                        color: details.hasAvailableSpaces
-                            ? Colors.green[600]
-                            : Colors.orange[600],
+                        color: occupancyColor.withValues(alpha: 0.8),
                       ),
                     ),
                   ],
@@ -629,15 +651,11 @@ class _ParkingDetailsBottomSheetState extends State<ParkingDetailsBottomSheet> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: details.hasAvailableSpaces
-                      ? Colors.green
-                      : Colors.orange,
+                  color: occupancyColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  details.hasAvailableSpaces
-                      ? AppLocalizations.of(context)!.available
-                      : AppLocalizations.of(context)!.limited,
+                  statusText,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,

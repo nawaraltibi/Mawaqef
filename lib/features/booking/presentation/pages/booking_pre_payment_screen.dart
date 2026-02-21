@@ -284,10 +284,16 @@ class _BookingPrePaymentScreenState extends State<BookingPrePaymentScreen> {
       }
     }
 
-    // Map internal error codes to localized messages
-    final message = state.error == 'invalid_booking_data'
-        ? l10n.invalidHours
-        : state.error;
+    // Map internal error codes and API messages to localized messages
+    String message;
+    if (state.error == 'invalid_booking_data') {
+      message = l10n.invalidHours;
+    } else if (state.error == 'The square is full') {
+      // Translate hardcoded API message to localized string
+      message = l10n.parkingLotFull;
+    } else {
+      message = state.error;
+    }
     UnifiedSnackbar.error(context, message: message);
   }
 

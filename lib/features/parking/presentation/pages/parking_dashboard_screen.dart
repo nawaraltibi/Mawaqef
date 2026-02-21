@@ -335,10 +335,13 @@ class _OccupancyIndicator extends StatelessWidget {
 
     // Safe percent calculation with validation
     final totalSpaces = stats.totalSpaces > 0 ? stats.totalSpaces : 1;
-    final occupiedSpaces = stats.occupiedSpaces.clamp(0, totalSpaces);
+    
+    // Use display values directly (backend computes from vacant_spaces)
+    final displayOccupied = stats.displayOccupiedSpaces.clamp(0, totalSpaces);
+    final displayAvailable = stats.displayAvailableSpaces;
     
     // Calculate percent safely
-    final occupancyPercent = (occupiedSpaces / totalSpaces).clamp(0.0, 1.0);
+    final occupancyPercent = (displayOccupied / totalSpaces).clamp(0.0, 1.0);
 
     return Container(
       padding: EdgeInsets.all(20.w),
@@ -375,7 +378,7 @@ class _OccupancyIndicator extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '$occupiedSpaces',
+                      '$displayOccupied',
                       style: AppTextStyles.headlineSmall(
                         context,
                         color: AppColors.primary,
@@ -400,10 +403,36 @@ class _OccupancyIndicator extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Text(
-            '$occupiedSpaces / $totalSpaces ${l10n.parkingDashboardOccupied}',
+            '$displayOccupied / $totalSpaces ${l10n.parkingDashboardOccupied}',
             style: AppTextStyles.bodyMedium(
               context,
               color: AppColors.secondaryText,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: AppColors.backgroundSecondary,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.event_available,
+                  size: 16.sp,
+                  color: AppColors.success,
+                ),
+                SizedBox(width: 6.w),
+                Text(
+                  '${l10n.parkingDashboardBookingAvailable}: $displayAvailable',
+                  style: AppTextStyles.labelMedium(
+                    context,
+                    color: AppColors.primaryText,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

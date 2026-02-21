@@ -1,9 +1,9 @@
-import '../entities/notification_entity.dart';
+import '../entities/notifications_result.dart';
 import '../repositories/notifications_repository.dart';
 import '../../../../core/utils/app_exception.dart';
 
 /// Get All Notifications Use Case
-/// Business logic for retrieving unread notifications
+/// Business logic for retrieving all notifications (read and unread)
 class GetAllNotificationsUseCase {
   final NotificationsRepository repository;
 
@@ -11,12 +11,14 @@ class GetAllNotificationsUseCase {
 
   /// Execute the use case
   /// 
-  /// Returns a list of NotificationEntity objects for unread notifications only.
+  /// Returns NotificationsResult containing:
+  /// - All notifications (both read and unread)
+  /// - unreadCount from server for badge display
   /// 
   /// Throws AppException on error:
   /// - 401: Unauthenticated
   /// - 500: Server errors
-  Future<List<NotificationEntity>> call() async {
+  Future<NotificationsResult> call() async {
     try {
       return await repository.getAllNotifications();
     } on AppException {
